@@ -1,6 +1,6 @@
 type TState = {
-    loading: boolean;
-    error: string | null;
+    readonly loading: boolean;
+    readonly error: string | null;
 }
 
 export default TState;
