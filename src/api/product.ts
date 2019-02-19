@@ -1,2 +1,19 @@
-export const GET_PRODUCT = 'http://localhost:8000/api/customers';
-export const GET_PRODUCT_BY_ID = (_: any, id: string | number) => `${GET_PRODUCT}/${id}` 
+import IProduct from '../models/Product';
+export const ALL_PRODUCTS = 'http://localhost:8000/api/products';
+
+export const fetchAll = async (config: object = {}): Promise<IProduct[]> => {
+  try {
+    const res = await fetch(ALL_PRODUCTS, config);
+    return await res.json();
+  } catch (err) {
+    throw err;
+  }
+};
+export const requestByID = async (id: string | number, config: object = {}): Promise<IProduct> => {
+  try {
+    const res = await fetch(`${ALL_PRODUCTS}/${id}`, config);
+    return await res.json();
+  } catch (err) {
+    throw err;
+  }
+};
