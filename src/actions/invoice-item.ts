@@ -1,6 +1,6 @@
 import { action, createStandardAction } from 'typesafe-actions';
-import { INVOICE_ITEMS_TYPES } from '../types';
 import IInvoiceItem from '../models/InvoiceItem';
+import { INVOICE_ITEMS_TYPES } from '../types';
 
 export const fetchInvoices = createStandardAction(INVOICE_ITEMS_TYPES.GET_INVOICE_ITEMS_REQUEST)<
   string

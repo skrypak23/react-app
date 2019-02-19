@@ -1,6 +1,6 @@
 import { action, createStandardAction } from 'typesafe-actions';
-import { CUSTOMER_TYPES } from '../types';
 import ICustomer from '../models/Customer';
+import { CUSTOMER_TYPES } from '../types';
 
 export const fetchCustomers = createStandardAction(CUSTOMER_TYPES.GET_CUSTOMERS_REQUEST)<string>();
 export const fetchCustomersSuccess = (customers: ICustomer[]) =>

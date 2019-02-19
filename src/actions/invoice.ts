@@ -1,7 +1,6 @@
 import { action, createStandardAction } from 'typesafe-actions';
-import { action, createStandardAction } from 'typesafe-actions';
-import { INVOICE_TYPES } from '../types';
 import IInvoice from '../models/Invoice';
+import { INVOICE_TYPES } from '../types';
 
 export const fetchInvoices = createStandardAction(INVOICE_TYPES.GET_INVOICES_REQUEST)<string>();
 export const fetchInvoicesSuccess = (invoices: IInvoice[]) =>

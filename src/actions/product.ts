@@ -1,7 +1,6 @@
 import { action, createStandardAction } from 'typesafe-actions';
-import { action, createStandardAction } from 'typesafe-actions';
-import { PRODUCT_TYPES } from '../types';
 import IProduct from '../models/Product';
+import { PRODUCT_TYPES } from '../types';
 
 export const fetchProducts = () =>
   createStandardAction(PRODUCT_TYPES.GET_PRODUCTS_REQUEST)<string>();
