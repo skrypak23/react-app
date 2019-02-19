@@ -1,22 +1,19 @@
-import { of } from 'rxjs';
+import { of, from } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
-import { ajax } from 'rxjs/ajax';
 import { ofType, Epic } from 'redux-observable';
-import TAction from '../common/types/TAction';
-import TYPES from '../types';
-import * as API from '../api/customer';
-import Actions from '../actions';
+import { RootAction, RootState } from '../store/types';
+import { CUSTOMER_TYPES } from '../types';
+import API from '../api';
+import { CustomerActions } from '../actions';
 import ICustomer from '../models/Customer';
 
-const { Customer } = Actions;
-
-export const getCustomersEpic: Epic<TAction, any> = action$ =>
+export const getCustomersEpi: Epic<RootAction, RootAction, RootState> = action$ =>
   action$.pipe(
-    ofType(TYPES.CUSTOMER.GET_CUSTOMERS_REQUEST),
+    ofType(CUSTOMER_TYPES.GET_CUSTOMERS_REQUEST),
     switchMap(() =>
-      ajax.getJSON(API.GET_CUSTOMERS).pipe(
-        map((data: any) => Customer.fetchCustomersSuccess(data)),
-        catchError(err => of(Customer.setError(err.message)))
+      from(API.Customer.fetchAll()).pipe(
+        map((data: ICustomer[]) => CustomerActions.fetchCustomersSuccess(data)),
+        catchError(err => of(CustomerActions.setError(err.message)))
       )
     )
   );
