@@ -4,11 +4,11 @@ import { CUSTOMER_TYPES } from '../types';
 import ICustomer from '../models/Customer';
 import TState from '../common/types/TState';
 
-type State = TState & {
+export type State = TState & {
   readonly customer: ICustomer | null;
   customers: ReadonlyArray<ICustomer>;
 };
-type Action = ActionType<typeof CustomerActions>;
+export type Action = ActionType<typeof CustomerActions>;
 
 const initialState: State = {
   loading: false,
@@ -22,8 +22,11 @@ const reducer = (state: State = initialState, action: Action): State => {
   console.log(action);
   switch (type) {
     case CUSTOMER_TYPES.GET_CUSTOMERS_REQUEST:
-      console.log(type);
-      return state;
+      return { ...state, loading: true, error: null };
+    case CUSTOMER_TYPES.GET_CUSTOMERS_SUCCESS:
+      return { ...state, customers: payload as ICustomer[], loading: false, error: null };
+    case CUSTOMER_TYPES.FETCH_CUSTOMER_ERROR:
+      return { ...state, loading: false, error: payload as string };
     default:
       return state;
   }
