@@ -1,17 +1,15 @@
-import TYPES from '../types';
+import { action, createStandardAction } from 'typesafe-actions';
+import { INVOICE_ITEMS_TYPES } from '../types';
 import IInvoiceItem from '../models/InvoiceItem';
 
-export const fetchInvoices = () => ({ type: TYPES.INVOICE.GET_INVOICES_REQUEST });
-export const fetchInvoicesSuccess = (invoices: IInvoiceItem[]) => ({
-  type: TYPES.INVOICE_ITEMS.GET_INVOICE_ITEMS_REQUEST,
-  payload: invoices
-});
+export const fetchInvoices = createStandardAction(INVOICE_ITEMS_TYPES.GET_INVOICE_ITEMS_REQUEST)<
+  string
+>();
+export const fetchInvoicesSuccess = (invoices: IInvoiceItem[]) =>
+  action(INVOICE_ITEMS_TYPES.GET_INVOICE_ITEMS_REQUEST, invoices);
 
-export const fetchInvoiceById = (id: string | number) => ({
-  type: TYPES.INVOICE_ITEMS.GET_INVOICE_ITEMS_BY_ID_REQUEST,
-  payload: id
-});
-export const fetchInvoiceByIdSuccess = (invoice: IInvoiceItem) => ({
-  type: TYPES.INVOICE_ITEMS.GET_INVOICE_ITEMS_BY_ID_SUCCESS,
-  payload: invoice
-});
+export const fetchInvoiceById = (id: string | number) =>
+  action(INVOICE_ITEMS_TYPES.GET_INVOICE_ITEMS_BY_ID_REQUEST, id);
+export const fetchInvoiceByIdSuccess = (invoice: IInvoiceItem) => (
+  INVOICE_ITEMS_TYPES.GET_INVOICE_ITEMS_BY_ID_SUCCESS, invoice
+);

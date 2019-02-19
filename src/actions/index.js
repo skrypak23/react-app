@@ -1,6 +1,6 @@
-import * as Customer from './customer';
-import * as Product from './product';
-import * as Invoice from './invoice';
-import * as InvoiceItem from './invoice-item';
+import * as CustomerActions from './customer';
+import * as ProductActions from './product';
+import * as InvoiceActions from './invoice';
+import * as InvoiceItemActions from './invoice-item';
 
-export default { Customer, Product, Invoice, InvoiceItem };
+export { CustomerActions, ProductActions, InvoiceActions, InvoiceItemActions };
