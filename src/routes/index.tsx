@@ -3,10 +3,10 @@ import { Route, Switch } from 'react-router-dom';
 import Spin from '../components/Spinner'
 import * as PATHS from './routes';
 
-const AsyncCustomer = lazy(() => import('../components/Customer'));
-const AsyncProduct = lazy(() => import('../components/Product'));
-const AsyncInvoice = lazy(() => import('../components/Invoice'));
-const AsyncInvoiceItem = lazy(() => import('../components/InvoiceItem'));
+const AsyncCustomer = lazy(() => import('../pages/Customer'));
+const AsyncProduct = lazy(() => import('../pages/Product'));
+const AsyncInvoice = lazy(() => import('../pages/Invoice'));
+const AsyncInvoiceItem = lazy(() => import('../pages/InvoiceItem'));
 
 const routes = [
   {
