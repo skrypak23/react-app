@@ -1,44 +1,83 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# MOCK Company Invoice App (React)
 
-## Available Scripts
+# Dependencies
 
-In the project directory, you can run:
+- sqlite3
+- node
+- npm
 
-### `npm start`
+# Getting Started
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+###### Install npm dependencies
+`npm install`
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+###### Run the node server
+`npm run start`
 
-### `npm test`
+###### Viewing the application in your browser
+`http://localhost:8000`
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+###### To regenerate project use 
+`npm run build`
 
-### `npm run build`
+###### Start local dev server that will upload files from src folder and perform server autoupdate when it comes to changing files in the project
+`npm run serve`
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+# Schema
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Customers
 
-### `npm run eject`
+- id (integer)
+- name (string)
+- address (string)
+- phone (string)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Products
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- id (integer)
+- name (string)
+- price (decimal)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Invoices
 
-## Learn More
+- id (integer)
+- customer_id (integer)
+- discount (decimal)
+- total (decimal)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## InvoiceItems
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- id (integer)
+- invoice_id (integer)
+- product_id (integer)
+- quantity (decimal)
+
+
+# Resources
+
+## Customers
+```
+GET|POST          /api/customers
+GET|PUT|DELETE    /api/customers/{id}
+```
+
+## Products
+```
+GET|POST          /api/products
+GET|PUT|DELETE    /api/products/{id}
+```
+## Invoices
+```
+GET|POST          /api/invoices
+GET|PUT|DELETE    /api/invoices/{id}
+```
+
+## InvoiceItems
+```
+GET|POST          /api/invoices/{id}/items
+GET|PUT|DELETE    /api/invoices/{invoice_id}/items/{id}
+```
+
+
