@@ -1,24 +1,29 @@
-import TYPES from '../types';
+import { ActionType } from 'typesafe-actions';
+import { CustomerActions } from '../actions';
+import { CUSTOMER_TYPES } from '../types';
 import ICustomer from '../models/Customer';
-import TAction from '../common/types/TAction';
 import TState from '../common/types/TState';
 
 type State = TState & {
-  customer: ICustomer | null;
-  customers: ICustomer[];
+  readonly customer: ICustomer | null;
+  customers: ReadonlyArray<ICustomer>;
 };
+type Action = ActionType<typeof CustomerActions>;
 
-const initialState = {
+const initialState: State = {
   loading: false,
   error: null,
   customer: null,
   customers: []
 };
 
-const reducer = (state: State = initialState, action: TAction): State => {
+const reducer = (state: State = initialState, action: Action): State => {
   const { type, payload } = action;
-  console.log(type, payload)
+  console.log(action);
   switch (type) {
+    case CUSTOMER_TYPES.GET_CUSTOMERS_REQUEST:
+      console.log(type);
+      return state;
     default:
       return state;
   }

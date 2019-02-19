@@ -1,21 +1,23 @@
-import TYPES from '../types';
+import { ActionType } from 'typesafe-actions';
+import { InvoiceItemActions } from '../actions';
+import { INVOICE_ITEMS_TYPES } from '../types';
 import IInvoiceItem from '../models/InvoiceItem';
-import TAction from '../common/types/TAction';
 import TState from '../common/types/TState';
 
 type State = TState & {
-  invoiceItem: IInvoiceItem | null;
-  invoiceItems: IInvoiceItem[];
+  readonly invoiceItem: IInvoiceItem | null;
+  invoiceItems: ReadonlyArray<IInvoiceItem>;
 };
+type Action = ActionType<typeof InvoiceItemActions>;
 
-const initialState = {
+const initialState: State = {
   loading: false,
   error: null,
   invoiceItem: null,
   invoiceItems: []
 };
 
-const reducer = (state: State = initialState, action: TAction): State => {
+const reducer = (state: State = initialState, action: Action): State => {
   const { type, payload } = action;
   switch (type) {
     default:

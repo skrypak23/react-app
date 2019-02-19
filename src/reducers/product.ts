@@ -1,21 +1,23 @@
-import TYPES from '../types';
+import { ActionType } from 'typesafe-actions';
+import { ProductActions } from '../actions';
+import { PRODUCT_TYPES } from '../types';
 import IProduct from '../models/Product';
-import TAction from '../common/types/TAction';
 import TState from '../common/types/TState';
 
 type State = TState & {
-  product: IProduct | null;
-  products: IProduct[];
+  readonly product: IProduct | null;
+  products: ReadonlyArray<IProduct>;
 };
+type Action = ActionType<typeof ProductActions>;
 
-const initialState = {
+const initialState: State = {
   loading: false,
   error: null,
   product: null,
   products: []
 };
 
-const reducer = (state: State = initialState, action: TAction): State => {
+const reducer = (state: State = initialState, action: Action): State => {
   const { type, payload } = action;
   switch (type) {
     default:
