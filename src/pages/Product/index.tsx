@@ -8,11 +8,11 @@ import { RootState } from '../../store/types';
 import IProduct from '../../models/Product';
 import Drawer from '../../components/Drawer';
 
-const { fetchProducts } = ProductActions;
+const { fetchAllProducts } = ProductActions;
 
 type Props = {
   product: State;
-  fetchProducts: Function;
+  fetchAllProducts: Function;
 };
 
 const Product: FC<Props> = props => {
@@ -20,7 +20,7 @@ const Product: FC<Props> = props => {
   const [visible, changeVisible] = useState(false);
   const [isEdit, setMode] = useState(false);
   useEffect(() => {
-    props.fetchProducts();
+    props.fetchAllProducts();
   }, []);
 
   const onClose = () => changeVisible(false);
@@ -37,7 +37,7 @@ const Product: FC<Props> = props => {
 };
 
 const mapStateToProps = (state: RootState) => ({ product: state.product });
-const mapDispatchToProps = { fetchProducts };
+const mapDispatchToProps = { fetchAllProducts };
 
 export default connect(
   mapStateToProps,

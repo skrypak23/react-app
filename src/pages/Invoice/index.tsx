@@ -6,17 +6,17 @@ import { State } from '../../reducers/invoice';
 import { RootState } from '../../store/types';
 import IInvoice from '../../models/Invoice';
 
-const { fetchInvoices } = InvoiceActions;
+const { fetchAllInvoices } = InvoiceActions;
 
 type Props = {
   invoice: State;
-  fetchInvoices: Function;
+  fetchAllInvoices: Function;
 };
 
 const Invoice: FC<Props> = props => {
   const { invoice } = props;
   useEffect(() => {
-    props.fetchInvoices();
+    props.fetchAllInvoices();
   }, []);
 
   return (
@@ -27,7 +27,7 @@ const Invoice: FC<Props> = props => {
 };
 
 const mapStateToProps = (state: RootState) => ({ invoice: state.invoice });
-const mapDispatchToProps = { fetchInvoices };
+const mapDispatchToProps = { fetchAllInvoices };
 
 export default connect(
   mapStateToProps,

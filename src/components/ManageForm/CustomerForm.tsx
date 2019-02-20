@@ -4,7 +4,7 @@ import BaseForm from './BaseForm';
 import ICustomer from '../../models/Customer';
 import { CustomerActions } from '../../actions';
 
-const { createRequest } = CustomerActions;
+const { createCustomer } = CustomerActions;
 
 const FORM_FIELDS = [
   {
@@ -25,22 +25,20 @@ const FORM_FIELDS = [
 ];
 
 type Props = {
-  createRequest: Function;
+  createCustomer: Function;
 };
 
 const CustomerForm: FC<Props> = props => {
   const [customer, setCustomer] = useState({});
   const handleSubmit = (values: ICustomer) => {
-    console.log(values);
-    props.createRequest({ ...values });
+    console.log(values, 'FORM');
+    props.createCustomer({ ...values });
   };
 
-  return (
-    <BaseForm formFields={FORM_FIELDS} onSubmit={handleSubmit} formData={customer} />
-  );
+  return <BaseForm formFields={FORM_FIELDS} onSubmit={handleSubmit} formData={customer} />;
 };
 
 export default connect(
   null,
-  { createRequest }
+  { createCustomer }
 )(CustomerForm);
