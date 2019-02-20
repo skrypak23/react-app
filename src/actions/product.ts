@@ -6,7 +6,7 @@ import { URL_ALL_PRODUCTS } from '../api';
 export const fetchProducts = () =>
   action(PRODUCT_TYPES.GET_PRODUCTS_REQUEST, URL_ALL_PRODUCTS);
 export const fetchProductsSuccess = (products: IProduct[]) =>
-  action(PRODUCT_TYPES.GET_PRODUCTS_REQUEST, products);
+  action(PRODUCT_TYPES.GET_PRODUCTS_SUCCESS, products);
 
 export const fetchProductById = (id: string | number) =>
   action(PRODUCT_TYPES.GET_PRODUCT_BY_ID_REQUEST, id);
