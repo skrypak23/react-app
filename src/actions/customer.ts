@@ -13,5 +13,10 @@ export const fetchCustomerById = (id: string | number) =>
 export const fetchCustomerByIdSuccess = (customer: ICustomer) =>
   action(CUSTOMER_TYPES.GET_CUSTOMER_BY_ID_SUCCESS, customer);
 
+export const createCustomer = (customer: ICustomer) =>
+  action(CUSTOMER_TYPES.CREATE_CUSTOMER_REQUEST, customer);
+export const createCustomerSuccess = () =>
+  action(CUSTOMER_TYPES.CREATE_CUSTOMER_SUCCESS, 'success');
+
 export const setError = (error: string) =>
   action(CUSTOMER_TYPES.FETCH_CUSTOMER_ERROR, error);

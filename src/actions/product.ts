@@ -13,4 +13,10 @@ export const fetchProductById = (id: string | number) =>
 export const fetchProductByIdSuccess = (product: IProduct) =>
   action(PRODUCT_TYPES.GET_PRODUCT_BY_ID_SUCCESS, product);
 
-export const setError = (error: string) => action(PRODUCT_TYPES.FETCH_PRODUCT_ERROR, error);
+export const createProduct = (product: IProduct) =>
+  action(PRODUCT_TYPES.CREATE_PRODUCT_REQUEST, product);
+export const createProductSuccess = () =>
+  action(PRODUCT_TYPES.CREATE_PRODUCT_SUCCESS, 'success');
+
+export const setError = (error: string) =>
+  action(PRODUCT_TYPES.FETCH_PRODUCT_ERROR, error);

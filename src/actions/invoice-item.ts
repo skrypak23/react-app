@@ -13,5 +13,10 @@ export const fetchInvoiceById = (id: string | number) =>
 export const fetchInvoiceByIdSuccess = (invoice: IInvoiceItem) =>
   action(INVOICE_ITEMS_TYPES.GET_INVOICE_ITEMS_BY_ID_SUCCESS, invoice);
 
+export const createInvoiceItem = (invoice: IInvoiceItem) =>
+  action(INVOICE_ITEMS_TYPES.CREATE_INVOICE_REQUEST, invoice);
+export const createInvoiceItemSuccess = () =>
+  action(INVOICE_ITEMS_TYPES.CREATE_INVOICE_SUCCESS, 'success');
+
 export const setError = (error: string) =>
   action(INVOICE_ITEMS_TYPES.FETCH_INVOICE_ITEMS_ERROR, error);
