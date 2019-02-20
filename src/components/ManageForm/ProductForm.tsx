@@ -1,6 +1,6 @@
 import React, { FC, FormEvent } from 'react';
 import { FormComponentProps } from 'antd/lib/form/Form';
-import BaseForm from './BaseForm';
+import BaseForm from '../BaseForm';
 
 type Props = FormComponentProps & {};
 const FORM_FIELDS = [

@@ -56,4 +56,11 @@ const BaseForm: FC<Props> = ({ formFields, form, onSubmit, formData }) => {
   );
 };
 
-export default Form.create()(BaseForm);
+export default Form.create({
+  mapPropsToFields({ formData = {} }: Props) {
+    return Object.entries(formData).reduce(
+      (values, [key, value]) => ({ ...values, [key]: Form.createFormField({ value }) }),
+      {}
+    );
+  }
+})(BaseForm);
