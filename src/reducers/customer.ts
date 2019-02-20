@@ -19,7 +19,6 @@ const initialState: State = {
 
 const reducer = (state: State = initialState, action: Action): State => {
   const { type, payload } = action;
-  console.log(action);
   switch (type) {
     case CUSTOMER_TYPES.GET_CUSTOMERS_REQUEST:
       return { ...state, loading: true, error: null };

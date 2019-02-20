@@ -4,7 +4,7 @@ import { INVOICE_ITEMS_TYPES } from '../types';
 import IInvoiceItem from '../models/InvoiceItem';
 import TState from '../common/types/TState';
 
-type State = TState & {
+export type State = TState & {
   readonly invoiceItem: IInvoiceItem | null;
   invoiceItems: ReadonlyArray<IInvoiceItem>;
 };

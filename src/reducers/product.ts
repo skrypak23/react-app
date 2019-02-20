@@ -4,7 +4,7 @@ import { PRODUCT_TYPES } from '../types';
 import IProduct from '../models/Product';
 import TState from '../common/types/TState';
 
-type State = TState & {
+export type State = TState & {
   readonly product: IProduct | null;
   products: ReadonlyArray<IProduct>;
 };
@@ -20,6 +20,12 @@ const initialState: State = {
 const reducer = (state: State = initialState, action: Action): State => {
   const { type, payload } = action;
   switch (type) {
+    case PRODUCT_TYPES.GET_PRODUCTS_REQUEST:
+      return { ...state, loading: true, error: null };
+    case PRODUCT_TYPES.GET_PRODUCTS_SUCCESS:
+      return { ...state, products: payload as IProduct[], loading: false, error: null };
+    case PRODUCT_TYPES.FETCH_PRODUCT_ERROR:
+      return { ...state, loading: false, error: payload as string };
     default:
       return state;
   }

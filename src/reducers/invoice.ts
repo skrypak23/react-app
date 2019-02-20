@@ -4,22 +4,28 @@ import { INVOICE_TYPES } from '../types';
 import IInvoice from '../models/Invoice';
 import TState from '../common/types/TState';
 
-type State = TState & {
-  readonly customer: IInvoice | null;
-  customers: ReadonlyArray<IInvoice>;
+export type State = TState & {
+  readonly invoice: IInvoice | null;
+  invoices: ReadonlyArray<IInvoice>;
 };
 type Action = ActionType<typeof InvoiceActions>;
 
 const initialState: State = {
   loading: false,
   error: null,
-  customer: null,
-  customers: []
+  invoice: null,
+  invoices: []
 };
 
 const reducer = (state: State = initialState, action: Action): State => {
   const { type, payload } = action;
   switch (type) {
+    case INVOICE_TYPES.GET_INVOICES_REQUEST:
+      return { ...state, loading: true, error: null };
+    case INVOICE_TYPES.GET_INVOICES_SUCCESS:
+      return { ...state, invoices: payload as IInvoice[], loading: false, error: null };
+    case INVOICE_TYPES.FETCH_INVOICE_ERROR:
+      return { ...state, loading: false, error: payload as string };
     default:
       return state;
   }
