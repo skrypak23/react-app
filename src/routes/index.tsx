@@ -1,6 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Spin from '../components/Spinner'
+import Spin from '../components/Spinner';
 import * as PATHS from './routes';
 
 const AsyncCustomer = lazy(() => import('../pages/Customer'));
@@ -30,7 +30,7 @@ const routes = [
 const RootRoutes = () => (
   <Suspense fallback={<Spin />}>
     <Switch>
-      {routes.map(({path, Component}) => (
+      {routes.map(({ path, Component }) => (
         <Route exact key={path} path={path} render={() => <Component />} />
       ))}
     </Switch>
