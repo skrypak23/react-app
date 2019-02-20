@@ -1,6 +1,6 @@
-import React, { FC, ReactNode } from 'react';
-import { Layout as AntLayout } from 'antd';
-const { Header, Content } = AntLayout;
+import React, { FC, ReactNode, useState } from 'react';
+import { Layout as AntLayout, Icon } from 'antd';
+const { Header, Content, Sider } = AntLayout;
 import Menu from './Menu';
 import styles from './style';
 import * as PATHS from '../../routes/routes';
@@ -16,15 +16,18 @@ const MENU_ITEMS = [
   { to: PATHS.INVOICE_ITEM, name: 'Invoice Items' }
 ];
 
-const Layout: FC<Props> = ({ children }) => (
-  <AntLayout className="layout">
-    <Header>
-      <Menu menuItems={MENU_ITEMS} />
-    </Header>
-    <Content style={styles.container}>
-      <div style={styles.content}>{children}</div>
-    </Content>
-  </AntLayout>
-);
+const Layout: FC<Props> = ({ children }) => {
+  return (
+    <AntLayout>
+      <Sider trigger={null}>
+        <Menu menuItems={MENU_ITEMS} />
+      </Sider>
+      <AntLayout className="layout">
+        <Header style={styles.header} />
+        <Content style={styles.content}>{children}</Content>
+      </AntLayout>
+    </AntLayout>
+  );
+};
 
 export default Layout;
