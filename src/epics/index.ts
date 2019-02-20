@@ -1,4 +1,4 @@
 import { combineEpics } from 'redux-observable';
-import { getCustomersEpic } from './customer';
+import fetchAllDataEpic from './fetchEpic';
 
-export default combineEpics(getCustomersEpic);
+export default combineEpics(...fetchAllDataEpic);
