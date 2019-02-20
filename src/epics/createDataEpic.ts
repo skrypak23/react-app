@@ -20,36 +20,44 @@ import IProduct from '../models/Product';
 import IInvoice from '../models/Invoice';
 import IInvoiceItem from '../models/InvoiceItem';
 
-const fetchCustomersEpic = (action$: Observable<Action>) =>
+const createCustomersEpic = (action$: Observable<Action>) =>
   action$.pipe(
-    ofType(CUSTOMER_TYPES.GET_CUSTOMERS_REQUEST),
+    ofType(CUSTOMER_TYPES.CREATE_CUSTOMER_REQUEST),
     switchMap((data: any) => createRequest<ICustomer>(CustomerActions, data))
   );
 const fetchProductsEpic = (action$: Observable<Action>) =>
   action$.pipe(
-    ofType(PRODUCT_TYPES.GET_PRODUCTS_REQUEST),
+    ofType(PRODUCT_TYPES.CREATE_PRODUCT_REQUEST),
     switchMap((data: any) => createRequest<IProduct>(ProductActions, data))
   );
 const fetchInvoicesEpic = (action$: Observable<Action>) =>
   action$.pipe(
-    ofType(INVOICE_TYPES.GET_INVOICES_REQUEST),
+    ofType(INVOICE_TYPES.CREATE_INVOICE_REQUEST),
     switchMap((data: any) => createRequest<IInvoice>(InvoiceActions, data))
   );
 const fetchInvoiceItemsEpic = (action$: Observable<Action>) =>
   action$.pipe(
-    ofType(INVOICE_ITEMS_TYPES.GET_INVOICE_ITEMS_REQUEST),
-    switchMap((data: any) => createRequest<IInvoiceItem>(InvoiceItemActions, data))
+    ofType(INVOICE_ITEMS_TYPES.CREATE_INVOICE_REQUEST),
+    switchMap((data: any) => createRequest<IProduct>(ProductActions, data))
   );
 
 function createRequest<T>(action: any, data: any) {
-  return from(API.fetchAll<T>(data.payload)).pipe(
-    map((data: T[]) => action.fetchData(data)),
+  return from(
+    API.request<T>(data.payload.url, {
+      method: 'POST',
+      body: JSON.stringify(data.payload.body),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+  ).pipe(
+    map((data: T) => action.createSuccess(data)),
     catchError(err => of(action.setError(err.message)))
   );
 }
 
 export default [
-  fetchCustomersEpic,
+  createCustomersEpic,
   fetchProductsEpic,
   fetchInvoiceItemsEpic,
   fetchInvoicesEpic

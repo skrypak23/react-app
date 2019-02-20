@@ -5,5 +5,6 @@ export const URL_ALL_INVOICES = `${HOST}/api/invoices`;
 export const URL_ALL_PRODUCTS = `${HOST}/api/products`;
 
 import fetchAll from './fetchAll';
+import request from './request';
 
-export default { fetchAll };
+export default { fetchAll, request };

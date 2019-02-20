@@ -10,10 +10,11 @@ type Props = {
     placeholder: string;
   }>;
   form: any;
-  onSubmit: any
+  formData?: any;
+  onSubmit: Function;
 };
 
-const BaseForm: FC<Props> = ({ formFields, form, onSubmit }) => {
+const BaseForm: FC<Props> = ({ formFields, form, onSubmit, formData }) => {
   const getFields = () => {
     const { getFieldDecorator } = form;
     return formFields.map(({ label, key, placeholder }) => (
@@ -25,12 +26,21 @@ const BaseForm: FC<Props> = ({ formFields, form, onSubmit }) => {
     ));
   };
 
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    form.validateFields((err: Error, values: any) => {
+      if (!err && Object.values(values).every(Boolean)) {
+        onSubmit(values);
+      }
+    });
+  };
+
   const handleReset = () => {
     form.resetFields();
   };
 
   return (
-    <Form onSubmit={onSubmit}>
+    <Form onSubmit={handleSubmit}>
       <Row gutter={24}>{getFields()}</Row>
       <Row>
         <Col span={24} style={{ textAlign: 'right' }}>

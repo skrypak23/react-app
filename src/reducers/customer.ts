@@ -19,11 +19,19 @@ const initialState: State = {
 
 const reducer = (state: State = initialState, action: Action): State => {
   const { type, payload } = action;
+
   switch (type) {
-    case CUSTOMER_TYPES.GET_CUSTOMERS_REQUEST:
+    case (CUSTOMER_TYPES.GET_CUSTOMERS_REQUEST, CUSTOMER_TYPES.CREATE_CUSTOMER_REQUEST):
       return { ...state, loading: true, error: null };
     case CUSTOMER_TYPES.GET_CUSTOMERS_SUCCESS:
       return { ...state, customers: payload as ICustomer[], loading: false, error: null };
+    case CUSTOMER_TYPES.CREATE_CUSTOMER_SUCCESS:
+      return {
+        ...state,
+        customers: [...state.customers, payload as ICustomer],
+        loading: false,
+        error: null
+      };
     case CUSTOMER_TYPES.FETCH_CUSTOMER_ERROR:
       return { ...state, loading: false, error: payload as string };
     default:

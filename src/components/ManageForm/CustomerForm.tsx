@@ -1,5 +1,10 @@
-import React, { FC, FormEvent } from 'react';
+import React, { FC, FormEvent, useState } from 'react';
+import { connect } from 'react-redux';
 import BaseForm from './BaseForm';
+import ICustomer from '../../models/Customer';
+import { CustomerActions } from '../../actions';
+
+const { createRequest } = CustomerActions;
 
 const FORM_FIELDS = [
   {
@@ -19,12 +24,23 @@ const FORM_FIELDS = [
   }
 ];
 
-const CustomerForm = () => {
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  };
-
-  return <BaseForm formFields={FORM_FIELDS} onSubmit={handleSubmit} />;
+type Props = {
+  createRequest: Function;
 };
 
-export default CustomerForm;
+const CustomerForm: FC<Props> = props => {
+  const [customer, setCustomer] = useState({});
+  const handleSubmit = (values: ICustomer) => {
+    console.log(values);
+    props.createRequest({ ...values });
+  };
+
+  return (
+    <BaseForm formFields={FORM_FIELDS} onSubmit={handleSubmit} formData={customer} />
+  );
+};
+
+export default connect(
+  null,
+  { createRequest }
+)(CustomerForm);

@@ -10,11 +10,11 @@ import { RootState } from '../../store/types';
 import ICustomer from '../../models/Customer';
 import { CustomerForm } from '../../components/ManageForm';
 
-const { fetchCustomers } = CustomerActions;
+const { fetchData } = CustomerActions;
 
 type Props = RouteComponentProps<any> & {
   customer: State;
-  fetchCustomers: Function;
+  fetchData: Function;
 };
 
 const Customer: FC<Props> = props => {
@@ -23,7 +23,7 @@ const Customer: FC<Props> = props => {
   const [isEdit, setMode] = useState(false);
 
   useEffect(() => {
-    props.fetchCustomers();
+    props.fetchData();
   }, []);
 
   const onClose = () => changeVisible(false);
@@ -43,7 +43,7 @@ const Customer: FC<Props> = props => {
 };
 
 const mapStateToProps = (state: RootState) => ({ customer: state.customer });
-const mapDispatchToProps = { fetchCustomers };
+const mapDispatchToProps = { fetchData };
 
 export default connect(
   mapStateToProps,
