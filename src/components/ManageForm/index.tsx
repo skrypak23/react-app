@@ -1,4 +1,5 @@
 import CustomerForm from './CustomerForm';
 import ProductForm from './ProductForm';
+import InvoiceForm from './InvoiceForm';
 
-export { CustomerForm, ProductForm };
+export {CustomerForm, ProductForm, InvoiceForm};
