@@ -30,7 +30,7 @@ const createInvoicesEpic = (action$: Observable<Action>) =>
   );
 const createInvoiceItemsEpic = (action$: Observable<Action>) =>
   action$.pipe(
-    ofType(INVOICE_ITEMS_TYPES.CREATE_INVOICE_REQUEST),
+    ofType(INVOICE_ITEMS_TYPES.CREATE_INVOICE_ITEMS_REQUEST),
     switchMap((action: any) => createRequest<IInvoiceItem>(InvoiceItemActions, action.payload))
   );
 

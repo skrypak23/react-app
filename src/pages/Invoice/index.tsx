@@ -1,81 +1,95 @@
-import React, {useEffect, useState, FC} from 'react';
-import {withRouter, RouteComponentProps} from 'react-router-dom';
-import {connect} from 'react-redux';
-import {Button, Icon} from 'antd';
+import React, { useEffect, useState, FC } from 'react';
+import { Dispatch } from 'redux';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Button, Icon } from 'antd';
 import Table from './Table';
 import Drawer from '../../components/Drawer';
-import {InvoiceActions, CustomerActions} from '../../actions';
-import {State} from '../../reducers/invoice';
-import {State as CustomerState} from '../../reducers/customer';
-import {RootState} from '../../store/types';
-import IInvoice from '../../models/Invoice';
-import {InvoiceForm} from '../../components/ManageForm';
+import { InvoiceForm } from '../../components/ManageForm';
+import { InvoiceActions, CustomerActions } from '../../actions';
+import { State } from '../../reducers/invoice';
+import { State as CustomerState } from '../../reducers/customer';
+import { RootState, RootAction } from '../../store/types';
+import { ID } from '../../common/types';
 
-const {fetchAllInvoices, fetchInvoiceById, resetInvoice, deleteInvoice} = InvoiceActions;
-const {fetchAllCustomers} = CustomerActions;
+const { fetchAllInvoices, fetchInvoiceById, resetInvoice, deleteInvoice } = InvoiceActions;
+const { fetchAllCustomers } = CustomerActions;
 
 type Props = RouteComponentProps<any> & {
-    invoice: State;
-    customer: CustomerState;
-    fetchAllInvoices: Function;
-    fetchInvoiceById: Function;
-    resetInvoice: Function;
-    deleteInvoice: Function;
-    fetchAllCustomers: Function;
+  fetchInvoiceById: (id: ID) => any;
+  deleteInvoice: (id: ID) => any;
+  fetchAllCustomers: () => any;
+  fetchAllInvoices: () => any;
+  resetInvoice: () => any;
+  customer: CustomerState;
+  invoice: State;
 };
 
 const Invoice: FC<Props> = ({
-                                fetchAllInvoices,
-                                fetchAllCustomers,
-                                fetchInvoiceById,
-                                deleteInvoice,
-                                resetInvoice,
-                                invoice,
-                                customer
-                            }) => {
-    const [visible, changeVisible] = useState(false);
-    const [isEdit, setIsEdit] = useState(false);
+  fetchAllCustomers,
+  fetchAllInvoices,
+  fetchInvoiceById,
+  deleteInvoice,
+  resetInvoice,
+  customer,
+  invoice
+}) => {
+  const [visible, changeVisible] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
 
-    useEffect(() => {
-        fetchAllInvoices();
-        fetchAllCustomers();
-    }, []);
+  useEffect(() => {
+    fetchAllCustomers();
+    fetchAllInvoices();
+  }, []);
 
-    const showDrawer = () => changeVisible(true);
-    const handleEdit = (id: string | number) => {
+  const showDrawer = () => changeVisible(true);
+  const handleEdit = (id: ID) => {
+    fetchInvoiceById(id);
+    showDrawer();
+    setIsEdit(true);
+  };
+  const handleCloseForm = () => {
+    changeVisible(false);
+    setIsEdit(false);
+    resetInvoice();
+  };
 
-        fetchInvoiceById(id);
-        showDrawer();
-        setIsEdit(true)
-    };
-    const handleCloseForm = () => {
-        changeVisible(false);
-        setIsEdit(false);
-        resetInvoice();
-    };
+  const findCustomerName = (id: ID): string => {
+    const foundCustomer = customer.customers.find(customer => customer.id === id);
+    return foundCustomer ? foundCustomer.name : '';
+  };
 
-    const findName = (id: number): string => {
-        const foundCustomer = customer.customers.find(customer => customer.id === id);
-        return foundCustomer ? foundCustomer.name : '';
-    };
-
-    return (
-        <div>
-            <Button type="primary" onClick={showDrawer} htmlType="button">
-                <Icon type="plus"/> Add Invoice
-            </Button>
-            <Table data={invoice.invoices as IInvoice[]} onEdit={handleEdit} onDelete={deleteInvoice} findName={findName}/>
-            <Drawer title="Create a new invoice" onClose={handleCloseForm} visible={visible}>
-                <InvoiceForm isEdit={isEdit}/>
-            </Drawer>
-        </div>
-    );
+  return (
+    <div>
+      <Button type="primary" onClick={showDrawer} htmlType="button">
+        <Icon type="plus" /> Add Invoice
+      </Button>
+      <Table
+        onEdit={handleEdit}
+        data={invoice.invoices}
+        onDelete={deleteInvoice}
+        findCustomerName={findCustomerName}
+      />
+      <Drawer title="Create a new invoice" onClose={handleCloseForm} visible={visible}>
+        <InvoiceForm isEdit={isEdit} />
+      </Drawer>
+    </div>
+  );
 };
 
-const mapStateToProps = (state: RootState) => ({invoice: state.invoice, customer: state.customer});
-const mapDispatchToProps = {fetchAllInvoices, fetchInvoiceById, resetInvoice, deleteInvoice, fetchAllCustomers};
+const mapStateToProps = (state: RootState) => ({
+  invoice: state.invoice,
+  customer: state.customer
+});
+const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
+  fetchInvoiceById: (id: ID) => dispatch(fetchInvoiceById(id)),
+  fetchAllCustomers: () => dispatch(fetchAllCustomers()),
+  deleteInvoice: (id: ID) => dispatch(deleteInvoice(id)),
+  fetchAllInvoices: () => dispatch(fetchAllInvoices()),
+  resetInvoice: () => dispatch(resetInvoice())
+});
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(withRouter(Invoice));
