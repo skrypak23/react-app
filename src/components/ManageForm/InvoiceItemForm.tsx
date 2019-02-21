@@ -1,6 +1,6 @@
 import React, { FC, FormEvent } from 'react';
 import { FormComponentProps } from 'antd/lib/form/Form';
-import BaseForm from '../BaseForm';
+// import BaseForm from '../BaseForm';
 
 type Props = FormComponentProps & {};
 
@@ -30,7 +30,7 @@ const InvoiceItemForm: FC<Props> = props => {
     });
   };
 
-  return <BaseForm formFields={FORM_FIELDS} onSubmit={handleSubmit} />;
+  return <div>Form</div>;
 };
 
 export default InvoiceItemForm;
