@@ -25,7 +25,7 @@ export const editSuccess = (customer: ICustomer) =>
 
 export const deleteCustomer = (id: string | number) =>
     action(CUSTOMER_TYPES.DELETE_CUSTOMER_REQUEST, {url: `${URL_ALL_CUSTOMERS}/${id}`});
-export const deleteCustomerSuccess = (customer: ICustomer) =>
+export const deleteSuccess = (customer: ICustomer) =>
     action(CUSTOMER_TYPES.DELETE_CUSTOMER_SUCCESS, customer);
 
 export const resetCustomer = () =>
