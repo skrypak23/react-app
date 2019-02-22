@@ -18,7 +18,7 @@ import API from '../api';
 import ICustomer from '../models/Customer';
 import IProduct from '../models/Product';
 import IInvoice from '../models/Invoice';
-import IInvoiceItem from "../models/InvoiceItem";
+import IInvoiceItem from '../models/InvoiceItem';
 
 type PayloadData = { url: string };
 type Actions = { deleteSuccess: Function; setError: Function };
@@ -36,30 +36,18 @@ const deleteCustomersEpic = (action$: Observable<Action>) =>
 const deleteProductEpic = (action$: Observable<Action>) =>
   action$.pipe(
     ofType(PRODUCT_TYPES.DELETE_PRODUCT_REQUEST),
-    switchMap((action: any) =>
-      concat(
-        createRequest<IProduct>(ProductActions, action.payload),
-        of(ProductActions.fetchAllProducts())
-      )
-    )
+    switchMap((action: any) => createRequest<IProduct>(ProductActions, action.payload))
   );
 const deleteInvoiceEpic = (action$: Observable<Action>) =>
   action$.pipe(
     ofType(INVOICE_TYPES.DELETE_INVOICE_REQUEST),
-    switchMap((action: any) =>
-      concat(
-        createRequest<IInvoice>(InvoiceActions, action.payload),
-        of(InvoiceActions.fetchAllInvoices())
-      )
-    )
+    switchMap((action: any) => createRequest<IInvoice>(InvoiceActions, action.payload))
   );
 const deleteInvoiceItemEpic = (action$: Observable<Action>) =>
   action$.pipe(
     ofType(INVOICE_ITEMS_TYPES.DELETE_INVOICE_ITEMS_REQUEST),
     switchMap((action: any) =>
-      concat(
-        createRequest<IInvoiceItem>(InvoiceItemActions, action.payload),
-      )
+      concat(createRequest<IInvoiceItem>(InvoiceItemActions, action.payload))
     )
   );
 
