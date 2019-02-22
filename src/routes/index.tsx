@@ -6,7 +6,6 @@ import * as PATHS from './routes';
 const AsyncCustomer = lazy(() => import('../pages/Customer'));
 const AsyncProduct = lazy(() => import('../pages/Product'));
 const AsyncInvoice = lazy(() => import('../pages/Invoice'));
-const AsyncInvoiceItem = lazy(() => import('../pages/InvoiceItem'));
 
 const routes = [
   {
@@ -20,10 +19,6 @@ const routes = [
   {
     path: PATHS.INVOICE,
     Component: AsyncInvoice
-  },
-  {
-    path: PATHS.INVOICE_ITEM,
-    Component: AsyncInvoiceItem
   }
 ];
 

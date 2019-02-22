@@ -11,8 +11,14 @@ import { State } from '../../reducers/invoice';
 import { State as CustomerState } from '../../reducers/customer';
 import { RootState, RootAction } from '../../store/types';
 import { ID } from '../../common/types';
+import IInvoice from '../../models/Invoice';
 
-const { fetchAllInvoices, fetchInvoiceById, resetInvoice, deleteInvoice } = InvoiceActions;
+const {
+  fetchAllInvoices,
+  fetchInvoiceById,
+  resetInvoice,
+  deleteInvoice
+} = InvoiceActions;
 const { fetchAllCustomers } = CustomerActions;
 
 type Props = RouteComponentProps<any> & {
@@ -36,6 +42,7 @@ const Invoice: FC<Props> = ({
 }) => {
   const [visible, changeVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [invoiceData, setInvoice] = useState<IInvoice>({} as IInvoice);
 
   useEffect(() => {
     fetchAllCustomers();
@@ -59,10 +66,11 @@ const Invoice: FC<Props> = ({
     return foundCustomer ? foundCustomer.name : '';
   };
 
+  console.log('RENDER');
   return (
     <div>
-      <Button type="primary" onClick={showDrawer} htmlType="button">
-        <Icon type="plus" /> Add Invoice
+      <Button type='primary' onClick={showDrawer} htmlType='button'>
+        <Icon type='plus' /> Add Invoice
       </Button>
       <Table
         onEdit={handleEdit}
@@ -70,8 +78,13 @@ const Invoice: FC<Props> = ({
         onDelete={deleteInvoice}
         findCustomerName={findCustomerName}
       />
-      <Drawer title="Create a new invoice" onClose={handleCloseForm} visible={visible}>
-        <InvoiceForm isEdit={isEdit} />
+      <Drawer title='Create a new invoice' onClose={handleCloseForm} visible={visible}>
+        <InvoiceForm
+          isEdit={isEdit}
+          setInvoice={setInvoice}
+          invoiceData={invoiceData}
+          fetchAllCustomers={fetchAllCustomers}
+        />
       </Drawer>
     </div>
   );

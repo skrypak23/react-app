@@ -1,9 +1,19 @@
 import { Action } from 'redux';
 import { Observable, of, from } from 'rxjs';
-import { switchMap, map, catchError } from 'rxjs/operators';
-import { ofType } from 'redux-observable';
-import { CUSTOMER_TYPES, PRODUCT_TYPES, INVOICE_TYPES, INVOICE_ITEMS_TYPES } from '../types';
-import { CustomerActions, ProductActions, InvoiceActions, InvoiceItemActions } from '../actions';
+import { switchMap, map, catchError, mergeMap, tap } from 'rxjs/operators';
+import { ofType, StateObservable } from 'redux-observable';
+import {
+  CUSTOMER_TYPES,
+  PRODUCT_TYPES,
+  INVOICE_TYPES,
+  INVOICE_ITEMS_TYPES
+} from '../types';
+import {
+  CustomerActions,
+  ProductActions,
+  InvoiceActions,
+  InvoiceItemActions
+} from '../actions';
 import API from '../api';
 import ICustomer from '../models/Customer';
 import IProduct from '../models/Product';
@@ -23,15 +33,29 @@ const createProductsEpic = (action$: Observable<Action>) =>
     ofType(PRODUCT_TYPES.CREATE_PRODUCT_REQUEST),
     switchMap((action: any) => createRequest<IProduct>(ProductActions, action.payload))
   );
-const createInvoicesEpic = (action$: Observable<Action>) =>
+const createInvoicesEpic = (action$: Observable<Action>, state$: StateObservable<any>) =>
   action$.pipe(
     ofType(INVOICE_TYPES.CREATE_INVOICE_REQUEST),
-    switchMap((action: any) => createRequest<IInvoice>(InvoiceActions, action.payload))
+    switchMap((action: any) =>
+      createRequest<IInvoice>(InvoiceActions, action.payload).pipe(
+        mergeMap(action =>
+          from(state$.value.invoiceItem.invoiceItems).pipe(
+            map(item =>
+              InvoiceItemActions.createInvoiceItem(action.payload.id, {
+                ...item
+              } as IInvoiceItem)
+            )
+          )
+        )
+      )
+    )
   );
 const createInvoiceItemsEpic = (action$: Observable<Action>) =>
   action$.pipe(
     ofType(INVOICE_ITEMS_TYPES.CREATE_INVOICE_ITEMS_REQUEST),
-    switchMap((action: any) => createRequest<IInvoiceItem>(InvoiceItemActions, action.payload))
+    switchMap((action: any) =>
+      createRequest<IInvoiceItem>(InvoiceItemActions, action.payload)
+    )
   );
 
 function createRequest<T>(action: Actions, data: PayloadData) {

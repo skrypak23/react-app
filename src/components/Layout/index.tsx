@@ -13,7 +13,6 @@ const MENU_ITEMS = [
   { to: PATHS.CUSTOMER, name: 'Customers' },
   { to: PATHS.PRODUCT, name: 'Products' },
   { to: PATHS.INVOICE, name: 'Invoices' },
-  { to: PATHS.INVOICE_ITEM, name: 'Invoice Items' }
 ];
 
 const Layout: FC<Props> = ({ children }) => {

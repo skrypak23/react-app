@@ -9,10 +9,14 @@ import { CustomerActions } from '../../actions';
 import { State } from '../../reducers/customer';
 import { RootState, RootAction } from '../../store/types';
 import { ID } from '../../common/types';
-import ICustomer from '../../models/Customer';
 import { CustomerForm } from '../../components/ManageForm';
 
-const { fetchAllCustomers, fetchCustomerById, resetCustomer, deleteCustomer } = CustomerActions;
+const {
+  fetchAllCustomers,
+  fetchCustomerById,
+  resetCustomer,
+  deleteCustomer
+} = CustomerActions;
 
 type Props = RouteComponentProps<any> & {
   fetchCustomerById: (id: ID) => any;
@@ -50,11 +54,19 @@ const Customer: FC<Props> = ({
 
   return (
     <div>
-      <Button type="primary" onClick={showDrawer} htmlType="button">
-        <Icon type="plus" /> Add Customer
+      <Button type='primary' onClick={showDrawer} htmlType='button'>
+        <Icon type='plus' /> Add Customer
       </Button>
-      <Table data={customer.customers} onEdit={handleEdit} onDelete={deleteCustomer} />
-      <Drawer title="Create a new customer" onClose={handleCloseForm} visible={visible}>
+      <Table
+        data={customer.customers}
+        onEdit={handleEdit}
+        onDelete={deleteCustomer}
+      />
+      <Drawer
+        title='Create a new customer'
+        onClose={handleCloseForm}
+        visible={visible}
+      >
         <CustomerForm isEdit={isEdit} />
       </Drawer>
     </div>
