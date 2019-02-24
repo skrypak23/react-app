@@ -12,7 +12,7 @@ type Props = {
   invoiceId: ID;
   formData?: IInvoiceItem;
   products: ReadonlyArray<IProduct>;
-  onSubmit: (id: ID, invoiceItem: IInvoiceItem) => void;
+  onSubmit: (invoiceItem: IInvoiceItem) => void;
 };
 
 const BaseForm: FC<Props> = ({ form, onSubmit, products, invoiceId }) => {
@@ -46,7 +46,7 @@ const BaseForm: FC<Props> = ({ form, onSubmit, products, invoiceId }) => {
     event.preventDefault();
     form.validateFields((err: Error, values: any) => {
       if (!err && Object.values(values).every(Boolean)) {
-        onSubmit(invoiceId, {...values, invoice_id: invoiceId});
+        onSubmit({...values, invoice_id: invoiceId});
       }
     });
   };

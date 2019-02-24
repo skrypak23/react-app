@@ -9,4 +9,5 @@ export const EDIT_INVOICE_SUCCESS = 'invoice-app/invoice/EDIT_INVOICE_SUCCESS';
 export const DELETE_INVOICE_REQUEST = 'invoice-app/invoice/DELETE_INVOICE_REQUEST';
 export const DELETE_INVOICE_SUCCESS = 'invoice-app/invoice/DELETE_INVOICE_SUCCESS';
 export const RESET_INVOICE = 'invoice-app/invoice/RESET_INVOICE';
+export const FILL_INVOICE = 'invoice-app/invoice/FILL_INVOICE';
 export const FETCH_INVOICE_ERROR = 'invoice-app/invoice/FETCH_INVOICE_ERROR';

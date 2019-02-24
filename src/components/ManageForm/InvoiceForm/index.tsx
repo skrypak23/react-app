@@ -27,6 +27,7 @@ type Props = {
   deleteInvoiceItemLocal: (id: ID) => any;
   fetchAllCustomers: () => any;
   fetchAllProducts: () => any;
+  fillInvoice: (invoice: IInvoice) => any;
   deleteInvoiceItem: (id: ID, invoiceId: ID) => any;
   customer: CustomerState;
   product: ProductState;
@@ -34,12 +35,10 @@ type Props = {
   invoice: State;
   isEdit: boolean;
   fillItems: (item: IInvoiceItem) => any;
-  setInvoice: Function;
   fetchAllInvoiceItems: (id: ID) => any;
-  invoiceData: IInvoice
 };
 
-const { createInvoice, editInvoice } = InvoiceActions;
+const { createInvoice, editInvoice, fillInvoice } = InvoiceActions;
 const { fetchAllCustomers } = CustomerActions;
 const { fetchAllProducts } = ProductActions;
 const {
@@ -65,8 +64,7 @@ const InvoiceForm: FC<Props> = ({
   customer,
   product,
   fillItems,
-  setInvoice,
-    invoiceData
+  fillInvoice
 }) => {
   useEffect(() => {
     fetchAllCustomers();
@@ -75,7 +73,6 @@ const InvoiceForm: FC<Props> = ({
   useEffect(() => {
     if (invoice.invoice) fetchAllInvoiceItems(invoice.invoice.id);
   }, [invoice.invoice]);
-  setInvoice(invoice.invoice);
 
   const handleSubmit = (values: IInvoice) => {
     if (isEdit) {
@@ -83,16 +80,10 @@ const InvoiceForm: FC<Props> = ({
     } else {
       createInvoice({ ...values, total: 0 });
     }
-  };
+  }
 
-  const handleCreateInvoiceItem = (id: ID, values: IInvoiceItem) => {
+  const handleCreateInvoiceItem = (values: IInvoiceItem) => {
     fillItems(values);
-    console.log(invoiceData);
-    calculateTotal(
-       0,
-      [...invoiceItem.invoiceItems, values] as IInvoiceItem[],
-      product.products as IProduct[]
-    );
   };
 
   const handleDelete = (index: ID, invoiceItem: IInvoiceItem) => {
@@ -118,9 +109,10 @@ const InvoiceForm: FC<Props> = ({
       customers={customer.customers as ICustomer[]}
       customer={findCustomer(customer.customers)}
       products={product.products}
-      invoice={invoiceData}
+      invoice={invoice.invoice}
       invoiceItems={invoiceItem.invoiceItems}
       handleDelete={handleDelete}
+      fillInvoice={fillInvoice}
       isEdit={isEdit}
     />
   );
@@ -137,6 +129,7 @@ const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
     dispatch(createInvoiceItem(id, invoiceItem)),
   editInvoice: (id: ID, invoice: IInvoice) => dispatch(editInvoice(id, invoice)),
   createInvoice: (invoice: IInvoice) => dispatch(createInvoice(invoice)),
+  fillInvoice: (invoice: IInvoice) => dispatch(fillInvoice(invoice)),
   fetchAllProducts: () => dispatch(fetchAllProducts()),
   fillItems: (item: IInvoiceItem) => dispatch(fillItems(item)),
   fetchAllInvoiceItems: (id: ID) => dispatch(fetchAllInvoiceItems(id)),

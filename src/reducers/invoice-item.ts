@@ -1,8 +1,8 @@
-import { ActionType } from 'typesafe-actions';
-import { InvoiceItemActions } from '../actions';
-import { INVOICE_ITEMS_TYPES } from '../types';
-import IInvoiceItem from '../models/InvoiceItem';
-import TState from '../common/types/TState';
+import { ActionType } from "typesafe-actions";
+import { InvoiceItemActions } from "../actions";
+import { INVOICE_ITEMS_TYPES } from "../types";
+import IInvoiceItem from "../models/InvoiceItem";
+import TState from "../common/types/TState";
 
 export type State = TState & {
   readonly invoiceItem: IInvoiceItem | null;
@@ -28,9 +28,14 @@ const reducer = (state: State = initialState, action: Action): State => {
         error: null
       };
     case INVOICE_ITEMS_TYPES.GET_INVOICE_ITEMS_SUCCESS:
-      return { ...state, invoiceItems: [...(payload as IInvoiceItem[])] };
+      return {
+        ...state,
+        invoiceItems: [...state.invoiceItems, ...(payload as IInvoiceItem[])]
+      };
     case INVOICE_ITEMS_TYPES.DELETE_INVOICE_ITEMS_LOCAL:
-      const filteredItems = state.invoiceItems.filter((_, i: number) => i !== payload);
+      const filteredItems = state.invoiceItems.filter(
+        (_, i: number) => i !== payload
+      );
       return { ...state, invoiceItems: filteredItems };
     case INVOICE_ITEMS_TYPES.DELETE_INVOICE_ITEMS_SUCCESS:
       const itemsWithoutDeleted = state.invoiceItems.filter(

@@ -1,8 +1,8 @@
-import { ActionType } from 'typesafe-actions';
-import { InvoiceActions } from '../actions';
-import { INVOICE_TYPES } from '../types';
-import IInvoice from '../models/Invoice';
-import TState from '../common/types/TState';
+import { ActionType } from "typesafe-actions";
+import { InvoiceActions } from "../actions";
+import { INVOICE_TYPES } from "../types";
+import IInvoice from "../models/Invoice";
+import TState from "../common/types/TState";
 
 export type State = TState & {
   readonly invoice: IInvoice | null;
@@ -23,7 +23,12 @@ const reducer = (state: State = initialState, action: Action): State => {
     case INVOICE_TYPES.GET_INVOICES_REQUEST:
       return { ...state, loading: true, error: null };
     case INVOICE_TYPES.GET_INVOICES_SUCCESS:
-      return { ...state, invoices: payload as IInvoice[], loading: false, error: null };
+      return {
+        ...state,
+        invoices: payload as IInvoice[],
+        loading: false,
+        error: null
+      };
     case INVOICE_TYPES.CREATE_INVOICE_SUCCESS:
       return {
         ...state,
@@ -32,7 +37,12 @@ const reducer = (state: State = initialState, action: Action): State => {
         error: null
       };
     case INVOICE_TYPES.GET_INVOICE_BY_ID_SUCCESS:
-      return { ...state, invoice: payload as IInvoice, loading: false, error: null };
+      return {
+        ...state,
+        invoice: payload as IInvoice,
+        loading: false,
+        error: null
+      };
     case INVOICE_TYPES.EDIT_INVOICE_SUCCESS:
       const updatedInvoices = state.invoices.map(invoice => {
         if (invoice.id === (payload as IInvoice).id) return payload;
@@ -52,6 +62,13 @@ const reducer = (state: State = initialState, action: Action): State => {
       return { ...state, invoices: filteredInvoices };
     case INVOICE_TYPES.RESET_INVOICE:
       return { ...state, invoice: null, loading: false, error: null };
+    case INVOICE_TYPES.FILL_INVOICE:
+      return {
+        ...state,
+        invoice: { ...state.invoice, ...(payload as IInvoice) },
+        loading: false,
+        error: null
+      };
     case INVOICE_TYPES.FETCH_INVOICE_ERROR:
       return { ...state, loading: false, error: payload as string };
     default:

@@ -42,7 +42,6 @@ const Invoice: FC<Props> = ({
 }) => {
   const [visible, changeVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const [invoiceData, setInvoice] = useState<IInvoice>({} as IInvoice);
 
   useEffect(() => {
     fetchAllCustomers();
@@ -81,8 +80,6 @@ const Invoice: FC<Props> = ({
       <Drawer title='Create a new invoice' onClose={handleCloseForm} visible={visible}>
         <InvoiceForm
           isEdit={isEdit}
-          setInvoice={setInvoice}
-          invoiceData={invoiceData}
           fetchAllCustomers={fetchAllCustomers}
         />
       </Drawer>

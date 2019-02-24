@@ -1,23 +1,34 @@
-import React, { FC, FormEvent } from 'react';
-import { Form, Row, Col, Input, Button, Select, Collapse, Statistic } from 'antd';
-import IInvoice from '../../../../models/Invoice';
-import ICustomer from '../../../../models/Customer';
-import IProduct from '../../../../models/Product';
-import Table from '../../../TableInvoiceItems';
-import ItemsForm from '../ItemForm';
-import IInvoiceItem from '../../../../models/InvoiceItem';
-import { ID } from '../../../../common/types';
+import React, { FC, FormEvent, ChangeEvent } from "react";
+import {
+  Form,
+  Row,
+  Col,
+  Input,
+  Button,
+  Select,
+  Collapse,
+  Statistic
+} from "antd";
+import IInvoice from "../../../../models/Invoice";
+import ICustomer from "../../../../models/Customer";
+import IProduct from "../../../../models/Product";
+import Table from "../../../TableInvoiceItems";
+import ItemsForm from "../ItemForm";
+import IInvoiceItem from "../../../../models/InvoiceItem";
+import { ID } from "../../../../common/types";
+import calculateTotal from "../../../../common/calculateTotal";
 
 type Props = {
   form: any;
   onSubmit: (values: any) => void;
+  fillInvoice: (invoice: IInvoice) => any;
   isEdit: boolean;
   customer: ICustomer | null;
   customers: ICustomer[];
   invoice: IInvoice | null;
   invoiceItems: ReadonlyArray<IInvoiceItem>;
   products: ReadonlyArray<IProduct>;
-  handleCreateInvoiceItem: (id: ID, invoiceItem: IInvoiceItem) => any;
+  handleCreateInvoiceItem: (invoiceItem: IInvoiceItem) => any;
   handleDelete: (index: ID, invoiceItem: IInvoiceItem) => any;
 };
 
@@ -34,17 +45,40 @@ const BaseForm: FC<Props> = ({
   invoice,
   handleDelete,
   invoiceItems,
+  fillInvoice,
   handleCreateInvoiceItem
 }) => {
   const { getFieldDecorator } = form;
+  const total =  (invoice && invoice.total ? invoice.total : 0);
+  const discount = invoice && invoice.discount ? invoice.discount : 0;
+
+  const addInvoiceItem = (invoiceItem: IInvoiceItem) => {
+    handleCreateInvoiceItem(invoiceItem);
+    const total = calculateTotal(
+      discount,
+      [...invoiceItems, invoiceItem] as IInvoiceItem[],
+      products as IProduct[]
+    );
+    fillInvoice({ ...form.getFieldsValue(), total });
+  };
+
+  const hendleDeleteItem = (index: ID, invoiceItem: IInvoiceItem) => {
+    handleDelete(index, invoiceItem);
+    const total = calculateTotal(
+      discount,
+      [invoiceItem] as IInvoiceItem[],
+      products as IProduct[]
+    );
+    fillInvoice({ ...form.getFieldsValue(), total });
+  };
 
   const getFields = () => (
     <Col span={24}>
       <FormItem>
-        {getFieldDecorator('customer_id', {
-          rules: [{ required: true, message: 'Please select customer' }]
+        {getFieldDecorator("customer_id", {
+          rules: [{ required: true, message: "Please select customer" }]
         })(
-          <Select placeholder='Select a customer'>
+          <Select placeholder="Select a customer">
             {customers.map((customer: ICustomer) => (
               <Option key={`${customer.id}`} value={customer.id}>
                 {customer.name}
@@ -55,30 +89,52 @@ const BaseForm: FC<Props> = ({
       </FormItem>
       <Row>
         <FormItem>
-          {getFieldDecorator('discount', {
-            rules: [{ required: true, message: 'Please input discount' }]
-          })(<Input placeholder='Input discount' type='number' step={0.01} min={0} />)}
+          {getFieldDecorator("discount", {
+            rules: [{ required: true, message: "Please input discount" }]
+          })(
+            <Input
+              placeholder="Input discount"
+              type="number"
+              step={0.01}
+              min={0}
+              onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                const total = calculateTotal(
+                  +event.target.value,
+                  [...invoiceItems] as IInvoiceItem[],
+                  products as IProduct[]
+                );
+                fillInvoice({
+                  ...form.getFieldsValue(),
+                  discount: event.target.value,
+                  total
+                } as IInvoice)
+              }
+            }
+            />
+          )}
         </FormItem>
         <Statistic
-          title='Total'
-          value={11.28}
+          title="Total"
+          value={total}
           precision={1}
-          valueStyle={{ color: '#3f8600' }}
-          suffix='$'
+          valueStyle={{ color: "#3f8600" }}
+          suffix="$"
         />
       </Row>
       <Collapse>
-        <Panel header='Add Invoice Item' key='1'>
+        <Panel header="Add Invoice Item" key="1">
           <ItemsForm
-            invoiceId={invoice ? invoice.id : ''}
+            invoiceId={invoice ? invoice.id : ""}
             products={products}
-            onSubmit={handleCreateInvoiceItem}
+            onSubmit={addInvoiceItem}
           />
         </Panel>
       </Collapse>
       <Table invoiceItems={invoiceItems} onDelete={handleDelete} />
     </Col>
   );
+
+  console.log(invoice, "total");
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -98,16 +154,16 @@ const BaseForm: FC<Props> = ({
     <Form onSubmit={handleSubmit}>
       <Row gutter={24}>{getFields()}</Row>
       <Row>
-        <Col span={24} style={{ textAlign: 'right' }}>
+        <Col span={24} style={{ textAlign: "right" }}>
           <FormItem>
-            <Button type='primary' htmlType='submit'>
+            <Button type="primary" htmlType="submit">
               Submit
             </Button>
             <Button
               style={{ marginLeft: 8 }}
               onClick={handleReset}
               disabled={isEdit}
-              htmlType='button'
+              htmlType="button"
             >
               Clear
             </Button>
