@@ -1,7 +1,7 @@
 import { Action } from 'redux';
 import { Observable, of, from, concat } from 'rxjs';
-import { switchMap, map, catchError } from 'rxjs/operators';
-import { ofType } from 'redux-observable';
+import { switchMap, map, catchError, filter } from 'rxjs/operators';
+import { Epic, ofType } from 'redux-observable';
 import {
   CUSTOMER_TYPES,
   PRODUCT_TYPES,
@@ -19,34 +19,36 @@ import ICustomer from '../models/Customer';
 import IProduct from '../models/Product';
 import IInvoice from '../models/Invoice';
 import IInvoiceItem from '../models/InvoiceItem';
+import { isOfType } from 'typesafe-actions';
+import { RootAction, RootState } from '../store/types';
 
 type PayloadData = { url: string };
 type Actions = { deleteSuccess: Function; setError: Function };
 
-const deleteCustomersEpic = (action$: Observable<Action>) =>
+const deleteCustomersEpic: Epic<RootAction, RootAction, RootState> = action$ =>
   action$.pipe(
-    ofType(CUSTOMER_TYPES.DELETE_CUSTOMER_REQUEST),
-    switchMap((action: any) =>
+    filter(isOfType(CUSTOMER_TYPES.DELETE_CUSTOMER_REQUEST)),
+    switchMap(action =>
       concat(
         createRequest<ICustomer>(CustomerActions, action.payload),
         of(CustomerActions.fetchAllCustomers())
       )
     )
   );
-const deleteProductEpic = (action$: Observable<Action>) =>
+const deleteProductEpic: Epic<RootAction, RootAction, RootState> = action$ =>
   action$.pipe(
-    ofType(PRODUCT_TYPES.DELETE_PRODUCT_REQUEST),
-    switchMap((action: any) => createRequest<IProduct>(ProductActions, action.payload))
+    filter(isOfType(PRODUCT_TYPES.DELETE_PRODUCT_REQUEST)),
+    switchMap(action => createRequest<IProduct>(ProductActions, action.payload))
   );
-const deleteInvoiceEpic = (action$: Observable<Action>) =>
+const deleteInvoiceEpic: Epic<RootAction, RootAction, RootState> = action$ =>
   action$.pipe(
-    ofType(INVOICE_TYPES.DELETE_INVOICE_REQUEST),
-    switchMap((action: any) => createRequest<IInvoice>(InvoiceActions, action.payload))
+    filter(isOfType(INVOICE_TYPES.DELETE_INVOICE_REQUEST)),
+    switchMap(action => createRequest<IInvoice>(InvoiceActions, action.payload))
   );
-const deleteInvoiceItemEpic = (action$: Observable<Action>) =>
+const deleteInvoiceItemEpic: Epic<RootAction, RootAction, RootState> = action$ =>
   action$.pipe(
-    ofType(INVOICE_ITEMS_TYPES.DELETE_INVOICE_ITEMS_REQUEST),
-    switchMap((action: any) =>
+    filter(isOfType(INVOICE_ITEMS_TYPES.DELETE_INVOICE_ITEMS_REQUEST)),
+    switchMap(action =>
       concat(createRequest<IInvoiceItem>(InvoiceItemActions, action.payload))
     )
   );

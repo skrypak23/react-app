@@ -1,7 +1,7 @@
 import { Action } from 'redux';
 import { Observable, of, from, concat } from 'rxjs';
-import { switchMap, map, catchError } from 'rxjs/operators';
-import { ofType } from 'redux-observable';
+import { switchMap, map, catchError, filter } from 'rxjs/operators';
+import { Epic, ofType } from 'redux-observable';
 import {
   CUSTOMER_TYPES,
   PRODUCT_TYPES,
@@ -19,24 +19,26 @@ import ICustomer from '../models/Customer';
 import IProduct from '../models/Product';
 import IInvoice from '../models/Invoice';
 import IInvoiceItem from '../models/InvoiceItem';
+import { RootAction, RootState } from '../store/types';
+import { isOfType } from 'typesafe-actions';
 
 type PayloadData = { url: string; body: ICustomer | IProduct | IInvoice | IInvoiceItem };
 type Actions = { editSuccess: Function; setError: Function };
 
-const editCustomerEpic = (action$: Observable<Action>) =>
+const editCustomerEpic: Epic<RootAction, RootAction, RootState> = action$ =>
   action$.pipe(
-    ofType(CUSTOMER_TYPES.EDIT_CUSTOMER_REQUEST),
-    switchMap((action: any) => createRequest<ICustomer>(CustomerActions, action.payload))
+    filter(isOfType(CUSTOMER_TYPES.EDIT_CUSTOMER_REQUEST)),
+    switchMap(action => createRequest<ICustomer>(CustomerActions, action.payload))
   );
-const editProductEpic = (action$: Observable<Action>) =>
+const editProductEpic: Epic<RootAction, RootAction, RootState> = action$ =>
   action$.pipe(
-    ofType(PRODUCT_TYPES.EDIT_PRODUCT_REQUEST),
-    switchMap((action: any) => createRequest<IProduct>(ProductActions, action.payload))
+    filter(isOfType(PRODUCT_TYPES.EDIT_PRODUCT_REQUEST)),
+    switchMap(action => createRequest<IProduct>(ProductActions, action.payload))
   );
-const editInvoiceEpic = (action$: Observable<Action>) =>
+const editInvoiceEpic: Epic<RootAction, RootAction, RootState> = action$ =>
   action$.pipe(
-    ofType(INVOICE_TYPES.EDIT_INVOICE_REQUEST),
-    switchMap((action: any) => createRequest<IInvoice>(InvoiceActions, action.payload))
+    filter(isOfType(INVOICE_TYPES.EDIT_INVOICE_REQUEST)),
+    switchMap(action => createRequest<IInvoice>(InvoiceActions, action.payload))
   );
 
 function createRequest<T>(action: Actions, data: PayloadData) {
