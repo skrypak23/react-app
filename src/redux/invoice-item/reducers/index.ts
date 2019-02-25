@@ -1,0 +1,35 @@
+import { ActionType } from 'typesafe-actions';
+import * as InvoiceItemActions from '../actions';
+import * as INVOICE_ITEMS_TYPES from '../actions/types';
+import { State, initialState } from '../states';
+
+type Action = ActionType<typeof InvoiceItemActions>;
+
+const reducer = (state: State = initialState, action: Action): State => {
+  switch (action.type) {
+    case INVOICE_ITEMS_TYPES.FILL_INVOICE_ITEMS:
+      return {
+        ...state,
+        invoiceItems: [...state.invoiceItems, action.payload],
+        loading: false,
+        error: null
+      };
+    case INVOICE_ITEMS_TYPES.GET_INVOICE_ITEMS_SUCCESS:
+      return {
+        ...state,
+        invoiceItems: [...state.invoiceItems, ...action.payload]
+      };
+    case INVOICE_ITEMS_TYPES.DELETE_INVOICE_ITEMS_LOCAL:
+      const filteredItems = state.invoiceItems.filter((_, i: number) => i !== action.payload);
+      return { ...state, invoiceItems: filteredItems };
+    case INVOICE_ITEMS_TYPES.DELETE_INVOICE_ITEMS_SUCCESS:
+      const itemsWithoutDeleted = state.invoiceItems.filter(
+        iI => iI.id !== action.payload.id
+      );
+      return { ...state, invoiceItems: itemsWithoutDeleted };
+    default:
+      return state;
+  }
+};
+
+export default reducer;
