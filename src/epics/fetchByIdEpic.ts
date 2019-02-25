@@ -14,12 +14,12 @@ import {
   InvoiceActions,
   InvoiceItemActions
 } from '../actions';
-import API from '../api';
-import ICustomer from '../models/Customer';
-import IProduct from '../models/Product';
-import IInvoice from '../models/Invoice';
-import IInvoiceItem from '../models/InvoiceItem';
-import { RootAction, RootState } from '../store/types';
+import API from '../shared/services';
+import ICustomer from '../shared/models/Customer';
+import IProduct from '../shared/models/Product';
+import IInvoice from '../shared/models/Invoice';
+import IInvoiceItem from '../shared/models/InvoiceItem';
+import { RootAction, RootState } from '../redux/store/types';
 import { isOfType } from 'typesafe-actions';
 
 type Actions = { fetchDataByIdSuccess: Function; setError: Function };

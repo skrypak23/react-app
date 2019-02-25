@@ -2,9 +2,9 @@ import React, { FC } from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import BaseForm from './Form';
-import IProduct from '../../../models/Product';
+import IProduct from '../../../shared/models/Product';
 import { State } from '../../../reducers/product';
-import { RootAction, RootState } from '../../../store/types';
+import { RootAction, RootState } from '../../../redux/store/types';
 import { ProductActions } from '../../../actions';
 import { ID } from '../../../common/types';
 

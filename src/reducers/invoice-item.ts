@@ -1,7 +1,7 @@
 import { ActionType } from "typesafe-actions";
 import { InvoiceItemActions } from "../actions";
 import { INVOICE_ITEMS_TYPES } from "../types";
-import IInvoiceItem from "../models/InvoiceItem";
+import IInvoiceItem from "../shared/models/InvoiceItem";
 import TState from "../common/types/TState";
 
 export type State = TState & {

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { Table, Divider } from 'antd';
-import ICustomer from '../../models/Customer';
+import ICustomer from '../../shared/models/Customer';
 import { ID, RecordAction } from '../../common/types';
 
 type Props = RecordAction & {

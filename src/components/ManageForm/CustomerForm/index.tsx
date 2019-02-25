@@ -2,9 +2,9 @@ import React, { FC } from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import BaseForm from './Form';
-import ICustomer from '../../../models/Customer';
+import ICustomer from '../../../shared/models/Customer';
 import { CustomerActions } from '../../../actions';
-import { RootAction, RootState } from '../../../store/types';
+import { RootAction, RootState } from '../../../redux/store/types';
 import { State } from '../../../reducers/customer';
 import { ID } from '../../../common/types';
 
@@ -60,8 +60,7 @@ const CustomerForm: FC<Props> = ({
 const mapStateToProps = (state: RootState) => ({ customer: state.customer });
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
   createCustomer: (customer: ICustomer) => dispatch(createCustomer(customer)),
-  editCustomer: (id: ID, customer: ICustomer) =>
-    dispatch(editCustomer(id, customer))
+  editCustomer: (id: ID, customer: ICustomer) => dispatch(editCustomer(id, customer))
 });
 
 export default connect(

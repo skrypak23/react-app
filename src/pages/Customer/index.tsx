@@ -7,7 +7,7 @@ import Table from './Table';
 import Drawer from '../../components/Drawer';
 import { CustomerActions } from '../../actions';
 import { State } from '../../reducers/customer';
-import { RootState, RootAction } from '../../store/types';
+import { RootState, RootAction } from '../../redux/store/types';
 import { ID } from '../../common/types';
 import { CustomerForm } from '../../components/ManageForm';
 

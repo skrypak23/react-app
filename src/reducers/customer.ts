@@ -1,7 +1,7 @@
-import { ActionType } from 'typesafe-actions';
+import {ActionType, getType} from 'typesafe-actions';
 import { CustomerActions } from '../actions';
 import { CUSTOMER_TYPES } from '../types';
-import ICustomer from '../models/Customer';
+import ICustomer from '../shared/models/Customer';
 import TState from '../common/types/TState';
 
 export type State = TState & {
@@ -18,44 +18,44 @@ const initialState: State = {
 };
 
 const reducer = (state: State = initialState, action: Action): State => {
-  const { type, payload } = action;
-  switch (type) {
+  switch (action.type) {
     case CUSTOMER_TYPES.GET_CUSTOMERS_REQUEST:
     case CUSTOMER_TYPES.CREATE_CUSTOMER_REQUEST:
     case CUSTOMER_TYPES.GET_CUSTOMER_BY_ID_REQUEST:
       return { ...state, loading: true, error: null };
     case CUSTOMER_TYPES.GET_CUSTOMERS_SUCCESS:
-      return { ...state, customers: payload as ICustomer[], loading: false, error: null };
+      return { ...state, customers: [...action.payload], loading: false, error: null };
     case CUSTOMER_TYPES.CREATE_CUSTOMER_SUCCESS:
       return {
         ...state,
-        customers: [...state.customers, payload as ICustomer],
+        customers: [...state.customers, action.payload],
+        customer: action.payload,
         loading: false,
         error: null
       };
     case CUSTOMER_TYPES.GET_CUSTOMER_BY_ID_SUCCESS:
-      return { ...state, customer: payload as ICustomer, loading: false, error: null };
+      return { ...state, customer: action.payload, loading: false, error: null };
     case CUSTOMER_TYPES.EDIT_CUSTOMER_SUCCESS:
       const updatedCustomers = state.customers.map(customer => {
-        if (customer.id === (payload as ICustomer).id) return payload;
+        if (customer.id === action.payload.id) return action.payload;
         return customer;
       });
       return {
         ...state,
-        customer: payload as ICustomer,
-        customers: updatedCustomers as ICustomer[],
+        customer: action.payload,
+        customers: updatedCustomers,
         loading: false,
         error: null
       };
     case CUSTOMER_TYPES.DELETE_CUSTOMER_SUCCESS:
       const filteredCustomers = state.customers.filter(
-        customer => customer.id !== (payload as ICustomer).id
+        customer => customer.id !== action.payload.id
       );
       return { ...state, customers: filteredCustomers, loading: false, error: null };
     case CUSTOMER_TYPES.RESET_CUSTOMER:
       return { ...state, customer: null, loading: false, error: null };
-    case CUSTOMER_TYPES.FETCH_CUSTOMER_ERROR:
-      return { ...state, loading: false, error: payload as string };
+    case getType(CustomerActions.setError):
+      return { ...state, loading: false, error: action.payload };
     default:
       return state;
   }

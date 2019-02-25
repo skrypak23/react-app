@@ -1,7 +1,7 @@
 import { ActionType } from 'typesafe-actions';
 import { ProductActions } from '../actions';
 import { PRODUCT_TYPES } from '../types';
-import IProduct from '../models/Product';
+import IProduct from '../shared/models/Product';
 import TState from '../common/types/TState';
 
 export type State = TState & {

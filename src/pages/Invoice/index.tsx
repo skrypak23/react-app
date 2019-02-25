@@ -9,9 +9,9 @@ import { InvoiceForm } from '../../components/ManageForm';
 import { InvoiceActions, CustomerActions } from '../../actions';
 import { State } from '../../reducers/invoice';
 import { State as CustomerState } from '../../reducers/customer';
-import { RootState, RootAction } from '../../store/types';
+import { RootState, RootAction } from '../../redux/store/types';
 import { ID } from '../../common/types';
-import IInvoice from '../../models/Invoice';
+import IInvoice from '../../shared/models/Invoice';
 
 const {
   fetchAllInvoices,
@@ -65,7 +65,6 @@ const Invoice: FC<Props> = ({
     return foundCustomer ? foundCustomer.name : '';
   };
 
-  console.log('RENDER');
   return (
     <div>
       <Button type='primary' onClick={showDrawer} htmlType='button'>

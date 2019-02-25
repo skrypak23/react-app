@@ -6,19 +6,19 @@ import { State } from '../../../reducers/invoice';
 import { State as CustomerState } from '../../../reducers/customer';
 import { State as ProductState } from '../../../reducers/product';
 import { State as InvoiceItemState } from '../../../reducers/invoice-item';
-import { RootAction, RootState } from '../../../store/types';
+import { RootAction, RootState } from '../../../redux/store/types';
 import {
   InvoiceActions,
   CustomerActions,
   ProductActions,
   InvoiceItemActions
 } from '../../../actions';
-import IInvoice from '../../../models/Invoice';
-import ICustomer from '../../../models/Customer';
+import IInvoice from '../../../shared/models/Invoice';
+import ICustomer from '../../../shared/models/Customer';
 import { ID } from '../../../common/types';
-import IInvoiceItem from '../../../models/InvoiceItem';
+import IInvoiceItem from '../../../shared/models/InvoiceItem';
 import calculateTotal from '../../../common/calculateTotal';
-import IProduct from '../../../models/Product';
+import IProduct from '../../../shared/models/Product';
 
 type Props = {
   editInvoice: (id: ID, invoice: IInvoice) => any;

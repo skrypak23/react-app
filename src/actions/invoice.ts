@@ -1,7 +1,7 @@
 import { action } from "typesafe-actions";
-import IInvoice from "../models/Invoice";
+import IInvoice from "../shared/models/Invoice";
 import { INVOICE_TYPES } from "../types";
-import { URL_ALL_INVOICES } from "../api";
+import { URL_ALL_INVOICES } from "../shared/services";
 import { ID } from "../common/types";
 
 export const fetchAllInvoices = () =>

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { Table, Divider } from 'antd';
-import IInvoiceItem from '../../models/InvoiceItem';
+import IInvoiceItem from '../../shared/models/InvoiceItem';
 import { RecordAction } from '../../common/types';
 
 type Props = RecordAction & {

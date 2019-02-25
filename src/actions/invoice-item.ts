@@ -1,8 +1,8 @@
 import {action} from 'typesafe-actions';
-import IInvoiceItem from '../models/InvoiceItem';
+import IInvoiceItem from '../shared/models/InvoiceItem';
 import {ID} from '../common/types';
 import {INVOICE_ITEMS_TYPES} from '../types';
-import {URL_ALL_INVOICES} from '../api';
+import {URL_ALL_INVOICES} from '../shared/services';
 
 export const fetchAllInvoiceItems = (invoiceId: ID) =>
     action(

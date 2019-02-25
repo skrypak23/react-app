@@ -1,7 +1,7 @@
 import { action } from 'typesafe-actions';
-import IProduct from '../models/Product';
+import IProduct from '../shared/models/Product';
 import { PRODUCT_TYPES } from '../types';
-import { URL_ALL_PRODUCTS } from '../api';
+import { URL_ALL_PRODUCTS } from '../shared/services';
 import { ID } from '../common/types';
 
 export const fetchAllProducts = () => action(PRODUCT_TYPES.GET_PRODUCTS_REQUEST, URL_ALL_PRODUCTS);

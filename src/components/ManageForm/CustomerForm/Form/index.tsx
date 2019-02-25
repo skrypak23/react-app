@@ -1,6 +1,6 @@
 import React, { FC, FormEvent } from 'react';
 import { Form, Row, Col, Input, Button } from 'antd';
-import ICustomer from '../../../../models/Customer';
+import ICustomer from '../../../../shared/models/Customer';
 
 const FormItem = Form.Item;
 

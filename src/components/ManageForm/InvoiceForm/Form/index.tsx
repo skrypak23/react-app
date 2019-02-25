@@ -9,12 +9,12 @@ import {
   Collapse,
   Statistic
 } from "antd";
-import IInvoice from "../../../../models/Invoice";
-import ICustomer from "../../../../models/Customer";
-import IProduct from "../../../../models/Product";
+import IInvoice from "../../../../shared/models/Invoice";
+import ICustomer from "../../../../shared/models/Customer";
+import IProduct from "../../../../shared/models/Product";
 import Table from "../../../TableInvoiceItems";
 import ItemsForm from "../ItemForm";
-import IInvoiceItem from "../../../../models/InvoiceItem";
+import IInvoiceItem from "../../../../shared/models/InvoiceItem";
 import { ID } from "../../../../common/types";
 import calculateTotal from "../../../../common/calculateTotal";
 

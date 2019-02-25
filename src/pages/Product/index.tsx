@@ -8,8 +8,8 @@ import { ProductForm } from '../../components/ManageForm';
 import Drawer from '../../components/Drawer';
 import { ProductActions } from '../../actions';
 import { State } from '../../reducers/product';
-import { RootState, RootAction } from '../../store/types';
-import IProduct from '../../models/Product';
+import { RootState, RootAction } from '../../redux/store/types';
+import IProduct from '../../shared/models/Product';
 import { ID } from '../../common/types';
 
 const { fetchAllProducts, fetchProductById, resetProduct, deleteProduct } = ProductActions;

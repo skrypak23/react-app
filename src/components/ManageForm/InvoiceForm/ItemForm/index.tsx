@@ -1,7 +1,7 @@
 import React, { FC, MouseEvent } from 'react';
 import { Form, Row, Col, Input, Button, Select } from 'antd';
-import IInvoiceItem from '../../../../models/InvoiceItem';
-import IProduct from '../../../../models/Product';
+import IInvoiceItem from '../../../../shared/models/InvoiceItem';
+import IProduct from '../../../../shared/models/Product';
 import {ID} from "../../../../common/types";
 
 const FormItem = Form.Item;
