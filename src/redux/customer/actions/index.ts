@@ -1,8 +1,8 @@
 import { action, createStandardAction } from 'typesafe-actions';
 import ICustomer from '../../../shared/models/Customer';
 import * as CUSTOMER_TYPES from './types';
-import { URL_ALL_CUSTOMERS } from '../../../shared/services';
-import { ID } from '../../../common/types';
+import { URL_ALL_CUSTOMERS } from '../../../shared/api';
+import { ID } from '../../../shared/typing/records';
 
 export const fetchAllCustomers = () =>
   action(CUSTOMER_TYPES.GET_CUSTOMERS_REQUEST, URL_ALL_CUSTOMERS);

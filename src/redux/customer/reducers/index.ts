@@ -1,18 +1,25 @@
-import { ActionType, getType } from 'typesafe-actions';
-import * as CustomerActions from '../actions';
-import {CUSTOMER_TYPES} from "../../../types";
-import { State, initialState } from '../states'
+import { ActionType, getType } from "typesafe-actions";
+import * as CustomerActions from "../actions";
+import { CUSTOMER_TYPES } from "../../../types";
+import { State, initialState } from "../states";
 
 export type Action = ActionType<typeof CustomerActions>;
 
 const reducer = (state: State = initialState, action: Action): State => {
   switch (action.type) {
     case CUSTOMER_TYPES.GET_CUSTOMERS_REQUEST:
+    case CUSTOMER_TYPES.EDIT_CUSTOMER_REQUEST:
+    case CUSTOMER_TYPES.EDIT_CUSTOMER_REQUEST:
     case CUSTOMER_TYPES.CREATE_CUSTOMER_REQUEST:
     case CUSTOMER_TYPES.GET_CUSTOMER_BY_ID_REQUEST:
       return { ...state, loading: true, error: null };
     case CUSTOMER_TYPES.GET_CUSTOMERS_SUCCESS:
-      return { ...state, customers: [...action.payload], loading: false, error: null };
+      return {
+        ...state,
+        customers: [...action.payload],
+        loading: false,
+        error: null
+      };
     case CUSTOMER_TYPES.CREATE_CUSTOMER_SUCCESS:
       return {
         ...state,
@@ -22,7 +29,12 @@ const reducer = (state: State = initialState, action: Action): State => {
         error: null
       };
     case CUSTOMER_TYPES.GET_CUSTOMER_BY_ID_SUCCESS:
-      return { ...state, customer: action.payload, loading: false, error: null };
+      return {
+        ...state,
+        customer: action.payload,
+        loading: false,
+        error: null
+      };
     case CUSTOMER_TYPES.EDIT_CUSTOMER_SUCCESS:
       const updatedCustomers = state.customers.map(customer => {
         if (customer.id === action.payload.id) return action.payload;
@@ -39,7 +51,12 @@ const reducer = (state: State = initialState, action: Action): State => {
       const filteredCustomers = state.customers.filter(
         customer => customer.id !== action.payload.id
       );
-      return { ...state, customers: filteredCustomers, loading: false, error: null };
+      return {
+        ...state,
+        customers: filteredCustomers,
+        loading: false,
+        error: null
+      };
     case CUSTOMER_TYPES.RESET_CUSTOMER:
       return { ...state, customer: null, loading: false, error: null };
     case getType(CustomerActions.setError):
