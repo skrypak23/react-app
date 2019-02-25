@@ -1,4 +1,4 @@
-async function fetchAll<T>(url: string, config: object = {}): Promise<T[]> {
+async function fetchAllService<T>(url: string, config: object = {}): Promise<T[]> {
   try {
     const res = await fetch(url, config);
     return await res.json();
@@ -7,4 +7,4 @@ async function fetchAll<T>(url: string, config: object = {}): Promise<T[]> {
   }
 }
 
-export default fetchAll;
+export default fetchAllService;

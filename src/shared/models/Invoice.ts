@@ -1,4 +1,4 @@
-import {ID} from "../common/types";
+import {ID} from "../../common/types";
 
 interface IInvoice {
   id: ID;
