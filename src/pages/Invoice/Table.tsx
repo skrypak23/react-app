@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Table, Divider } from 'antd';
 import IInvoice from '../../shared/models/Invoice';
-import { RecordAction, ID } from '../../common/types';
+import { RecordAction, ID } from '../../shared/typing/records';
 
 type Props = RecordAction & {
   data: ReadonlyArray<IInvoice>;

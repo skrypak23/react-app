@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Table, Divider, Collapse } from 'antd';
 import IInvoiceItem from '../../shared/models/InvoiceItem';
-import { ID } from '../../common/types';
+import { ID } from '../../shared/typing/records';
 
 const Panel = Collapse.Panel;
 

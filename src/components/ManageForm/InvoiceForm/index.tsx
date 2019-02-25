@@ -2,22 +2,20 @@ import React, { FC, useEffect, useState } from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import BaseForm from './Form';
-import { State } from '../../../reducers/invoice';
-import { State as CustomerState } from '../../../reducers/customer';
-import { State as ProductState } from '../../../reducers/product';
-import { State as InvoiceItemState } from '../../../reducers/invoice-item';
+import { State } from '../../../redux/invoice/states';
+import { State as CustomerState } from '../../../redux/customer/states';
+import { State as ProductState } from '../../../redux/product/states';
+import { State as InvoiceItemState } from '../../../redux/invoice-item/states';
 import { RootAction, RootState } from '../../../redux/store/types';
-import {
-  InvoiceActions,
-  CustomerActions,
-  ProductActions,
-  InvoiceItemActions
-} from '../../../actions';
+import * as InvoiceActions from '../../../redux/invoice/actions';
+import * as CustomerActions from '../../../redux/customer/actions';
+import * as ProductActions from '../../../redux/product/actions';
+import * as InvoiceItemActions from '../../../redux/invoice-item/actions';
 import IInvoice from '../../../shared/models/Invoice';
 import ICustomer from '../../../shared/models/Customer';
-import { ID } from '../../../common/types';
+import { ID } from '../../../shared/typing/records';
 import IInvoiceItem from '../../../shared/models/InvoiceItem';
-import calculateTotal from '../../../common/calculateTotal';
+import calculateTotal from '../../../shared/calculateTotal';
 import IProduct from '../../../shared/models/Product';
 
 type Props = {

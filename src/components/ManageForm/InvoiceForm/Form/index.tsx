@@ -1,4 +1,4 @@
-import React, { FC, FormEvent, ChangeEvent } from "react";
+import React, { FC, FormEvent, ChangeEvent } from 'react';
 import {
   Form,
   Row,
@@ -8,15 +8,15 @@ import {
   Select,
   Collapse,
   Statistic
-} from "antd";
-import IInvoice from "../../../../shared/models/Invoice";
-import ICustomer from "../../../../shared/models/Customer";
-import IProduct from "../../../../shared/models/Product";
-import Table from "../../../TableInvoiceItems";
-import ItemsForm from "../ItemForm";
-import IInvoiceItem from "../../../../shared/models/InvoiceItem";
-import { ID } from "../../../../common/types";
-import calculateTotal from "../../../../common/calculateTotal";
+} from 'antd';
+import IInvoice from '../../../../shared/models/Invoice';
+import ICustomer from '../../../../shared/models/Customer';
+import IProduct from '../../../../shared/models/Product';
+import Table from '../../../TableInvoiceItems';
+import ItemsForm from '../ItemForm';
+import IInvoiceItem from '../../../../shared/models/InvoiceItem';
+import { ID } from '../../../../shared/typing/records';
+import calculateTotal from '../../../../shared/calculateTotal';
 
 type Props = {
   form: any;
@@ -49,7 +49,7 @@ const BaseForm: FC<Props> = ({
   handleCreateInvoiceItem
 }) => {
   const { getFieldDecorator } = form;
-  const total =  (invoice && invoice.total ? invoice.total : 0);
+  const total = invoice && invoice.total ? invoice.total : 0;
   const discount = invoice && invoice.discount ? invoice.discount : 0;
 
   const addInvoiceItem = (invoiceItem: IInvoiceItem) => {
@@ -75,8 +75,8 @@ const BaseForm: FC<Props> = ({
   const getFields = () => (
     <Col span={24}>
       <FormItem>
-        {getFieldDecorator("customer_id", {
-          rules: [{ required: true, message: "Please select customer" }]
+        {getFieldDecorator('customer_id', {
+          rules: [{ required: true, message: 'Please select customer' }]
         })(
           <Select placeholder="Select a customer">
             {customers.map((customer: ICustomer) => (
@@ -89,8 +89,8 @@ const BaseForm: FC<Props> = ({
       </FormItem>
       <Row>
         <FormItem>
-          {getFieldDecorator("discount", {
-            rules: [{ required: true, message: "Please input discount" }]
+          {getFieldDecorator('discount', {
+            rules: [{ required: true, message: 'Please input discount' }]
           })(
             <Input
               placeholder="Input discount"
@@ -107,9 +107,8 @@ const BaseForm: FC<Props> = ({
                   ...form.getFieldsValue(),
                   discount: event.target.value,
                   total
-                } as IInvoice)
-              }
-            }
+                } as IInvoice);
+              }}
             />
           )}
         </FormItem>
@@ -117,14 +116,14 @@ const BaseForm: FC<Props> = ({
           title="Total"
           value={total}
           precision={1}
-          valueStyle={{ color: "#3f8600" }}
+          valueStyle={{ color: '#3f8600' }}
           suffix="$"
         />
       </Row>
       <Collapse>
         <Panel header="Add Invoice Item" key="1">
           <ItemsForm
-            invoiceId={invoice ? invoice.id : ""}
+            invoiceId={invoice ? invoice.id : ''}
             products={products}
             onSubmit={addInvoiceItem}
           />
@@ -134,7 +133,7 @@ const BaseForm: FC<Props> = ({
     </Col>
   );
 
-  console.log(invoice, "total");
+  console.log(invoice, 'total');
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -154,7 +153,7 @@ const BaseForm: FC<Props> = ({
     <Form onSubmit={handleSubmit}>
       <Row gutter={24}>{getFields()}</Row>
       <Row>
-        <Col span={24} style={{ textAlign: "right" }}>
+        <Col span={24} style={{ textAlign: 'right' }}>
           <FormItem>
             <Button type="primary" htmlType="submit">
               Submit

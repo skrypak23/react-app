@@ -6,11 +6,10 @@ import { Button, Icon } from 'antd';
 import Table from './Table';
 import { ProductForm } from '../../components/ManageForm';
 import Drawer from '../../components/Drawer';
-import { ProductActions } from '../../actions';
-import { State } from '../../reducers/product';
+import * as ProductActions from '../../redux/product/actions';
+import { State } from '../../redux/product/states';
 import { RootState, RootAction } from '../../redux/store/types';
-import IProduct from '../../shared/models/Product';
-import { ID } from '../../common/types';
+import { ID } from '../../shared/typing/records';
 
 const { fetchAllProducts, fetchProductById, resetProduct, deleteProduct } = ProductActions;
 

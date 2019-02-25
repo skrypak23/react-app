@@ -10,7 +10,7 @@ import * as InvoiceActions from "../actions";
 import * as InvoiceItemActions from "../../invoice-item/actions";
 import IInvoice from "../../../shared/models/Invoice";
 import IInvoiceItem from "../../../shared/models/InvoiceItem";
-import ApiService from "../../../shared/services/api.service";
+import ApiService from "../../../shared/services/request.service";
 
 const fetchInvoicesEpic: Epic<RootAction, RootAction, RootState> = action$ =>
   action$.pipe(

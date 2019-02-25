@@ -1,6 +1,6 @@
 import { ActionType, getType } from "typesafe-actions";
 import * as CustomerActions from "../actions";
-import { CUSTOMER_TYPES } from "../../../types";
+import * as CUSTOMER_TYPES from "../actions/types";
 import { State, initialState } from "../states";
 
 export type Action = ActionType<typeof CustomerActions>;

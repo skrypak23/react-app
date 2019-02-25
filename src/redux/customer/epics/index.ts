@@ -2,12 +2,12 @@ import { of, Observable, concat } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 import { Epic, ofType } from 'redux-observable';
 import { RootAction, RootState } from '../../store/types';
-import { CUSTOMER_TYPES } from '../../../types';
+import * as CUSTOMER_TYPES from '../actions/types';
 import ICustomer from '../../../shared/models/Customer';
 import * as CustomerActions from '../actions';
 import { isOfType } from 'typesafe-actions';
 import { Action } from 'redux';
-import ApiService from '../../../shared/services/api.service';
+import ApiService from '../../../shared/services/request.service';
 
 const fetchCustomersEpic: Epic<RootAction, RootAction, RootState> = action$ =>
   action$.pipe(

@@ -2,16 +2,16 @@ import { of, Observable, concat } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 import { Epic, ofType } from 'redux-observable';
 import { RootAction, RootState } from '../../store/types';
-import { CUSTOMER_TYPES } from '../../../types';
+import * as INVOICE_ITEM_TYPES  from '../actions/types';
 import IInvoiceItem from '../../../shared/models/InvoiceItem';
 import * as InvoiceItemActions from '../actions';
 import { isOfType } from 'typesafe-actions';
 import { Action } from 'redux';
-import ApiService from '../../../shared/services/api.service';
+import ApiService from '../../../shared/services/request.service';
 
 const fetchInvoiceItemsEpic: Epic<RootAction, RootAction, RootState> = action$ =>
     action$.pipe(
-        filter(isOfType(CUSTOMER_TYPES.GET_CUSTOMERS_REQUEST)),
+        filter(isOfType(INVOICE_ITEM_TYPES.GET_INVOICE_ITEMS_REQUEST)),
         switchMap(action =>
             ApiService.fetchAllData<IInvoiceItem>(InvoiceItemActions, action.payload)
         )
@@ -19,20 +19,20 @@ const fetchInvoiceItemsEpic: Epic<RootAction, RootAction, RootState> = action$ =
 
 const fetchInvoiceItemsByIdEpic: Epic<RootAction, RootAction, RootState> = action$ =>
     action$.pipe(
-        filter(isOfType(CUSTOMER_TYPES.GET_CUSTOMER_BY_ID_REQUEST)),
+        filter(isOfType(INVOICE_ITEM_TYPES.GET_INVOICE_ITEMS_BY_ID_REQUEST)),
         switchMap(action => ApiService.fetchById<IInvoiceItem>(InvoiceItemActions, action.payload))
     );
 
 const editInvoiceItemEpic: Epic<RootAction, RootAction, RootState> = action$ =>
     action$.pipe(
-        filter(isOfType(CUSTOMER_TYPES.EDIT_CUSTOMER_REQUEST)),
+        filter(isOfType(INVOICE_ITEM_TYPES.EDIT_INVOICE_ITEMS_REQUEST)),
         switchMap(action => ApiService.editData<IInvoiceItem>(InvoiceItemActions, action.payload))
     );
 
 
 const createInvoiceItemsEpic = (action$: Observable<Action>) =>
     action$.pipe(
-        ofType(CUSTOMER_TYPES.CREATE_CUSTOMER_REQUEST),
+        ofType(INVOICE_ITEM_TYPES.CREATE_INVOICE_ITEMS_REQUEST),
         switchMap((action: any) =>
             ApiService.createData<IInvoiceItem>(InvoiceItemActions, action.payload)
         )

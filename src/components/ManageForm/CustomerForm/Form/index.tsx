@@ -11,7 +11,7 @@ type Props = {
     placeholder: string;
   }>;
   form: any;
-  formData?: ICustomer;
+  formData?: ICustomer | null;
   onSubmit: (customer: ICustomer) => void;
   isEdit: boolean;
 };
@@ -46,14 +46,14 @@ const BaseForm: FC<Props> = ({ formFields, form, onSubmit, isEdit }) => {
       <Row gutter={24}>{getFields()}</Row>
       <Row>
         <Col span={24} style={{ textAlign: 'right' }}>
-          <Button type='primary' htmlType='submit'>
+          <Button type="primary" htmlType="submit">
             Submit
           </Button>
           <Button
             style={{ marginLeft: 8 }}
             onClick={handleReset}
             disabled={isEdit}
-            htmlType='button'
+            htmlType="button"
           >
             Clear
           </Button>
@@ -64,8 +64,8 @@ const BaseForm: FC<Props> = ({ formFields, form, onSubmit, isEdit }) => {
 };
 
 export default Form.create({
-  mapPropsToFields({ formData = {} as ICustomer }: Props) {
-    return Object.entries(formData).reduce(
+  mapPropsToFields({ formData }: Props) {
+    return Object.entries(formData || {}).reduce(
       (values, [key, value]) => ({
         ...values,
         [key]: Form.createFormField({ value })

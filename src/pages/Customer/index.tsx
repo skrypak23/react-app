@@ -1,15 +1,15 @@
 import React, { useEffect, useState, FC } from 'react';
-import { Dispatch } from 'redux';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button, Icon } from 'antd';
 import Table from './Table';
 import Drawer from '../../components/Drawer';
-import { CustomerActions } from '../../actions';
-import { State } from '../../reducers/customer';
-import { RootState, RootAction } from '../../redux/store/types';
-import { ID } from '../../common/types';
 import { CustomerForm } from '../../components/ManageForm';
+import * as CustomerActions from '../../redux/customer/actions';
+import { State } from '../../redux/customer/states';
+import { RootState, RootAction } from '../../redux/store/types';
+import { ID } from '../../shared/typing/records';
+import ICustomer from '../../shared/models/Customer';
 
 const {
   fetchAllCustomers,
@@ -18,11 +18,11 @@ const {
   deleteCustomer
 } = CustomerActions;
 
-type Props = RouteComponentProps<any> & {
-  fetchCustomerById: (id: ID) => any;
-  deleteCustomer: (id: ID) => any;
-  fetchAllCustomers: () => any;
-  resetCustomer: () => any;
+type Props = {
+  fetchCustomerById: (id: ID) => void;
+  deleteCustomer: (id: ID) => void;
+  fetchAllCustomers: () => void;
+  resetCustomer: () => void;
   customer: State;
 };
 
@@ -54,8 +54,8 @@ const Customer: FC<Props> = ({
 
   return (
     <div>
-      <Button type='primary' onClick={showDrawer} htmlType='button'>
-        <Icon type='plus' /> Add Customer
+      <Button type="primary" onClick={showDrawer} htmlType="button">
+        <Icon type="plus" /> Add Customer
       </Button>
       <Table
         data={customer.customers}
@@ -63,7 +63,7 @@ const Customer: FC<Props> = ({
         onDelete={deleteCustomer}
       />
       <Drawer
-        title='Create a new customer'
+        title="Create a new customer"
         onClose={handleCloseForm}
         visible={visible}
       >
@@ -74,14 +74,18 @@ const Customer: FC<Props> = ({
 };
 
 const mapStateToProps = (state: RootState) => ({ customer: state.customer });
-const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
-  fetchCustomerById: (id: ID) => dispatch(fetchCustomerById(id)),
-  deleteCustomer: (id: ID) => dispatch(deleteCustomer(id)),
-  fetchAllCustomers: () => dispatch(fetchAllCustomers()),
-  resetCustomer: () => dispatch(resetCustomer())
-});
+const mapDispatchToProps = (dispatch: Dispatch<RootAction>) =>
+  bindActionCreators(
+    {
+      fetchCustomerById,
+      deleteCustomer,
+      fetchAllCustomers,
+      resetCustomer
+    },
+    dispatch
+  );
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(Customer));
+)(Customer);

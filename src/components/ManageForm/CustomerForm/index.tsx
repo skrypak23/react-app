@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
-import { Dispatch } from 'redux';
+import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import BaseForm from './Form';
 import ICustomer from '../../../shared/models/Customer';
-import { CustomerActions } from '../../../actions';
+import * as CustomerActions from '../../../redux/customer/actions';
 import { RootAction, RootState } from '../../../redux/store/types';
-import { State } from '../../../reducers/customer';
-import { ID } from '../../../common/types';
+import { State } from '../../../redux/customer/states';
+import { ID } from '../../../shared/typing/records';
 
 const { createCustomer, editCustomer } = CustomerActions;
 
@@ -51,17 +51,21 @@ const CustomerForm: FC<Props> = ({
     <BaseForm
       formFields={FORM_FIELDS}
       onSubmit={handleSubmit}
-      formData={(customer.customer as ICustomer) || {}}
+      formData={customer.customer}
       isEdit={isEdit}
     />
   );
 };
 
 const mapStateToProps = (state: RootState) => ({ customer: state.customer });
-const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
-  createCustomer: (customer: ICustomer) => dispatch(createCustomer(customer)),
-  editCustomer: (id: ID, customer: ICustomer) => dispatch(editCustomer(id, customer))
-});
+const mapDispatchToProps = (dispatch: Dispatch<RootAction>) =>
+  bindActionCreators(
+    {
+      createCustomer,
+      editCustomer
+    },
+    dispatch
+  );
 
 export default connect(
   mapStateToProps,

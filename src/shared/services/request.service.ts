@@ -7,7 +7,7 @@ import {
   EditActions,
   DeleteActions,
   FetchActions,
-  FetchByIdActions
+  FetchByIdActions,
 } from '../typing/actions';
 
 class ApiService {

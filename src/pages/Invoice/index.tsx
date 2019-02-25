@@ -6,12 +6,12 @@ import { Button, Icon } from 'antd';
 import Table from './Table';
 import Drawer from '../../components/Drawer';
 import { InvoiceForm } from '../../components/ManageForm';
-import { InvoiceActions, CustomerActions } from '../../actions';
-import { State } from '../../reducers/invoice';
-import { State as CustomerState } from '../../reducers/customer';
+import * as InvoiceActions from '../../redux/invoice/actions';
+import * as CustomerActions from '../../redux/customer/actions';
+import { State } from '../../redux/invoice/states';
+import { State as CustomerState } from '../../redux/customer/states';
 import { RootState, RootAction } from '../../redux/store/types';
-import { ID } from '../../common/types';
-import IInvoice from '../../shared/models/Invoice';
+import { ID } from '../../shared/typing/records';
 
 const {
   fetchAllInvoices,
@@ -61,14 +61,16 @@ const Invoice: FC<Props> = ({
   };
 
   const findCustomerName = (id: ID): string => {
-    const foundCustomer = customer.customers.find(customer => customer.id === id);
+    const foundCustomer = customer.customers.find(
+      customer => customer.id === id
+    );
     return foundCustomer ? foundCustomer.name : '';
   };
 
   return (
     <div>
-      <Button type='primary' onClick={showDrawer} htmlType='button'>
-        <Icon type='plus' /> Add Invoice
+      <Button type="primary" onClick={showDrawer} htmlType="button">
+        <Icon type="plus" /> Add Invoice
       </Button>
       <Table
         onEdit={handleEdit}
@@ -76,11 +78,12 @@ const Invoice: FC<Props> = ({
         onDelete={deleteInvoice}
         findCustomerName={findCustomerName}
       />
-      <Drawer title='Create a new invoice' onClose={handleCloseForm} visible={visible}>
-        <InvoiceForm
-          isEdit={isEdit}
-          fetchAllCustomers={fetchAllCustomers}
-        />
+      <Drawer
+        title="Create a new invoice"
+        onClose={handleCloseForm}
+        visible={visible}
+      >
+        <InvoiceForm isEdit={isEdit} fetchAllCustomers={fetchAllCustomers} />
       </Drawer>
     </div>
   );

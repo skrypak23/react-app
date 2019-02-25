@@ -3,10 +3,10 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import BaseForm from './Form';
 import IProduct from '../../../shared/models/Product';
-import { State } from '../../../reducers/product';
+import { State } from '../../../redux/product/states';
 import { RootAction, RootState } from '../../../redux/store/types';
-import { ProductActions } from '../../../actions';
-import { ID } from '../../../common/types';
+import * as ProductActions from '../../../redux/product/actions';
+import { ID } from '../../../shared/typing/records';
 
 type Props = {
   editProduct: (id: ID, product: IProduct) => any;

@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { Table, Divider } from 'antd';
 import ICustomer from '../../shared/models/Customer';
-import { ID, RecordAction } from '../../common/types';
+import { ID, RecordAction } from '../../shared/typing/records';
 
 type Props = RecordAction & {
   data: ReadonlyArray<ICustomer>;
