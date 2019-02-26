@@ -13,11 +13,10 @@ const reducer = (state: State = initialState, action: Action): State => {
     case INVOICE_ITEMS_TYPES.GET_INVOICE_ITEMS_BY_ID_REQUEST:
       return { ...state, loading: true, error: null };
     case INVOICE_ITEMS_TYPES.FILL_INVOICE_ITEMS:
+      const foundItem = state.invoiceItems[action.payload];
       return {
         ...state,
-        invoiceItems: [...state.invoiceItems, action.payload],
-        loading: false,
-        error: null
+        invoiceItem: foundItem
       };
     case INVOICE_ITEMS_TYPES.GET_INVOICE_ITEMS_BY_ID_SUCCESS:
       return {
@@ -33,7 +32,7 @@ const reducer = (state: State = initialState, action: Action): State => {
       };
     case INVOICE_ITEMS_TYPES.DELETE_INVOICE_ITEMS_LOCAL:
       const filteredItems = state.invoiceItems.filter(
-        (_, i: number) => i !== action.payload
+        (_, idx: number) => idx !== action.payload
       );
       return { ...state, invoiceItems: filteredItems };
     case INVOICE_ITEMS_TYPES.DELETE_INVOICE_ITEMS_SUCCESS:
@@ -46,16 +45,29 @@ const reducer = (state: State = initialState, action: Action): State => {
         ...state,
         invoiceItems: [...state.invoiceItems, action.payload]
       };
-      case INVOICE_ITEMS_TYPES.EDIT_INVOICE_ITEMS_SUCCESS:
-        const filteredData = state.invoiceItems.map(iI => {
-          if (iI.id === action.payload.id) return action.payload;
-          return iI;
-        });
+    case INVOICE_ITEMS_TYPES.EDIT_INVOICE_ITEMS_SUCCESS:
+      const filteredData = state.invoiceItems.map(iI => {
+        if (iI.id === action.payload.id) return action.payload;
+        return iI;
+      });
       return {
         ...state,
         invoiceItems: [...filteredData],
         invoiceItem: action.payload
       };
+    case INVOICE_ITEMS_TYPES.EDIT_INVOICE_ITEMS_LOCAL_REQUEST:
+      const filtered = state.invoiceItems.map((iI, idx) => {
+        if (idx === action.payload.id) return action.payload.invoiceItem;
+        return iI;
+      });
+      console.log(filtered, action.payload);
+      return {
+        ...state,
+        invoiceItems: [...filtered],
+        invoiceItem: null
+      };
+    case INVOICE_ITEMS_TYPES.RESET_INVOICE_ITEMS:
+      return { ...initialState };
     default:
       return state;
   }

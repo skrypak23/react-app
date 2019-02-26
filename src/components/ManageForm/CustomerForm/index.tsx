@@ -3,12 +3,12 @@ import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import BaseForm from './Form';
 import ICustomer from '../../../shared/models/Customer';
-import * as CustomerActions from '../../../redux/customer/actions';
+import { createCustomer, editCustomer } from '../../../redux/customer/actions';
 import { RootAction, RootState } from '../../../redux/store/types';
 import { State } from '../../../redux/customer/states';
 import { ID } from '../../../shared/typing/records';
 
-const { createCustomer, editCustomer } = CustomerActions;
+//const { createCustomer, editCustomer } = CustomerActions;
 
 const FORM_FIELDS = [
   {

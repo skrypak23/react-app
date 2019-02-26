@@ -25,7 +25,6 @@ type Props = {
   invoice: IInvoice | null;
   invoiceItems: ReadonlyArray<IInvoiceItem>;
   products: ReadonlyArray<IProduct>;
-  handleCreateInvoiceItem: (invoiceItem: IInvoiceItem) => void;
   handleDelete: (index: ID, invoiceItem: IInvoiceItem) => void;
   closeForm: () => void;
 };
@@ -44,7 +43,6 @@ const BaseForm: FC<Props> = ({
   handleDelete,
   invoiceItems,
   fillInvoice,
-  handleCreateInvoiceItem,
   closeForm
 }) => {
   const { getFieldDecorator } = form;

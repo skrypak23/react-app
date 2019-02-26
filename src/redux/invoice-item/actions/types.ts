@@ -7,6 +7,7 @@ export const GET_INVOICE_ITEMS_BY_ID_SUCCESS =
 export const CREATE_INVOICE_ITEMS_REQUEST = '@invoice-app/invoice-item/CREATE_INVOICE_ITEMS_REQUEST';
 export const CREATE_INVOICE_ITEMS_SUCCESS = '@invoice-app/invoice-item/CREATE_INVOICE_ITEMS_SUCCESS';
 export const EDIT_INVOICE_ITEMS_REQUEST = '@invoice-app/invoice-item/EDIT_INVOICE_ITEMS_REQUEST';
+export const EDIT_INVOICE_ITEMS_LOCAL_REQUEST = '@invoice-app/invoice-item/EDIT_INVOICE_ITEMS_LOCAL_REQUEST';
 export const EDIT_INVOICE_ITEMS_SUCCESS = '@invoice-app/invoice-item/EDIT_INVOICE_ITEMS_SUCCESS';
 export const DELETE_INVOICE_ITEMS_REQUEST = '@invoice-app/invoice-item/DELETE_INVOICE_ITEMS_REQUEST';
 export const DELETE_INVOICE_ITEMS_SUCCESS = '@invoice-app/invoice-item/DELETE_INVOICE_ITEMS_SUCCESS';

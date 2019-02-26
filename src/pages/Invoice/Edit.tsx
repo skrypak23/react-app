@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { InvoiceForm } from '../../components/ManageForm';
@@ -19,25 +19,26 @@ import * as InvoiceActions from '../../redux/invoice/actions';
 import * as InvoiceItemActions from '../../redux/invoice-item/actions';
 
 type Props = {
-  fetchAllCustomers: () => any;
-  fillInvoice: (invoice: IInvoice) => any;
   addInvoiceItem: (invoiceItem: IInvoiceItem) => any;
   invoice: InvoiceState;
   product: ProductState;
   customer: CustomerState;
   invoiceItem: InvoiceItemsState;
-  toggleShowForm: () => any;
+  toggleShowForm: () => void;
   isEdit: boolean;
   setIsEdit: Function;
-  resetInvoice: () => any;
-  deleteInvoiceItem: (id: ID, invoiceId: ID) => any;
-  deleteInvoiceItemLocal: (id: ID) => any;
-  fetchInvoiceItemById: (id: ID, invoiceId: ID) => any;
-  editInvoiceItem: (id: ID, invoiceId: ID, invoice: IInvoiceItem) => any;
+  fillItem: (idx: ID) => void;
+  resetInvoice: () => void;
+  deleteInvoiceItem: (id: ID, invoiceId: ID) => void;
+  deleteInvoiceItemLocal: (id: ID) => void;
+  fetchInvoiceItemById: (id: ID, invoiceId: ID) => void;
+  editInvoiceItem: (id: ID, invoiceId: ID, invoice: IInvoiceItem) => void;
+  editInvoiceItemLocal: (id: ID, invoice: IInvoiceItem) => void;
+  resetInvoiceItem: () => void;
 };
 const Edit: FC<Props> = ({
-  fetchAllCustomers,
-  fillInvoice,
+  fillItem,
+  editInvoiceItemLocal,
   invoice,
   product,
   customer,
@@ -50,10 +51,13 @@ const Edit: FC<Props> = ({
   deleteInvoiceItemLocal,
   fetchInvoiceItemById,
   invoiceItem,
-  editInvoiceItem
+  editInvoiceItem,
+  resetInvoiceItem
 }) => {
   const [visible, changeVisible] = useState(false);
   const [isEditItem, setIsEditItem] = useState(false);
+  const [editIndex, setEditIndex] = useState(0);
+
   const showDrawer = () => changeVisible(!visible);
 
   const handleCloseForm = () => {
@@ -61,6 +65,7 @@ const Edit: FC<Props> = ({
     toggleShowForm();
     setIsEdit(false);
     resetInvoice();
+    resetInvoiceItem()
   };
   const handleDelete = (index: ID, invoiceItem: IInvoiceItem) => {
     console.log(index, invoiceItem);
@@ -76,14 +81,19 @@ const Edit: FC<Props> = ({
     setIsEditItem(true);
     if (record.id) {
       fetchInvoiceItemById(record.id, invoice.invoice!.id);
+    } else {
+      fillItem(index);
+      setEditIndex(index);
     }
   };
 
   const handleEditInvoiceItem = (values: IInvoiceItem) => {
-    if (invoiceItem.invoiceItem!.id) { editInvoiceItem(invoiceItem.invoiceItem!.id, invoice.invoice!.id, values); }
-    else {
-
+    if (invoiceItem.invoiceItem!.id) {
+      editInvoiceItem(invoiceItem.invoiceItem!.id, invoice.invoice!.id, values);
+    } else {
+      editInvoiceItemLocal(editIndex, values);
     }
+    closeDrawer();
   };
 
   const closeDrawer = () => {

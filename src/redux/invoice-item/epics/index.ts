@@ -1,4 +1,4 @@
-import { of, Observable, concat } from 'rxjs';
+import { Observable } from 'rxjs';
 import { switchMap, filter, tap } from 'rxjs/operators';
 import { Epic, ofType } from 'redux-observable';
 import { RootAction, RootState } from '../../store/types';

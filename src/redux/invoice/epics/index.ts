@@ -1,4 +1,4 @@
-import { Observable, from, of } from 'rxjs';
+import { Observable, from, of, concat } from 'rxjs';
 import { Action } from 'redux';
 import { isOfType } from 'typesafe-actions';
 import { switchMap, filter, mergeMap, map, tap, mapTo } from 'rxjs/operators';
@@ -52,12 +52,17 @@ const calculateTotalEpic = (
         INVOICE_TYPES.FILL_INVOICE,
         INVOICE_ITEMS_TYPES.ADD_INVOICE_ITEM,
         INVOICE_ITEMS_TYPES.DELETE_INVOICE_ITEMS_SUCCESS,
-        INVOICE_ITEMS_TYPES.DELETE_INVOICE_ITEMS_LOCAL
+        INVOICE_ITEMS_TYPES.DELETE_INVOICE_ITEMS_LOCAL,
+        INVOICE_ITEMS_TYPES.EDIT_INVOICE_ITEMS_SUCCESS,
+        INVOICE_ITEMS_TYPES.EDIT_INVOICE_ITEMS_LOCAL_REQUEST
       ])
     ),
     map(() => {
       const { invoice, invoiceItem, product } = state$.value;
-      const discount = invoice.invoice ? invoice.invoice.discount : 0;
+      const discount =
+        invoice.invoice && invoice.invoice.discount
+          ? invoice.invoice.discount
+          : 0;
       return calculateTotal(
         discount,
         invoiceItem.invoiceItems,
@@ -73,20 +78,22 @@ const createInvoicesEpic = (
 ) =>
   action$.pipe(
     ofType(INVOICE_TYPES.CREATE_INVOICE_REQUEST),
-              tap(() => console.log('TAP')),
     switchMap((action: any) =>
+    concat(
       ApiService.createData<IInvoice>(InvoiceActions, action.payload).pipe(
-        mergeMap(action =>
+        switchMap(action =>
+          concat(
           from(state$.value.invoiceItem.invoiceItems).pipe(
             map(item =>
               InvoiceItemActions.createInvoiceItem(action.payload.id, {
                 ...item
               } as IInvoiceItem)
             )
-          )
+          ),
+          of(InvoiceActions.createSuccess(action.payload))
         )
-      )
-    )
+      ))
+    ))
   );
 
 export default [

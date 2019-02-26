@@ -13,9 +13,9 @@ export const fetchDataSuccess = createStandardAction(
   INVOICE_ITEMS_TYPES.GET_INVOICE_ITEMS_SUCCESS
 )<IInvoiceItem[]>();
 
-export const fillItems = createStandardAction(
+export const fillItem = createStandardAction(
   INVOICE_ITEMS_TYPES.FILL_INVOICE_ITEMS
-)<IInvoiceItem>();
+)<number>();
 
 export const fetchInvoiceItemById = (id: ID, invoiceId: ID) =>
   action(
@@ -60,6 +60,10 @@ export const resetInvoiceItem = createStandardAction(
 export const addInvoiceItem = createStandardAction(
   INVOICE_ITEMS_TYPES.ADD_INVOICE_ITEM
 )<IInvoiceItem>();
+export const editInvoiceItemLocal = (id: ID, invoiceItem: IInvoiceItem) => action(
+  INVOICE_ITEMS_TYPES.EDIT_INVOICE_ITEMS_LOCAL_REQUEST,
+  { id, invoiceItem }
+);
 export const setError = createStandardAction(
   INVOICE_ITEMS_TYPES.FETCH_INVOICE_ITEMS_ERROR
 )<string>();

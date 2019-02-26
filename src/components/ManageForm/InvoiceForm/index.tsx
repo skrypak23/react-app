@@ -15,14 +15,13 @@ import IInvoice from '../../../shared/models/Invoice';
 import ICustomer from '../../../shared/models/Customer';
 import { ID } from '../../../shared/typing/records';
 import IInvoiceItem from '../../../shared/models/InvoiceItem';
-import IProduct from "../../../shared/models/Product";
+import IProduct from '../../../shared/models/Product';
 
 type Props = {
   editInvoice: (id: ID, invoice: IInvoice) => any;
   createInvoice: (invoice: IInvoice) => any;
-  createInvoiceItem: (id: ID, invoiceItem: IInvoiceItem) => any;
   deleteInvoiceItemLocal: (id: ID) => any;
-  customers: ReadonlyArray<ICustomer>
+  customers: ReadonlyArray<ICustomer>;
   fillInvoice: (invoice: IInvoice) => any;
   deleteInvoiceItem: (id: ID, invoiceId: ID) => any;
   customer: CustomerState;
@@ -30,33 +29,19 @@ type Props = {
   invoiceItem: InvoiceItemState;
   invoice: State;
   isEdit: boolean;
-  fillItems: (item: IInvoiceItem) => any;
-  fetchAllInvoiceItems: (id: ID) => any;
   closeForm: () => void;
 };
-
-const { createInvoice, editInvoice, fillInvoice } = InvoiceActions;
-const {
-  createInvoiceItem,
-  fillItems,
-  fetchAllInvoiceItems,
-  deleteInvoiceItemLocal,
-  deleteInvoiceItem
-} = InvoiceItemActions;
 
 const InvoiceForm: FC<Props> = ({
   invoice,
   invoiceItem,
   createInvoice,
   editInvoice,
-  createInvoiceItem,
-  fetchAllInvoiceItems,
   deleteInvoiceItemLocal,
   deleteInvoiceItem,
   isEdit,
   customer,
   products,
-  fillItems,
   fillInvoice,
   closeForm
 }) => {
@@ -66,10 +51,7 @@ const InvoiceForm: FC<Props> = ({
     } else {
       createInvoice({ ...values });
     }
-  };
-
-  const handleCreateInvoiceItem = (values: IInvoiceItem) => {
-    fillItems(values);
+    closeForm();
   };
 
   const handleDelete = (index: ID, invoiceItem: IInvoiceItem) => {
@@ -93,7 +75,6 @@ const InvoiceForm: FC<Props> = ({
   return (
     <BaseForm
       onSubmit={handleSubmit}
-      handleCreateInvoiceItem={handleCreateInvoiceItem}
       customers={customer.customers as ICustomer[]}
       customer={findCustomer(customer.customers)}
       products={products}
@@ -110,19 +91,13 @@ const InvoiceForm: FC<Props> = ({
 const mapStateToProps = (state: RootState) => ({
   invoice: state.invoice,
   invoiceItem: state.invoiceItem,
-  customer: state.customer,
+  customer: state.customer
 });
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) =>
   bindActionCreators(
     {
-      createInvoiceItem,
-      editInvoice,
-      createInvoice,
-      fillInvoice,
-      fillItems,
-      fetchAllInvoiceItems,
-      deleteInvoiceItemLocal,
-      deleteInvoiceItem
+      ...InvoiceActions,
+      ...InvoiceItemActions
     },
     dispatch
   );
