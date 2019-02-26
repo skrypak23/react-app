@@ -9,6 +9,8 @@ type Props = {
     label: string;
     key: string;
     placeholder: string;
+    type: string;
+    message: string;
   }>;
   form: any;
   formData?: IProduct;
@@ -19,10 +21,12 @@ type Props = {
 const BaseForm: FC<Props> = ({ formFields, form, onSubmit, isEdit }) => {
   const getFields = () => {
     const { getFieldDecorator } = form;
-    return formFields.map(({ label, key, placeholder }) => (
+    return formFields.map(({ label, key, placeholder, type, message }) => (
       <Col span={24} key={key}>
         <FormItem label={label}>
-          {getFieldDecorator(key)(<Input placeholder={placeholder} />)}
+          {getFieldDecorator(key, { rules: [{ required: true, message }]})(
+            <Input placeholder={placeholder} type={type} />
+          )}
         </FormItem>
       </Col>
     ));
@@ -46,14 +50,14 @@ const BaseForm: FC<Props> = ({ formFields, form, onSubmit, isEdit }) => {
       <Row gutter={24}>{getFields()}</Row>
       <Row>
         <Col span={24} style={{ textAlign: 'right' }}>
-          <Button type='primary' htmlType='submit'>
+          <Button type="primary" htmlType="submit">
             Submit
           </Button>
           <Button
             style={{ marginLeft: 8 }}
             onClick={handleReset}
             disabled={isEdit}
-            htmlType='button'
+            htmlType="button"
           >
             Clear
           </Button>
@@ -66,7 +70,10 @@ const BaseForm: FC<Props> = ({ formFields, form, onSubmit, isEdit }) => {
 export default Form.create({
   mapPropsToFields({ formData = {} as IProduct }: Props) {
     return Object.entries(formData).reduce(
-      (values, [key, value]) => ({ ...values, [key]: Form.createFormField({ value }) }),
+      (values, [key, value]) => ({
+        ...values,
+        [key]: Form.createFormField({ value })
+      }),
       {}
     );
   }

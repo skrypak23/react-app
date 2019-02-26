@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Dispatch } from 'redux';
+import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import BaseForm from './Form';
 import IProduct from '../../../shared/models/Product';
@@ -21,16 +21,25 @@ const FORM_FIELDS = [
   {
     label: 'Name',
     key: 'name',
-    placeholder: 'Input name'
+    placeholder: 'Input name',
+    type: 'text',
+    message: 'Please input name'
   },
   {
     label: 'Price',
     key: 'price',
-    placeholder: 'Input price'
+    placeholder: 'Input price',
+    type: 'number',
+    message: 'Please input price'
   }
 ];
 
-const ProductForm: FC<Props> = ({ product, createProduct, editProduct, isEdit }) => {
+const ProductForm: FC<Props> = ({
+  product,
+  createProduct,
+  editProduct,
+  isEdit
+}) => {
   const handleSubmit = (values: IProduct) => {
     isEdit
       ? editProduct(product.product!.id, { ...values })
@@ -48,10 +57,14 @@ const ProductForm: FC<Props> = ({ product, createProduct, editProduct, isEdit })
 };
 
 const mapStateToProps = (state: RootState) => ({ product: state.product });
-const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
-  editProduct: (id: ID, product: IProduct) => dispatch(editProduct(id, product)),
-  createProduct: (product: IProduct) => dispatch(createProduct(product)),
-});
+const mapDispatchToProps = (dispatch: Dispatch<RootAction>) =>
+  bindActionCreators(
+    {
+      editProduct,
+      createProduct
+    },
+    dispatch
+  );
 
 export default connect(
   mapStateToProps,

@@ -8,59 +8,50 @@ import * as ProductActions from '../actions';
 import { isOfType } from 'typesafe-actions';
 import { Action } from 'redux';
 import ApiService from '../../../shared/services/request.service';
-import { PRODUCT } from '../../../routes/routes';
 
 const fetchProductsEpic: Epic<RootAction, RootAction, RootState> = action$ =>
-  action$.pipe(
-    filter(isOfType(PRODUCT_TYPES.GET_PRODUCTS_REQUEST)),
-    switchMap(action =>
-      ApiService.fetchAllData<IProduct>(ProductActions, action.payload)
-    )
-  );
+    action$.pipe(
+        filter(isOfType(PRODUCT_TYPES.GET_PRODUCTS_REQUEST)),
+        switchMap((action: any) =>
+            ApiService.fetchAllData<IProduct>(ProductActions, action.payload)
+        )
+    );
 
-const fetchProductsByIdEpic: Epic<
-  RootAction,
-  RootAction,
-  RootState
-> = action$ =>
-  action$.pipe(
-    filter(isOfType(PRODUCT_TYPES.GET_PRODUCT_BY_ID_REQUEST)),
-    switchMap(action =>
-      ApiService.fetchById<IProduct>(ProductActions, action.payload)
-    )
-  );
+const fetchProductsByIdEpic: Epic<RootAction, RootAction, RootState> = action$ =>
+    action$.pipe(
+        filter(isOfType(PRODUCT_TYPES.GET_PRODUCT_BY_ID_REQUEST)),
+        switchMap((action: any) => ApiService.fetchById<IProduct>(ProductActions, action.payload))
+    );
 
 const editProductEpic: Epic<RootAction, RootAction, RootState> = action$ =>
-  action$.pipe(
-    filter(isOfType(PRODUCT_TYPES.EDIT_PRODUCT_REQUEST)),
-    switchMap(action =>
-      ApiService.editData<IProduct>(ProductActions, action.payload)
-    )
-  );
+    action$.pipe(
+        filter(isOfType(PRODUCT_TYPES.EDIT_PRODUCT_REQUEST)),
+        switchMap((action: any) => ApiService.editData<IProduct>(ProductActions, action.payload))
+    );
 
 const deleteProductsEpic: Epic<RootAction, RootAction, RootState> = action$ =>
-  action$.pipe(
-    filter(isOfType(PRODUCT_TYPES.DELETE_PRODUCT_REQUEST)),
-    switchMap(action =>
-      concat(
-        ApiService.deleteData<IProduct>(ProductActions, action.payload),
-        of(ProductActions.fetchAllProducts())
-      )
-    )
-  );
+    action$.pipe(
+        filter(isOfType(PRODUCT_TYPES.DELETE_PRODUCT_REQUEST)),
+        switchMap((action: any) =>
+            concat(
+                ApiService.deleteData<IProduct>(ProductActions, action.payload),
+                of(ProductActions.fetchAllProducts())
+            )
+        )
+    );
 
 const createProductsEpic = (action$: Observable<Action>) =>
-  action$.pipe(
-    ofType(PRODUCT_TYPES.CREATE_PRODUCT_REQUEST),
-    switchMap((action: any) =>
-      ApiService.createData<IProduct>(ProductActions, action.payload)
-    )
-  );
+    action$.pipe(
+        ofType(PRODUCT_TYPES.CREATE_PRODUCT_REQUEST),
+        switchMap((action: any) =>
+            ApiService.createData<IProduct>(ProductActions, action.payload)
+        )
+    );
 
 export default [
-  fetchProductsByIdEpic,
-  fetchProductsEpic,
-  editProductEpic,
-  deleteProductsEpic,
-  createProductsEpic
+    fetchProductsByIdEpic,
+    fetchProductsEpic,
+    editProductEpic,
+    deleteProductsEpic,
+    createProductsEpic
 ];

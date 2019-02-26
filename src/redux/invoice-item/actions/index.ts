@@ -20,7 +20,7 @@ export const fillItems = createStandardAction(
 export const fetchInvoiceItemById = (id: ID, invoiceId: ID) =>
   action(
     INVOICE_ITEMS_TYPES.GET_INVOICE_ITEMS_BY_ID_REQUEST,
-    `${URL_ALL_INVOICES}/${invoiceId}/items${id}`
+    `${URL_ALL_INVOICES}/${invoiceId}/items/${id}`
   );
 export const fetchDataByIdSuccess = createStandardAction(
   INVOICE_ITEMS_TYPES.GET_INVOICE_ITEMS_BY_ID_SUCCESS
@@ -35,11 +35,7 @@ export const createSuccess = createStandardAction(
   INVOICE_ITEMS_TYPES.CREATE_INVOICE_ITEMS_SUCCESS
 )<IInvoiceItem>();
 
-export const editInvoiceItem = (
-  id: ID,
-  invoiceId: ID,
-  invoice: IInvoiceItem[]
-) => () =>
+export const editInvoiceItem = (id: ID, invoiceId: ID, invoice: IInvoiceItem) =>
   action(INVOICE_ITEMS_TYPES.EDIT_INVOICE_ITEMS_REQUEST, {
     url: `${URL_ALL_INVOICES}/${invoiceId}/items/${id}`,
     body: invoice
@@ -61,6 +57,9 @@ export const deleteSuccess = createStandardAction(
 export const resetInvoiceItem = createStandardAction(
   INVOICE_ITEMS_TYPES.RESET_INVOICE_ITEMS
 )<undefined>();
+export const addInvoiceItem = createStandardAction(
+  INVOICE_ITEMS_TYPES.ADD_INVOICE_ITEM
+)<IInvoiceItem>();
 export const setError = createStandardAction(
   INVOICE_ITEMS_TYPES.FETCH_INVOICE_ITEMS_ERROR
 )<string>();

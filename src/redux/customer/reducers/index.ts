@@ -9,7 +9,6 @@ const reducer = (state: State = initialState, action: Action): State => {
   switch (action.type) {
     case CUSTOMER_TYPES.GET_CUSTOMERS_REQUEST:
     case CUSTOMER_TYPES.EDIT_CUSTOMER_REQUEST:
-    case CUSTOMER_TYPES.EDIT_CUSTOMER_REQUEST:
     case CUSTOMER_TYPES.CREATE_CUSTOMER_REQUEST:
     case CUSTOMER_TYPES.GET_CUSTOMER_BY_ID_REQUEST:
       return { ...state, loading: true, error: null };

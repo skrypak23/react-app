@@ -1,7 +1,8 @@
-import { ActionType } from "typesafe-actions";
-import * as InvoiceActions from "../actions";
-import * as INVOICE_TYPES from "../actions/types";
-import { State, initialState } from "../states";
+import { ActionType } from 'typesafe-actions';
+import * as InvoiceActions from '../actions';
+import * as INVOICE_TYPES from '../actions/types';
+import { State, initialState } from '../states';
+import IInvoice from "../../../shared/models/Invoice";
 
 type Action = ActionType<typeof InvoiceActions>;
 
@@ -60,6 +61,8 @@ const reducer = (state: State = initialState, action: Action): State => {
         loading: false,
         error: null
       };
+    case INVOICE_TYPES.CALCULATE_TOTAL:
+      return { ...state, invoice: { ...state.invoice, total: action.payload } as IInvoice };
     case INVOICE_TYPES.FETCH_INVOICE_ERROR:
       return { ...state, loading: false, error: action.payload };
     default:

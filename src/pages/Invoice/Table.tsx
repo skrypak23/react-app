@@ -14,7 +14,7 @@ const InvoiceTable: FC<Props> = ({ data, onEdit, onDelete, findCustomerName }) =
       title: 'Customer name',
       dataIndex: 'customer_id',
       key: 'customer_id',
-      render: (text: string) => findCustomerName(text)
+      render: (customerId: number) => findCustomerName(customerId)
     },
     {
       title: 'Discount',

@@ -13,4 +13,5 @@ export const DELETE_INVOICE_ITEMS_SUCCESS = '@invoice-app/invoice-item/DELETE_IN
 export const DELETE_INVOICE_ITEMS_LOCAL = '@invoice-app/invoice-item/DELETE_INVOICE_ITEMS_LOCAL';
 export const RESET_INVOICE_ITEMS = '@invoice-app/invoice-item/RESET_INVOICE_ITEMS';
 export const FILL_INVOICE_ITEMS = '@invoice-app/invoice-item/FILL_INVOICE_ITEMS';
+export const ADD_INVOICE_ITEM = '@invoice-app/invoice-item/ADD_INVOICE_ITEM';
 export const FETCH_INVOICE_ITEMS_ERROR = '@invoice-app/invoice-item/FETCH_INVOICE_ITEMS_ERROR';

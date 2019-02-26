@@ -9,13 +9,22 @@ const Option = Select.Option;
 
 type Props = {
   form: any;
-  invoiceId: ID;
-  formData?: IInvoiceItem;
+  isEdit: boolean;
+  invoiceId: ID | null;
   products: ReadonlyArray<IProduct>;
+  invoiceItem: IInvoiceItem | null;
   onSubmit: (invoiceItem: IInvoiceItem) => void;
+  onEdit: Function;
 };
 
-const BaseForm: FC<Props> = ({ form, onSubmit, products, invoiceId }) => {
+const BaseForm: FC<Props> = ({
+  form,
+  onSubmit,
+  products,
+  invoiceId,
+  isEdit,
+  onEdit
+}) => {
   const getFields = () => {
     const { getFieldDecorator } = form;
     return (
@@ -24,7 +33,7 @@ const BaseForm: FC<Props> = ({ form, onSubmit, products, invoiceId }) => {
           {getFieldDecorator('product_id', {
             rules: [{ required: true, message: 'Please input discount' }]
           })(
-            <Select placeholder="Select a product">
+            <Select placeholder="Select a product" style={{ width: '100%' }}>
               {products.map((product: IProduct) => (
                 <Option key={`${product.id}`} value={product.id}>
                   {product.name} - {product.price}$
@@ -46,7 +55,9 @@ const BaseForm: FC<Props> = ({ form, onSubmit, products, invoiceId }) => {
     event.preventDefault();
     form.validateFields((err: Error, values: any) => {
       if (!err && Object.values(values).every(Boolean)) {
-        onSubmit({ ...values, invoice_id: invoiceId });
+        isEdit
+          ? onEdit(values)
+          : onSubmit({ ...values, invoice_id: invoiceId });
       }
     });
   };
@@ -57,7 +68,7 @@ const BaseForm: FC<Props> = ({ form, onSubmit, products, invoiceId }) => {
       <Row>
         <Col span={24} style={{ textAlign: 'right' }}>
           <Button type="primary" htmlType="button" onClick={handleSubmit}>
-            add
+            {isEdit ? 'edit' : 'add'}
           </Button>
         </Col>
       </Row>
@@ -66,8 +77,9 @@ const BaseForm: FC<Props> = ({ form, onSubmit, products, invoiceId }) => {
 };
 
 export default Form.create({
-  mapPropsToFields({ formData = {} as IInvoiceItem }: Props) {
-    return Object.entries(formData).reduce(
+  mapPropsToFields({ invoiceItem }: Props) {
+    const data = invoiceItem || {};
+    return Object.entries(data).reduce(
       (values, [key, value]) => ({
         ...values,
         [key]: Form.createFormField({ value })

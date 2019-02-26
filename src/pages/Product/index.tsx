@@ -1,6 +1,5 @@
 import React, { useEffect, useState, FC } from 'react';
-import { Dispatch } from 'redux';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button, Icon } from 'antd';
 import Table from './Table';
@@ -11,9 +10,14 @@ import { State } from '../../redux/product/states';
 import { RootState, RootAction } from '../../redux/store/types';
 import { ID } from '../../shared/typing/records';
 
-const { fetchAllProducts, fetchProductById, resetProduct, deleteProduct } = ProductActions;
+const {
+  fetchAllProducts,
+  fetchProductById,
+  resetProduct,
+  deleteProduct
+} = ProductActions;
 
-type Props = RouteComponentProps<any> & {
+type Props = {
   fetchProductById: (id: ID) => any;
   deleteProduct: (id: ID) => any;
   fetchAllProducts: () => any;
@@ -36,7 +40,7 @@ const Product: FC<Props> = ({
   }, []);
 
   const showDrawer = () => changeVisible(true);
-  const handleEdit = (id: string | number) => {
+  const handleEdit = (id: number) => {
     fetchProductById(id);
     showDrawer();
     setIsEdit(true);
@@ -52,8 +56,16 @@ const Product: FC<Props> = ({
       <Button type="primary" onClick={showDrawer} htmlType="button">
         <Icon type="plus" /> Add Product
       </Button>
-      <Table data={product.products} onEdit={handleEdit} onDelete={deleteProduct} />
-      <Drawer title="Create a new product" onClose={handleCloseForm} visible={visible}>
+      <Table
+        data={product.products}
+        onEdit={handleEdit}
+        onDelete={deleteProduct}
+      />
+      <Drawer
+        title="Create a new product"
+        onClose={handleCloseForm}
+        visible={visible}
+      >
         <ProductForm isEdit={isEdit} />
       </Drawer>
     </div>
@@ -61,14 +73,18 @@ const Product: FC<Props> = ({
 };
 
 const mapStateToProps = (state: RootState) => ({ product: state.product });
-const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
-  fetchProductById: (id: ID) => dispatch(fetchProductById(id)),
-  deleteProduct: (id: ID) => dispatch(deleteProduct(id)),
-  fetchAllProducts: () => dispatch(fetchAllProducts()),
-  resetProduct: () => dispatch(resetProduct())
-});
+const mapDispatchToProps = (dispatch: Dispatch<RootAction>) =>
+  bindActionCreators(
+    {
+      fetchProductById,
+      deleteProduct,
+      fetchAllProducts,
+      resetProduct
+    },
+    dispatch
+  );
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(Product));
+)(Product);

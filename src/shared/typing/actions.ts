@@ -7,17 +7,17 @@ export type PayloadData = { url: string; body?: TModels };
 export type TModels = ICustomer | IProduct | IInvoice | IInvoiceItem;
 export type TErrorAction = { setError: (error: string) => void };
 export type FetchActions = TErrorAction & {
-  fetchDataSuccess: (data: TModels[]) => void;
+  fetchDataSuccess: (data: any[]) => any;
 };
 export type FetchByIdActions = TErrorAction & {
-  fetchDataByIdSuccess: (data: any) => void;
+  fetchDataByIdSuccess: (data: any) => any;
 };
 export type DeleteActions = TErrorAction & {
-  deleteSuccess: (data: any) => void;
+  deleteSuccess: (data: any) => any;
 };
 export type EditActions = TErrorAction & {
-  editSuccess: (data: any) => void;
+  editSuccess: (data: any) => any;
 };
 export type CreateActions = TErrorAction & {
-  createSuccess: (data: any) => void;
+  createSuccess: (data: any) => any;
 };

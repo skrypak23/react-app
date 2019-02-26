@@ -12,24 +12,22 @@ import {
 import IInvoice from '../../../../shared/models/Invoice';
 import ICustomer from '../../../../shared/models/Customer';
 import IProduct from '../../../../shared/models/Product';
-import Table from '../../../TableInvoiceItems';
-import ItemsForm from '../ItemForm';
 import IInvoiceItem from '../../../../shared/models/InvoiceItem';
 import { ID } from '../../../../shared/typing/records';
-import calculateTotal from '../../../../shared/calculateTotal';
 
 type Props = {
   form: any;
   onSubmit: (values: any) => void;
-  fillInvoice: (invoice: IInvoice) => any;
+  fillInvoice: (invoice: IInvoice) => void;
   isEdit: boolean;
   customer: ICustomer | null;
   customers: ICustomer[];
   invoice: IInvoice | null;
   invoiceItems: ReadonlyArray<IInvoiceItem>;
   products: ReadonlyArray<IProduct>;
-  handleCreateInvoiceItem: (invoiceItem: IInvoiceItem) => any;
-  handleDelete: (index: ID, invoiceItem: IInvoiceItem) => any;
+  handleCreateInvoiceItem: (invoiceItem: IInvoiceItem) => void;
+  handleDelete: (index: ID, invoiceItem: IInvoiceItem) => void;
+  closeForm: () => void;
 };
 
 const FormItem = Form.Item;
@@ -46,31 +44,11 @@ const BaseForm: FC<Props> = ({
   handleDelete,
   invoiceItems,
   fillInvoice,
-  handleCreateInvoiceItem
+  handleCreateInvoiceItem,
+  closeForm
 }) => {
   const { getFieldDecorator } = form;
   const total = invoice && invoice.total ? invoice.total : 0;
-  const discount = invoice && invoice.discount ? invoice.discount : 0;
-
-  const addInvoiceItem = (invoiceItem: IInvoiceItem) => {
-    handleCreateInvoiceItem(invoiceItem);
-    const total = calculateTotal(
-      discount,
-      [...invoiceItems, invoiceItem] as IInvoiceItem[],
-      products as IProduct[]
-    );
-    fillInvoice({ ...form.getFieldsValue(), total });
-  };
-
-  const hendleDeleteItem = (index: ID, invoiceItem: IInvoiceItem) => {
-    handleDelete(index, invoiceItem);
-    const total = calculateTotal(
-      discount,
-      [invoiceItem] as IInvoiceItem[],
-      products as IProduct[]
-    );
-    fillInvoice({ ...form.getFieldsValue(), total });
-  };
 
   const getFields = () => (
     <Col span={24}>
@@ -95,18 +73,13 @@ const BaseForm: FC<Props> = ({
             <Input
               placeholder="Input discount"
               type="number"
-              step={0.01}
+              step={0.1}
               min={0}
+              max={100}
               onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                const total = calculateTotal(
-                  +event.target.value,
-                  [...invoiceItems] as IInvoiceItem[],
-                  products as IProduct[]
-                );
                 fillInvoice({
                   ...form.getFieldsValue(),
                   discount: event.target.value,
-                  total
                 } as IInvoice);
               }}
             />
@@ -120,33 +93,17 @@ const BaseForm: FC<Props> = ({
           suffix="$"
         />
       </Row>
-      <Collapse>
-        <Panel header="Add Invoice Item" key="1">
-          <ItemsForm
-            invoiceId={invoice ? invoice.id : ''}
-            products={products}
-            onSubmit={addInvoiceItem}
-          />
-        </Panel>
-      </Collapse>
-      <Table invoiceItems={invoiceItems} onDelete={handleDelete} />
     </Col>
   );
-
-  console.log(invoice, 'total');
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     form.validateFields((err: Error, values: any) => {
       console.log(values);
       if (!err && Object.values(values).every(Boolean)) {
-        onSubmit(values);
+        onSubmit({...values, total: total.toFixed(2)});
       }
     });
-  };
-
-  const handleReset = () => {
-    form.resetFields();
   };
 
   return (
@@ -160,11 +117,10 @@ const BaseForm: FC<Props> = ({
             </Button>
             <Button
               style={{ marginLeft: 8 }}
-              onClick={handleReset}
-              disabled={isEdit}
+              onClick={closeForm}
               htmlType="button"
             >
-              Clear
+              Close
             </Button>
           </FormItem>
         </Col>
@@ -174,7 +130,7 @@ const BaseForm: FC<Props> = ({
 };
 
 export default Form.create({
-  mapPropsToFields({ invoice, customer }: Props) {
+  mapPropsToFields({ isEdit, invoice, customer }: Props) {
     return {
       customer_id: Form.createFormField({ value: customer && customer.id }),
       discount: Form.createFormField({ value: invoice && invoice.discount }),

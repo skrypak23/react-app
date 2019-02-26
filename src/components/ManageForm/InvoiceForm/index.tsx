@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Dispatch } from 'redux';
+import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import BaseForm from './Form';
 import { State } from '../../../redux/invoice/states';
@@ -15,30 +15,27 @@ import IInvoice from '../../../shared/models/Invoice';
 import ICustomer from '../../../shared/models/Customer';
 import { ID } from '../../../shared/typing/records';
 import IInvoiceItem from '../../../shared/models/InvoiceItem';
-import calculateTotal from '../../../shared/calculateTotal';
-import IProduct from '../../../shared/models/Product';
+import IProduct from "../../../shared/models/Product";
 
 type Props = {
   editInvoice: (id: ID, invoice: IInvoice) => any;
   createInvoice: (invoice: IInvoice) => any;
   createInvoiceItem: (id: ID, invoiceItem: IInvoiceItem) => any;
   deleteInvoiceItemLocal: (id: ID) => any;
-  fetchAllCustomers: () => any;
-  fetchAllProducts: () => any;
+  customers: ReadonlyArray<ICustomer>
   fillInvoice: (invoice: IInvoice) => any;
   deleteInvoiceItem: (id: ID, invoiceId: ID) => any;
   customer: CustomerState;
-  product: ProductState;
+  products: ReadonlyArray<IProduct>;
   invoiceItem: InvoiceItemState;
   invoice: State;
   isEdit: boolean;
   fillItems: (item: IInvoiceItem) => any;
   fetchAllInvoiceItems: (id: ID) => any;
+  closeForm: () => void;
 };
 
 const { createInvoice, editInvoice, fillInvoice } = InvoiceActions;
-const { fetchAllCustomers } = CustomerActions;
-const { fetchAllProducts } = ProductActions;
 const {
   createInvoiceItem,
   fillItems,
@@ -52,33 +49,24 @@ const InvoiceForm: FC<Props> = ({
   invoiceItem,
   createInvoice,
   editInvoice,
-  fetchAllCustomers,
-  fetchAllProducts,
   createInvoiceItem,
   fetchAllInvoiceItems,
   deleteInvoiceItemLocal,
   deleteInvoiceItem,
   isEdit,
   customer,
-  product,
+  products,
   fillItems,
-  fillInvoice
+  fillInvoice,
+  closeForm
 }) => {
-  useEffect(() => {
-    fetchAllCustomers();
-    fetchAllProducts();
-  }, []);
-  useEffect(() => {
-    if (invoice.invoice) fetchAllInvoiceItems(invoice.invoice.id);
-  }, [invoice.invoice]);
-
   const handleSubmit = (values: IInvoice) => {
     if (isEdit) {
       editInvoice(invoice.invoice!.id, { ...values });
     } else {
-      createInvoice({ ...values, total: 0 });
+      createInvoice({ ...values });
     }
-  }
+  };
 
   const handleCreateInvoiceItem = (values: IInvoiceItem) => {
     fillItems(values);
@@ -95,7 +83,9 @@ const InvoiceForm: FC<Props> = ({
   const findCustomer = (customers: ReadonlyArray<ICustomer>): ICustomer => {
     let customer;
     if (customers && invoice.invoice) {
-      customer = customers.find(customer => customer.id === invoice.invoice!.customer_id);
+      customer = customers.find(
+        customer => customer.id === invoice.invoice!.customer_id
+      );
     }
     return customer || ({} as ICustomer);
   };
@@ -106,12 +96,13 @@ const InvoiceForm: FC<Props> = ({
       handleCreateInvoiceItem={handleCreateInvoiceItem}
       customers={customer.customers as ICustomer[]}
       customer={findCustomer(customer.customers)}
-      products={product.products}
+      products={products}
       invoice={invoice.invoice}
       invoiceItems={invoiceItem.invoiceItems}
       handleDelete={handleDelete}
       fillInvoice={fillInvoice}
       isEdit={isEdit}
+      closeForm={closeForm}
     />
   );
 };
@@ -120,20 +111,21 @@ const mapStateToProps = (state: RootState) => ({
   invoice: state.invoice,
   invoiceItem: state.invoiceItem,
   customer: state.customer,
-  product: state.product
 });
-const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
-  createInvoiceItem: (id: ID, invoiceItem: IInvoiceItem) =>
-    dispatch(createInvoiceItem(id, invoiceItem)),
-  editInvoice: (id: ID, invoice: IInvoice) => dispatch(editInvoice(id, invoice)),
-  createInvoice: (invoice: IInvoice) => dispatch(createInvoice(invoice)),
-  fillInvoice: (invoice: IInvoice) => dispatch(fillInvoice(invoice)),
-  fetchAllProducts: () => dispatch(fetchAllProducts()),
-  fillItems: (item: IInvoiceItem) => dispatch(fillItems(item)),
-  fetchAllInvoiceItems: (id: ID) => dispatch(fetchAllInvoiceItems(id)),
-  deleteInvoiceItemLocal: (id: ID) => dispatch(deleteInvoiceItemLocal(id)),
-  deleteInvoiceItem: (id: ID, invoiceId: ID) => dispatch(deleteInvoiceItem(id, invoiceId))
-});
+const mapDispatchToProps = (dispatch: Dispatch<RootAction>) =>
+  bindActionCreators(
+    {
+      createInvoiceItem,
+      editInvoice,
+      createInvoice,
+      fillInvoice,
+      fillItems,
+      fetchAllInvoiceItems,
+      deleteInvoiceItemLocal,
+      deleteInvoiceItem
+    },
+    dispatch
+  );
 
 export default connect(
   mapStateToProps,
