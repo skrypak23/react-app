@@ -13,11 +13,6 @@ type Action = ActionType<typeof InvoiceItemActions>;
 
 const reducer = (state: State = initialState, action: Action): State => {
   switch (action.type) {
-    case INVOICE_ITEMS_TYPES.GET_INVOICE_ITEMS_REQUEST:
-    case INVOICE_ITEMS_TYPES.CREATE_INVOICE_ITEMS_REQUEST:
-    case INVOICE_ITEMS_TYPES.DELETE_INVOICE_ITEMS_REQUEST:
-    case INVOICE_ITEMS_TYPES.GET_INVOICE_ITEMS_BY_ID_REQUEST:
-      return { ...state, loading: true, error: null };
     case INVOICE_ITEMS_TYPES.FILL_INVOICE_ITEMS:
       const foundItem = state.invoiceItems[action.payload];
       return {

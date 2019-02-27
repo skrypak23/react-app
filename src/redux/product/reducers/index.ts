@@ -8,11 +8,6 @@ type Action = ActionType<typeof ProductActions>;
 
 const reducer = (state: State = initialState, action: Action): State => {
   switch (action.type) {
-    case PRODUCT_TYPES.GET_PRODUCTS_REQUEST:
-    case PRODUCT_TYPES.CREATE_PRODUCT_REQUEST:
-    case PRODUCT_TYPES.DELETE_PRODUCT_REQUEST:
-    case PRODUCT_TYPES.GET_PRODUCT_BY_ID_REQUEST:
-      return { ...state, loading: true, error: null };
     case PRODUCT_TYPES.GET_PRODUCTS_SUCCESS:
       return {
         ...state,

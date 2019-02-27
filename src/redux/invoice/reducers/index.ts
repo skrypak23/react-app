@@ -9,12 +9,6 @@ type Action = ActionType<typeof InvoiceActions>;
 
 const reducer = (state: State = initialState, action: Action): State => {
   switch (action.type) {
-    case INVOICE_TYPES.GET_INVOICES_REQUEST:
-    case INVOICE_TYPES.CREATE_INVOICE_REQUEST:
-    case INVOICE_TYPES.EDIT_INVOICE_REQUEST:
-    case INVOICE_TYPES.DELETE_INVOICE_REQUEST:
-    case INVOICE_TYPES.GET_INVOICE_BY_ID_REQUEST:
-      return { ...state, loading: true, error: null };
     case INVOICE_TYPES.GET_INVOICES_SUCCESS:
       return {
         ...state,
@@ -23,7 +17,6 @@ const reducer = (state: State = initialState, action: Action): State => {
         error: null
       };
     case INVOICE_TYPES.CREATE_INVOICE_SUCCESS:
-      console.log(action.payload, '==================');
       return {
         ...state,
         invoices: [...state.invoices, action.payload],
