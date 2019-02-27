@@ -23,8 +23,6 @@ const reducer = (state: State = initialState, action: Action): State => {
       return {
         ...state,
         invoiceItem: action.payload,
-        loading: false,
-        error: null
       };
     case INVOICE_ITEMS_TYPES.GET_INVOICE_ITEMS_SUCCESS:
       return {

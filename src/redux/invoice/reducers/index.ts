@@ -13,22 +13,16 @@ const reducer = (state: State = initialState, action: Action): State => {
       return {
         ...state,
         invoices: action.payload,
-        loading: false,
-        error: null
       };
     case INVOICE_TYPES.CREATE_INVOICE_SUCCESS:
       return {
         ...state,
         invoices: [...state.invoices, action.payload],
-        loading: false,
-        error: null
       };
     case INVOICE_TYPES.GET_INVOICE_BY_ID_SUCCESS:
       return {
         ...state,
         invoice: action.payload,
-        loading: false,
-        error: null
       };
     case INVOICE_TYPES.EDIT_INVOICE_SUCCESS: {
       const { payload: invoice } = action;
@@ -37,8 +31,6 @@ const reducer = (state: State = initialState, action: Action): State => {
         ...state,
         invoice,
         invoices,
-        loading: false,
-        error: null
       };
     }
     case INVOICE_TYPES.DELETE_INVOICE_SUCCESS: {
@@ -46,13 +38,11 @@ const reducer = (state: State = initialState, action: Action): State => {
       return { ...state, invoices };
     }
     case INVOICE_TYPES.RESET_INVOICE:
-      return { ...state, invoice: null, loading: false, error: null };
+      return { ...state, invoice: null };
     case INVOICE_TYPES.FILL_INVOICE:
       return {
         ...state,
         invoice: { ...state.invoice, ...action.payload },
-        loading: false,
-        error: null
       };
     case INVOICE_TYPES.CALCULATE_TOTAL:
       return {

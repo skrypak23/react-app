@@ -11,39 +11,31 @@ const reducer = (state: State = initialState, action: Action): State => {
     case PRODUCT_TYPES.GET_PRODUCTS_SUCCESS:
       return {
         ...state,
-        products: action.payload,
-        loading: false,
-        error: null
+        products: action.payload
       };
     case PRODUCT_TYPES.CREATE_PRODUCT_SUCCESS:
       return {
         ...state,
-        products: [...state.products, action.payload],
-        loading: false,
-        error: null
+        products: [...state.products, action.payload]
       };
     case PRODUCT_TYPES.GET_PRODUCT_BY_ID_SUCCESS:
       return {
         ...state,
-        product: action.payload,
-        loading: false,
-        error: null
+        product: action.payload
       };
     case PRODUCT_TYPES.EDIT_PRODUCT_SUCCESS: {
       const products = mapedData(state.products, action.payload);
       return {
         ...state,
         product: action.payload,
-        products,
-        loading: false,
-        error: null
+        products
       };
     }
     case PRODUCT_TYPES.DELETE_PRODUCT_SUCCESS:
       const products = filteredData(state.products, action.payload.id);
-      return { ...state, products, loading: true, error: null };
+      return { ...state, products };
     case PRODUCT_TYPES.RESET_PRODUCT:
-      return { ...state, product: null, loading: false, error: null };
+      return { ...state, product: null };
     case PRODUCT_TYPES.FETCH_PRODUCT_ERROR:
       return { ...state, loading: false, error: null };
     default:
