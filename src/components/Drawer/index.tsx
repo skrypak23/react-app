@@ -1,6 +1,5 @@
 import React, { ReactNode, FC, MouseEvent } from 'react';
-import { Drawer as AntDrawer } from 'antd';
-import styles from './style';
+import { StyledDrawer } from './style';
 
 type EventType = MouseEvent<HTMLDivElement> | MouseEvent<HTMLButtonElement>;
 
@@ -14,15 +13,14 @@ type Props = {
 const DRAWER_WIDTH = 500;
 
 const Drawer: FC<Props> = ({ title, children, onClose, visible }) => (
-  <AntDrawer
+  <StyledDrawer
     title={title}
     width={DRAWER_WIDTH}
     onClose={onClose}
     visible={visible}
-    style={styles}
   >
     {children}
-  </AntDrawer>
+  </StyledDrawer>
 );
 
 export default Drawer;

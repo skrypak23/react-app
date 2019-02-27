@@ -1,5 +1,6 @@
 import React, { FC, FormEvent } from 'react';
 import { Form, Row, Col, Input, Button } from 'antd';
+import { ButtonContainer, StyledButton } from '../../style';
 import ICustomer from '../../../../shared/models/Customer';
 
 const FormItem = Form.Item;
@@ -9,6 +10,7 @@ type Props = {
     label: string;
     key: string;
     placeholder: string;
+    message: string;
   }>;
   form: any;
   formData?: ICustomer | null;
@@ -19,10 +21,10 @@ type Props = {
 const BaseForm: FC<Props> = ({ formFields, form, onSubmit, isEdit }) => {
   const getFields = () => {
     const { getFieldDecorator } = form;
-    return formFields.map(({ label, key, placeholder }) => (
+    return formFields.map(({ label, key, placeholder, message }) => (
       <Col span={24} key={key}>
         <FormItem label={label}>
-          {getFieldDecorator(key)(<Input placeholder={placeholder} />)}
+          {getFieldDecorator(key, { rules: [{required: true, message }] })(<Input placeholder={placeholder} />)}
         </FormItem>
       </Col>
     ));
@@ -45,19 +47,18 @@ const BaseForm: FC<Props> = ({ formFields, form, onSubmit, isEdit }) => {
     <Form onSubmit={handleSubmit}>
       <Row gutter={24}>{getFields()}</Row>
       <Row>
-        <Col span={24} style={{ textAlign: 'right' }}>
+        <ButtonContainer span={24}>
           <Button type="primary" htmlType="submit">
             Submit
           </Button>
-          <Button
-            style={{ marginLeft: 8 }}
+          <StyledButton
             onClick={handleReset}
             disabled={isEdit}
             htmlType="button"
           >
             Clear
-          </Button>
-        </Col>
+          </StyledButton>
+        </ButtonContainer>
       </Row>
     </Form>
   );

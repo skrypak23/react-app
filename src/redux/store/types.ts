@@ -7,8 +7,8 @@ import * as InvoiceActions from '../customer/actions';
 import * as InvoiceItemActions from '../customer/actions';
 
 const Actions = {
-  ...CustomerActions,
   ...ProductActions,
+  ...CustomerActions,
   ...InvoiceActions,
   ...InvoiceItemActions
 };

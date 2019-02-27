@@ -1,7 +1,8 @@
-import { ActionType, getType } from "typesafe-actions";
-import * as CustomerActions from "../actions";
-import * as CUSTOMER_TYPES from "../actions/types";
-import { State, initialState } from "../states";
+import { ActionType } from 'typesafe-actions';
+import * as CustomerActions from '../actions';
+import * as CUSTOMER_TYPES from '../actions/types';
+import { State, initialState } from '../states';
+import { filteredData, mapedData } from '../../../shared/utils';
 
 export type Action = ActionType<typeof CustomerActions>;
 
@@ -34,31 +35,29 @@ const reducer = (state: State = initialState, action: Action): State => {
         loading: false,
         error: null
       };
-    case CUSTOMER_TYPES.EDIT_CUSTOMER_SUCCESS:
-      const updatedCustomers = state.customers.map(customer => {
-        if (customer.id === action.payload.id) return action.payload;
-        return customer;
-      });
+    case CUSTOMER_TYPES.EDIT_CUSTOMER_SUCCESS: {
+      const { payload: customer } = action;
+      const customers = mapedData(state.customers, customer);
       return {
         ...state,
-        customer: action.payload,
-        customers: updatedCustomers,
+        customer,
+        customers,
         loading: false,
         error: null
       };
-    case CUSTOMER_TYPES.DELETE_CUSTOMER_SUCCESS:
-      const filteredCustomers = state.customers.filter(
-        customer => customer.id !== action.payload.id
-      );
+    }
+    case CUSTOMER_TYPES.DELETE_CUSTOMER_SUCCESS: {
+      const customers = filteredData(state.customers, action.payload.id);
       return {
         ...state,
-        customers: filteredCustomers,
+        customers,
         loading: false,
         error: null
       };
+    }
     case CUSTOMER_TYPES.RESET_CUSTOMER:
       return { ...state, customer: null, loading: false, error: null };
-    case getType(CustomerActions.setError):
+    case CUSTOMER_TYPES.FETCH_CUSTOMER_ERROR:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;

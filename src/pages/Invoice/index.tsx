@@ -1,6 +1,5 @@
 import React, { useEffect, useState, FC } from 'react';
 import { Dispatch, bindActionCreators } from 'redux';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Button, Icon } from 'antd';
 import Table from './Table';
@@ -16,21 +15,9 @@ import { RootState, RootAction } from '../../redux/store/types';
 import { ID } from '../../shared/typing/records';
 import Edit from './Edit';
 import IInvoice from '../../shared/models/Invoice';
-import IInvoiceItem from '../../shared/models/InvoiceItem';
 
 const {
-  fetchAllInvoices,
-  fetchInvoiceById,
-  resetInvoice,
-  deleteInvoice,
-  fillInvoice
-} = InvoiceActions;
-const {
   fetchAllInvoiceItems,
-  addInvoiceItem,
-  deleteInvoiceItem,
-  deleteInvoiceItemLocal,
-  fetchInvoiceItemById
 } = InvoiceItemsActions;
 const { fetchAllCustomers } = CustomerActions;
 const { fetchAllProducts } = ProductActions;
@@ -122,13 +109,9 @@ const mapDispatchToProps = (dispatch: Dispatch<RootAction>) =>
   bindActionCreators(
     {
       fetchAllInvoiceItems,
-      fetchInvoiceById,
       fetchAllCustomers,
-      deleteInvoice,
-      fetchAllInvoices,
       fetchAllProducts,
-      resetInvoice,
-      fillInvoice,
+        ...InvoiceActions
     },
     dispatch
   );

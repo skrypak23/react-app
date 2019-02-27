@@ -47,7 +47,7 @@ const ItemsTable: FC<Props> = ({ invoiceItems, onDelete, onEdit }) => {
         <Table
           columns={columns}
           dataSource={invoiceItems as IInvoiceItem[]}
-          rowKey={(_, idx) => `${idx}`}
+          rowKey={(record, idx) => `${idx}-${record.id}`}
         />
       </Panel>
     </Collapse>

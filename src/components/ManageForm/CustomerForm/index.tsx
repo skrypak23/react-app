@@ -8,23 +8,24 @@ import { RootAction, RootState } from '../../../redux/store/types';
 import { State } from '../../../redux/customer/states';
 import { ID } from '../../../shared/typing/records';
 
-//const { createCustomer, editCustomer } = CustomerActions;
-
 const FORM_FIELDS = [
   {
     label: 'Name',
     key: 'name',
-    placeholder: 'Input name'
+    placeholder: 'Input name',
+    message: 'Please input name'
   },
   {
     label: 'Phone',
     key: 'phone',
-    placeholder: 'Input phone'
+    placeholder: 'Input phone',
+    message: 'Please input phone'
   },
   {
     label: 'Address',
     key: 'address',
-    placeholder: 'Input address'
+    placeholder: 'Input address',
+    message: 'Please input address'
   }
 ];
 

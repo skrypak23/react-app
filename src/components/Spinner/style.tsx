@@ -1,4 +1,7 @@
-.container {
+import styled from 'styled-components';
+import { Spin } from 'antd';
+
+export const Container = styled.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -7,13 +10,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: '#fff';
+  background-color: #fff;
   z-index: 100;
-}
+`
 
-.spin {
+export const StyledSpin = styled(Spin)`
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
-}
+`

@@ -14,7 +14,7 @@ const InvoiceTable: FC<Props> = ({ data, onEdit, onDelete }) => {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      render: (text: string) => <Link to="javascript:;">{text}</Link>
+      render: (text: string) => <a>{text}</a>
     },
     {
       title: 'Phone',

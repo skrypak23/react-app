@@ -11,10 +11,7 @@ export const fetchDataSuccess = createStandardAction(
 )<IInvoice[]>();
 
 export const fetchInvoiceById = (id: ID) =>
-         action(
-           INVOICE_TYPES.GET_INVOICE_BY_ID_REQUEST,
-           `${URL_ALL_INVOICES}/${id}`
-         );
+  action(INVOICE_TYPES.GET_INVOICE_BY_ID_REQUEST, `${URL_ALL_INVOICES}/${id}`);
 export const fetchDataByIdSuccess = createStandardAction(
   INVOICE_TYPES.GET_INVOICE_BY_ID_SUCCESS
 )<IInvoice>();
@@ -51,7 +48,9 @@ export const resetInvoice = createStandardAction(INVOICE_TYPES.RESET_INVOICE)<
 export const fillInvoice = createStandardAction(INVOICE_TYPES.FILL_INVOICE)<
   IInvoice
 >();
-export const calculateTotal = createStandardAction(INVOICE_TYPES.CALCULATE_TOTAL)<number>();
+export const calculateTotal = createStandardAction(
+  INVOICE_TYPES.CALCULATE_TOTAL
+)<number>();
 export const setError = createStandardAction(INVOICE_TYPES.FETCH_INVOICE_ERROR)<
   string
 >();

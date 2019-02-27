@@ -9,6 +9,7 @@ import * as ProductActions from '../../redux/product/actions';
 import { State } from '../../redux/product/states';
 import { RootState, RootAction } from '../../redux/store/types';
 import { ID } from '../../shared/typing/records';
+import { ActionBtn } from '../../components/ManageForm/style';
 
 const {
   fetchAllProducts,
@@ -53,9 +54,9 @@ const Product: FC<Props> = ({
 
   return (
     <div>
-      <Button type="primary" onClick={showDrawer} htmlType="button">
+      <ActionBtn type="primary" onClick={showDrawer} htmlType="button">
         <Icon type="plus" /> Add Product
-      </Button>
+      </ActionBtn>
       <Table
         data={product.products}
         onEdit={handleEdit}

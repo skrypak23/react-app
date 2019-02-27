@@ -9,7 +9,7 @@ import * as CustomerActions from '../../redux/customer/actions';
 import { State } from '../../redux/customer/states';
 import { RootState, RootAction } from '../../redux/store/types';
 import { ID } from '../../shared/typing/records';
-import ICustomer from '../../shared/models/Customer';
+import { ActionBtn } from '../../components/ManageForm/style';
 
 const {
   fetchAllCustomers,
@@ -54,9 +54,9 @@ const Customer: FC<Props> = ({
 
   return (
     <div>
-      <Button type="primary" onClick={showDrawer} htmlType="button">
+      <ActionBtn type="primary" onClick={showDrawer} htmlType="button">
         <Icon type="plus" /> Add Customer
-      </Button>
+      </ActionBtn>
       <Table
         data={customer.customers}
         onEdit={handleEdit}

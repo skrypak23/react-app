@@ -1,9 +1,8 @@
 import React from 'react';
-import { Spin } from 'antd';
-import './style.css';
+import { StyledSpin, Container } from './style';
 
 export default () => (
-  <div className="container">
-    <Spin size="large" className="spin" />
-  </div>
+  <Container>
+    <StyledSpin size="large" />
+  </Container>
 );

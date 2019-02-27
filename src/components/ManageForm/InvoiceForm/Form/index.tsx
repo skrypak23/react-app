@@ -1,14 +1,6 @@
 import React, { FC, FormEvent, ChangeEvent } from 'react';
-import {
-  Form,
-  Row,
-  Col,
-  Input,
-  Button,
-  Select,
-  Collapse,
-  Statistic
-} from 'antd';
+import { Form, Row, Col, Input, Button, Select, Statistic } from 'antd';
+import { ButtonContainer, StyledButton } from '../../style';
 import IInvoice from '../../../../shared/models/Invoice';
 import ICustomer from '../../../../shared/models/Customer';
 import IProduct from '../../../../shared/models/Product';
@@ -21,7 +13,7 @@ type Props = {
   fillInvoice: (invoice: IInvoice) => void;
   isEdit: boolean;
   customer: ICustomer | null;
-  customers: ICustomer[];
+  customers: ReadonlyArray<ICustomer>;
   invoice: IInvoice | null;
   invoiceItems: ReadonlyArray<IInvoiceItem>;
   products: ReadonlyArray<IProduct>;
@@ -31,7 +23,6 @@ type Props = {
 
 const FormItem = Form.Item;
 const Option = Select.Option;
-const Panel = Collapse.Panel;
 
 const BaseForm: FC<Props> = ({
   form,
@@ -77,7 +68,7 @@ const BaseForm: FC<Props> = ({
               onChange={(event: ChangeEvent<HTMLInputElement>) => {
                 fillInvoice({
                   ...form.getFieldsValue(),
-                  discount: event.target.value,
+                  discount: event.target.value
                 } as IInvoice);
               }}
             />
@@ -97,9 +88,8 @@ const BaseForm: FC<Props> = ({
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     form.validateFields((err: Error, values: any) => {
-      console.log(values);
       if (!err && Object.values(values).every(Boolean)) {
-        onSubmit({...values, total: total.toFixed(2)});
+        onSubmit({ ...values, total: total.toFixed(2) });
       }
     });
   };
@@ -108,20 +98,16 @@ const BaseForm: FC<Props> = ({
     <Form onSubmit={handleSubmit}>
       <Row gutter={24}>{getFields()}</Row>
       <Row>
-        <Col span={24} style={{ textAlign: 'right' }}>
+        <ButtonContainer span={24}>
           <FormItem>
             <Button type="primary" htmlType="submit">
               Submit
             </Button>
-            <Button
-              style={{ marginLeft: 8 }}
-              onClick={closeForm}
-              htmlType="button"
-            >
+            <StyledButton onClick={closeForm} htmlType="button">
               Close
-            </Button>
+            </StyledButton>
           </FormItem>
-        </Col>
+        </ButtonContainer>
       </Row>
     </Form>
   );

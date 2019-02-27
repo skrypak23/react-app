@@ -4,12 +4,9 @@ import { connect } from 'react-redux';
 import BaseForm from './Form';
 import { State } from '../../../redux/invoice/states';
 import { State as CustomerState } from '../../../redux/customer/states';
-import { State as ProductState } from '../../../redux/product/states';
 import { State as InvoiceItemState } from '../../../redux/invoice-item/states';
 import { RootAction, RootState } from '../../../redux/store/types';
 import * as InvoiceActions from '../../../redux/invoice/actions';
-import * as CustomerActions from '../../../redux/customer/actions';
-import * as ProductActions from '../../../redux/product/actions';
 import * as InvoiceItemActions from '../../../redux/invoice-item/actions';
 import IInvoice from '../../../shared/models/Invoice';
 import ICustomer from '../../../shared/models/Customer';
@@ -18,12 +15,12 @@ import IInvoiceItem from '../../../shared/models/InvoiceItem';
 import IProduct from '../../../shared/models/Product';
 
 type Props = {
-  editInvoice: (id: ID, invoice: IInvoice) => any;
-  createInvoice: (invoice: IInvoice) => any;
-  deleteInvoiceItemLocal: (id: ID) => any;
+  editInvoice: (id: ID, invoice: IInvoice) => void;
+  createInvoice: (invoice: IInvoice) => void;
+  deleteInvoiceItemLocal: (id: ID) => void;
   customers: ReadonlyArray<ICustomer>;
-  fillInvoice: (invoice: IInvoice) => any;
-  deleteInvoiceItem: (id: ID, invoiceId: ID) => any;
+  fillInvoice: (invoice: IInvoice) => void;
+  deleteInvoiceItem: (id: ID, invoiceId: ID) => void;
   customer: CustomerState;
   products: ReadonlyArray<IProduct>;
   invoiceItem: InvoiceItemState;
@@ -47,7 +44,8 @@ const InvoiceForm: FC<Props> = ({
 }) => {
   const handleSubmit = (values: IInvoice) => {
     if (isEdit) {
-      editInvoice(invoice.invoice!.id, { ...values });
+      const id = invoice.invoice!.id;
+      editInvoice(id, { id, ...values });
     } else {
       createInvoice({ ...values });
     }
@@ -65,9 +63,7 @@ const InvoiceForm: FC<Props> = ({
   const findCustomer = (customers: ReadonlyArray<ICustomer>): ICustomer => {
     let customer;
     if (customers && invoice.invoice) {
-      customer = customers.find(
-        customer => customer.id === invoice.invoice!.customer_id
-      );
+      customer = customers.find(customer => customer.id === invoice.invoice!.customer_id);
     }
     return customer || ({} as ICustomer);
   };
@@ -75,7 +71,7 @@ const InvoiceForm: FC<Props> = ({
   return (
     <BaseForm
       onSubmit={handleSubmit}
-      customers={customer.customers as ICustomer[]}
+      customers={customer.customers}
       customer={findCustomer(customer.customers)}
       products={products}
       invoice={invoice.invoice}

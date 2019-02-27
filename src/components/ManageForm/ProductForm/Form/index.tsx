@@ -1,6 +1,7 @@
 import React, { FC, FormEvent } from 'react';
 import { Form, Row, Col, Input, Button } from 'antd';
 import IProduct from '../../../../shared/models/Product';
+import { ButtonContainer, StyledButton } from '../../style';
 
 const FormItem = Form.Item;
 
@@ -49,19 +50,18 @@ const BaseForm: FC<Props> = ({ formFields, form, onSubmit, isEdit }) => {
     <Form onSubmit={handleSubmit}>
       <Row gutter={24}>{getFields()}</Row>
       <Row>
-        <Col span={24} style={{ textAlign: 'right' }}>
+        <ButtonContainer span={24}>
           <Button type="primary" htmlType="submit">
             Submit
           </Button>
-          <Button
-            style={{ marginLeft: 8 }}
+          <StyledButton
             onClick={handleReset}
             disabled={isEdit}
             htmlType="button"
           >
             Clear
-          </Button>
-        </Col>
+          </StyledButton>
+        </ButtonContainer>
       </Row>
     </Form>
   );

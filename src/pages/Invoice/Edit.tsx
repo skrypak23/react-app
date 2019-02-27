@@ -17,6 +17,7 @@ import { State as InvoiceState } from '../../redux/invoice/states';
 import * as CustomerActions from '../../redux/customer/actions';
 import * as InvoiceActions from '../../redux/invoice/actions';
 import * as InvoiceItemActions from '../../redux/invoice-item/actions';
+import { ActionBtn } from '../../components/ManageForm/style';
 
 type Props = {
   addInvoiceItem: (invoiceItem: IInvoiceItem) => any;
@@ -55,7 +56,7 @@ const Edit: FC<Props> = ({
   resetInvoiceItem
 }) => {
   const [visible, changeVisible] = useState(false);
-  const [isEditItem, setIsEditItem] = useState(false);
+  const [isEditItem, setEditItem] = useState(false);
   const [editIndex, setEditIndex] = useState(0);
 
   const showDrawer = () => changeVisible(!visible);
@@ -65,10 +66,8 @@ const Edit: FC<Props> = ({
     toggleShowForm();
     setIsEdit(false);
     resetInvoice();
-    resetInvoiceItem()
   };
   const handleDelete = (index: ID, invoiceItem: IInvoiceItem) => {
-    console.log(index, invoiceItem);
     if (invoiceItem.id) {
       deleteInvoiceItem(invoiceItem.id, invoiceItem.invoice_id);
     } else {
@@ -78,7 +77,7 @@ const Edit: FC<Props> = ({
 
   const handleClickOnEdit = (record: IInvoiceItem, index: ID) => {
     showDrawer();
-    setIsEditItem(true);
+    setEditItem(true);
     if (record.id) {
       fetchInvoiceItemById(record.id, invoice.invoice!.id);
     } else {
@@ -98,14 +97,14 @@ const Edit: FC<Props> = ({
 
   const closeDrawer = () => {
     showDrawer();
-    setIsEditItem(false);
+    setEditItem(false);
   };
 
   return (
     <div>
-      <Button type="primary" onClick={showDrawer} htmlType="button">
+      <ActionBtn type="primary" onClick={showDrawer} htmlType="button">
         <Icon type="plus" /> Add Invoice Item
-      </Button>
+      </ActionBtn>
       <InvoiceForm
         isEdit={isEdit}
         customers={customer.customers}

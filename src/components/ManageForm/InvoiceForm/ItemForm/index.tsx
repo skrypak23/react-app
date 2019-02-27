@@ -1,5 +1,6 @@
 import React, { FC, MouseEvent } from 'react';
-import { Form, Row, Col, Input, Button, Select } from 'antd';
+import { Form, Row, Input, Button, Select } from 'antd';
+import {ButtonContainer} from '../../style';
 import IInvoiceItem from '../../../../shared/models/InvoiceItem';
 import IProduct from '../../../../shared/models/Product';
 import { ID } from '../../../../shared/typing/records';
@@ -66,11 +67,11 @@ const BaseForm: FC<Props> = ({
     <>
       <Row gutter={24}>{getFields()}</Row>
       <Row>
-        <Col span={24} style={{ textAlign: 'right' }}>
+        <ButtonContainer span={24}>
           <Button type="primary" htmlType="button" onClick={handleSubmit}>
             {isEdit ? 'edit' : 'add'}
           </Button>
-        </Col>
+        </ButtonContainer>
       </Row>
     </>
   );

@@ -1,5 +1,5 @@
-import { from, of, Observable } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { from, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import * as API from '../api';
 import {
   PayloadData,
@@ -7,19 +7,18 @@ import {
   EditActions,
   DeleteActions,
   FetchActions,
-  FetchByIdActions,
+  FetchByIdActions
 } from '../typing/actions';
-import {RootAction} from "../../redux/store/types";
+
+const headers = { 'Content-Type': 'application/json' };
 
 class ApiService {
+  headers = { 'Content-Type': 'application/json' };
   static createData<T>(action: CreateActions, data: PayloadData) {
-    console.log('CREATE')
     const config = {
       method: 'POST',
       body: JSON.stringify(data.body),
-      headers: {
-        'Content-Type': 'application/json'
-      }
+      headers
     };
     return from(API.request<T>(data.url, config)).pipe(
       map((response: T) => action.createSuccess(response)),
@@ -30,10 +29,9 @@ class ApiService {
     const config = {
       method: 'PUT',
       body: JSON.stringify(data.body),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
+      headers
+    }
+    ;
     return from(API.request<T>(data.url, config)).pipe(
       map((response: T) => action.editSuccess(response)),
       catchError(err => of(action.setError(err.message)))

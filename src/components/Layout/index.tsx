@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { Layout as AntLayout, Icon } from 'antd';
-const { Header, Content, Sider } = AntLayout;
+const {  Sider } = AntLayout;
 import Menu from './Menu';
-import styles from './style';
+import {StyledContent, StyledHeader} from './style';
 import * as PATHS from '../../routes/routes';
 
 const MENU_ITEMS = [
@@ -18,8 +18,8 @@ const Layout: FC = ({ children }) => {
         <Menu menuItems={MENU_ITEMS} />
       </Sider>
       <AntLayout className="layout">
-        <Header style={styles.header} />
-        <Content style={styles.content}>{children}</Content>
+        <StyledHeader/>
+        <StyledContent>{children}</StyledContent>
       </AntLayout>
     </AntLayout>
   );

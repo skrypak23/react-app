@@ -17,7 +17,7 @@ const InvoiceTable: FC<Props> = ({ data, onEdit, onDelete, findCustomerName }) =
       render: (customerId: number) => findCustomerName(customerId)
     },
     {
-      title: 'Discount',
+      title: 'Discount %',
       dataIndex: 'discount',
       key: 'discount'
     },
@@ -42,7 +42,7 @@ const InvoiceTable: FC<Props> = ({ data, onEdit, onDelete, findCustomerName }) =
     <Table
       columns={renderColumns()}
       dataSource={data as IInvoice[]}
-      rowKey={record => `${record.id}`}
+      rowKey={(record, idx) => `${record.id}${idx}`}
     />
   );
 };

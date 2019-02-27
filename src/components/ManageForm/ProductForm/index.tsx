@@ -9,8 +9,8 @@ import * as ProductActions from '../../../redux/product/actions';
 import { ID } from '../../../shared/typing/records';
 
 type Props = {
-  editProduct: (id: ID, product: IProduct) => any;
-  createProduct: (product: IProduct) => any;
+  editProduct: (id: ID, product: IProduct) => void;
+  createProduct: (product: IProduct) => void;
   product: State;
   isEdit: boolean;
 };
@@ -34,12 +34,7 @@ const FORM_FIELDS = [
   }
 ];
 
-const ProductForm: FC<Props> = ({
-  product,
-  createProduct,
-  editProduct,
-  isEdit
-}) => {
+const ProductForm: FC<Props> = ({ product, createProduct, editProduct, isEdit }) => {
   const handleSubmit = (values: IProduct) => {
     isEdit
       ? editProduct(product.product!.id, { ...values })
