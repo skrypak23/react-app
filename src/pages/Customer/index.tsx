@@ -11,13 +11,6 @@ import { RootState, RootAction } from '../../redux/store/types';
 import { ID } from '../../shared/typing/records';
 import { ActionBtn } from '../../components/ManageForm/style';
 
-const {
-  fetchAllCustomers,
-  fetchCustomerById,
-  resetCustomer,
-  deleteCustomer
-} = CustomerActions;
-
 type Props = {
   fetchCustomerById: (id: ID) => void;
   deleteCustomer: (id: ID) => void;
@@ -57,16 +50,8 @@ const Customer: FC<Props> = ({
       <ActionBtn type="primary" onClick={showDrawer} htmlType="button">
         <Icon type="plus" /> Add Customer
       </ActionBtn>
-      <Table
-        data={customer.customers}
-        onEdit={handleEdit}
-        onDelete={deleteCustomer}
-      />
-      <Drawer
-        title="Create a new customer"
-        onClose={handleCloseForm}
-        visible={visible}
-      >
+      <Table data={customer.customers} onEdit={handleEdit} onDelete={deleteCustomer} />
+      <Drawer title="Create a new customer" onClose={handleCloseForm} visible={visible}>
         <CustomerForm isEdit={isEdit} />
       </Drawer>
     </div>
@@ -77,10 +62,7 @@ const mapStateToProps = (state: RootState) => ({ customer: state.customer });
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) =>
   bindActionCreators(
     {
-      fetchCustomerById,
-      deleteCustomer,
-      fetchAllCustomers,
-      resetCustomer
+      ...CustomerActions
     },
     dispatch
   );

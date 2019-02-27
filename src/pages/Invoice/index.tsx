@@ -29,11 +29,7 @@ type Props = {
   fetchAllProducts: () => void;
   fetchAllInvoices: () => void;
   fetchInvoiceById: (id: ID) => void;
-  resetInvoice: () => void;
-  fillInvoice: (invoice: IInvoice) => void;
-  invoiceItem: InvoiceItemsState;
   customer: CustomerState;
-  product: ProductState;
   invoice: State;
 };
 
@@ -42,12 +38,8 @@ const Invoice: FC<Props> = ({
   fetchAllInvoices,
   fetchInvoiceById,
   deleteInvoice,
-  resetInvoice,
   customer,
   invoice,
-  invoiceItem,
-  product,
-  fillInvoice,
   fetchAllProducts,
   fetchAllInvoiceItems,
 }) => {
@@ -102,8 +94,6 @@ const Invoice: FC<Props> = ({
 const mapStateToProps = (state: RootState) => ({
   invoice: state.invoice,
   customer: state.customer,
-  invoiceItem: state.invoiceItem,
-  product: state.product
 });
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) =>
   bindActionCreators(

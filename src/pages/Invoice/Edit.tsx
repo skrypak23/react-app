@@ -20,22 +20,21 @@ import * as InvoiceItemActions from '../../redux/invoice-item/actions';
 import { ActionBtn } from '../../components/ManageForm/style';
 
 type Props = {
-  addInvoiceItem: (invoiceItem: IInvoiceItem) => any;
   invoice: InvoiceState;
   product: ProductState;
   customer: CustomerState;
   invoiceItem: InvoiceItemsState;
-  toggleShowForm: () => void;
   isEdit: boolean;
   setIsEdit: Function;
-  fillItem: (idx: ID) => void;
   resetInvoice: () => void;
-  deleteInvoiceItem: (id: ID, invoiceId: ID) => void;
+  toggleShowForm: () => void;
+  fillItem: (idx: ID) => void;
   deleteInvoiceItemLocal: (id: ID) => void;
+  deleteInvoiceItem: (id: ID, invoiceId: ID) => void;
+  addInvoiceItem: (invoiceItem: IInvoiceItem) => void;
   fetchInvoiceItemById: (id: ID, invoiceId: ID) => void;
-  editInvoiceItem: (id: ID, invoiceId: ID, invoice: IInvoiceItem) => void;
   editInvoiceItemLocal: (id: ID, invoice: IInvoiceItem) => void;
-  resetInvoiceItem: () => void;
+  editInvoiceItem: (id: ID, invoiceId: ID, invoice: IInvoiceItem) => void;
 };
 const Edit: FC<Props> = ({
   fillItem,
@@ -52,8 +51,7 @@ const Edit: FC<Props> = ({
   deleteInvoiceItemLocal,
   fetchInvoiceItemById,
   invoiceItem,
-  editInvoiceItem,
-  resetInvoiceItem
+  editInvoiceItem
 }) => {
   const [visible, changeVisible] = useState(false);
   const [isEditItem, setEditItem] = useState(false);
@@ -116,11 +114,7 @@ const Edit: FC<Props> = ({
         onDelete={handleDelete}
         onEdit={handleClickOnEdit}
       />
-      <Drawer
-        title="Create a new invoice"
-        onClose={closeDrawer}
-        visible={visible}
-      >
+      <Drawer title="Create a new invoice" onClose={closeDrawer} visible={visible}>
         <ItemsForm
           isEdit={isEditItem}
           invoiceId={invoice.invoice ? invoice.invoice.id : null}

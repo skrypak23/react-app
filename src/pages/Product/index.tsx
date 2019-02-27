@@ -11,13 +11,6 @@ import { RootState, RootAction } from '../../redux/store/types';
 import { ID } from '../../shared/typing/records';
 import { ActionBtn } from '../../components/ManageForm/style';
 
-const {
-  fetchAllProducts,
-  fetchProductById,
-  resetProduct,
-  deleteProduct
-} = ProductActions;
-
 type Props = {
   fetchProductById: (id: ID) => any;
   deleteProduct: (id: ID) => any;
@@ -57,16 +50,8 @@ const Product: FC<Props> = ({
       <ActionBtn type="primary" onClick={showDrawer} htmlType="button">
         <Icon type="plus" /> Add Product
       </ActionBtn>
-      <Table
-        data={product.products}
-        onEdit={handleEdit}
-        onDelete={deleteProduct}
-      />
-      <Drawer
-        title="Create a new product"
-        onClose={handleCloseForm}
-        visible={visible}
-      >
+      <Table data={product.products} onEdit={handleEdit} onDelete={deleteProduct} />
+      <Drawer title="Create a new product" onClose={handleCloseForm} visible={visible}>
         <ProductForm isEdit={isEdit} />
       </Drawer>
     </div>
@@ -77,10 +62,7 @@ const mapStateToProps = (state: RootState) => ({ product: state.product });
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) =>
   bindActionCreators(
     {
-      fetchProductById,
-      deleteProduct,
-      fetchAllProducts,
-      resetProduct
+      ...ProductActions
     },
     dispatch
   );

@@ -6,8 +6,8 @@ type EventType = MouseEvent<HTMLDivElement> | MouseEvent<HTMLButtonElement>;
 type Props = {
   title: string;
   visible: boolean;
-  onClose: (event: EventType) => void;
   children: ReactNode;
+  onClose: (event: EventType) => void;
 };
 
 const DRAWER_WIDTH = 500;
