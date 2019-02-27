@@ -2,9 +2,9 @@ import { StateType, ActionType } from 'typesafe-actions';
 import State from '.';
 import Reducer from '../rootReducer';
 import * as CustomerActions from '../customer/actions';
-import * as ProductActions from '../customer/actions';
-import * as InvoiceActions from '../customer/actions';
-import * as InvoiceItemActions from '../customer/actions';
+import * as ProductActions from '../product/actions';
+import * as InvoiceActions from '../invoice/actions';
+import * as InvoiceItemActions from '../invoice-item/actions';
 
 const Actions = {
   ...ProductActions,

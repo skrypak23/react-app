@@ -15,7 +15,7 @@ import { createItems } from '../../../shared/utils';
 const fetchInvoicesEpic: Epic<RootAction, RootAction, RootState> = action$ =>
   action$.pipe(
     filter(isOfType(INVOICE_TYPES.GET_INVOICES_REQUEST)),
-    switchMap((action: any) =>
+    switchMap((action) =>
       ApiService.fetchAllData<IInvoice>(InvoiceActions, action.payload)
     )
   );
@@ -23,7 +23,7 @@ const fetchInvoicesEpic: Epic<RootAction, RootAction, RootState> = action$ =>
 const fetchInvoiceEpic: Epic<RootAction, RootAction, RootState> = action$ =>
   action$.pipe(
     filter(isOfType(INVOICE_TYPES.GET_INVOICE_BY_ID_REQUEST)),
-    switchMap((action: any) =>
+    switchMap((action) =>
       ApiService.fetchById<IInvoice>(InvoiceActions, action.payload)
     )
   );
@@ -31,7 +31,7 @@ const fetchInvoiceEpic: Epic<RootAction, RootAction, RootState> = action$ =>
 const editInvoiceEpic: Epic<RootAction, Action, RootState> = (action$, state$) =>
   action$.pipe(
     filter(isOfType(INVOICE_TYPES.EDIT_INVOICE_REQUEST)),
-    switchMap((action: any) =>
+    switchMap((action) =>
       concat(
         ApiService.editData<IInvoice>(InvoiceActions, action.payload).pipe(
           switchMap(action => createItems(state$, action))
@@ -49,7 +49,7 @@ const deleteInvoiceEpic: Epic<RootAction, RootAction, RootState> = action$ =>
     )
   );
 
-const calculateTotalEpic: Epic<RootAction, Action, RootState> = (action$, state$) =>
+const calculateTotalEpic: Epic<RootAction, RootAction, RootState> = (action$, state$) =>
   action$.pipe(
     filter(
       isOfType([
@@ -70,10 +70,10 @@ const calculateTotalEpic: Epic<RootAction, Action, RootState> = (action$, state$
     map((total: number) => InvoiceActions.calculateTotal(total))
   );
 
-const createInvoicesEpic: Epic<Action, RootAction, RootState> = action$ =>
+const createInvoicesEpic: Epic<RootAction, RootAction, RootState> = action$ =>
   action$.pipe(
-    ofType(INVOICE_TYPES.CREATE_INVOICE_REQUEST),
-    switchMap((action: any) =>
+    filter(isOfType(INVOICE_TYPES.CREATE_INVOICE_REQUEST)),
+    switchMap((action) =>
       ApiService.createData<IInvoice>(InvoiceActions, action.payload)
     )
   );

@@ -3,8 +3,9 @@ import { createEpicMiddleware } from 'redux-observable';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import rootReducer from '../rootReducer';
 import rootEpic from '../rootEpic';
+import { RootAction, RootState } from './types';
 
-const epicMiddleware = createEpicMiddleware();
+const epicMiddleware = createEpicMiddleware<RootAction, RootAction, RootState>();
 
 const store = createStore(
   rootReducer,
