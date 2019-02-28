@@ -1,5 +1,5 @@
-import IInvoiceItem from '../shared/models/InvoiceItem';
-import IProduct from '../shared/models/Product';
+import IInvoiceItem from '../models/InvoiceItem';
+import IProduct from '../models/Product';
 
 export default (
   discount: number,
