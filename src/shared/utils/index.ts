@@ -1,5 +1,5 @@
-import * as InvoiceItemActions from '../redux/invoice-item/actions';
-import IInvoiceItem from './models/InvoiceItem';
+import { InvoiceItemRequest }  from '../../redux/request/actions';
+import IInvoiceItem from '../models/InvoiceItem';
 import { filter, map } from 'rxjs/operators';
 import { from } from 'rxjs';
 
@@ -22,7 +22,7 @@ export const createItems = (state$: any, action: any) => {
   return from(state$.value.invoiceItem.invoiceItems).pipe(
     filter((invoiceItem: any) => !invoiceItem.hasOwnProperty('id')),
     map(item =>
-      InvoiceItemActions.createInvoiceItem(action.payload.id, {
+      InvoiceItemRequest.CreateInvoiceItemActions.createInvoiceItem(action.payload.id, {
         ...item
       } as IInvoiceItem)
     )

@@ -1,6 +1,6 @@
 import { from, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import * as API from '../api';
+import * as API from '../utils/api';
 import {
   PayloadData,
   CreateActions,
@@ -13,7 +13,6 @@ import {
 const headers = { 'Content-Type': 'application/json' };
 
 class ApiService {
-  headers = { 'Content-Type': 'application/json' };
   static createData<T>(action: CreateActions, data: PayloadData) {
     const config = {
       method: 'POST',
