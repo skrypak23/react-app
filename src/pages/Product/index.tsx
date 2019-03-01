@@ -1,22 +1,24 @@
 import React, { useEffect, useState, FC } from 'react';
-import { Dispatch, bindActionCreators } from 'redux';
+import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Icon } from 'antd';
+import { Icon } from 'antd';
 import Table from './Table';
 import { ProductForm } from '../../components/ManageForm';
 import Drawer from '../../components/Drawer';
-import * as ProductActions from '../../redux/product/actions';
-import { State } from '../../redux/product/states';
 import { RootState, RootAction } from '../../redux/store/types';
 import { ID } from '../../shared/typing/records';
 import { ActionBtn } from '../../components/ManageForm/style';
+import IProduct from '../../shared/models/Product';
+import { ProductRequest } from '../../redux/request/actions';
+
+const { Action } = ProductRequest;
 
 type Props = {
-  fetchProductById: (id: ID) => any;
-  deleteProduct: (id: ID) => any;
-  fetchAllProducts: () => any;
-  resetProduct: () => any;
-  product: State;
+  fetchProductById: (id: ID) => void;
+  deleteProduct: (id: ID) => void;
+  fetchAllProducts: () => void;
+  resetProduct: () => void;
+  products: ReadonlyArray<IProduct>;
 };
 
 const Product: FC<Props> = ({
@@ -24,7 +26,7 @@ const Product: FC<Props> = ({
   fetchProductById,
   deleteProduct,
   resetProduct,
-  product
+  products
 }) => {
   const [visible, changeVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -50,7 +52,7 @@ const Product: FC<Props> = ({
       <ActionBtn type="primary" onClick={showDrawer} htmlType="button">
         <Icon type="plus" /> Add Product
       </ActionBtn>
-      <Table data={product.products} onEdit={handleEdit} onDelete={deleteProduct} />
+      <Table data={products} onEdit={handleEdit} onDelete={deleteProduct} />
       <Drawer title="Create a new product" onClose={handleCloseForm} visible={visible}>
         <ProductForm isEdit={isEdit} />
       </Drawer>
@@ -58,14 +60,13 @@ const Product: FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: RootState) => ({ product: state.product });
-const mapDispatchToProps = (dispatch: Dispatch<RootAction>) =>
-  bindActionCreators(
-    {
-      ...ProductActions
-    },
-    dispatch
-  );
+const mapStateToProps = (state: RootState) => ({ products: state.product.entities });
+const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
+  fetchProductById: (id: ID) => dispatch(Action.fetchProductById(id)),
+  deleteProduct: (id: ID) => dispatch(Action.deleteProduct(id)),
+  fetchAllProducts: () => dispatch(Action.fetchAllProducts()),
+  resetProduct: () => dispatch(Action.resetProduct()),
+});
 
 export default connect(
   mapStateToProps,

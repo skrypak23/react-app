@@ -35,6 +35,7 @@ class InvoiceService {
     return from(API.request<IInvoice>(data.url, config));
   }
   static fetchInvoices(data: TData) {
+    console.log(data);
     return from(API.fetchAll<IInvoice>(data.url));
   }
   static fetchInvoiceById(data: TData) {

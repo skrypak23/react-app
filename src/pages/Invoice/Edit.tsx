@@ -1,47 +1,48 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
+import { Dispatch } from 'redux';
 import { InvoiceForm } from '../../components/ManageForm';
 import Drawer from '../../components/Drawer';
 import Table from '../../components/TableInvoiceItems';
 import { ID } from '../../shared/typing/records';
 import IInvoiceItem from '../../shared/models/InvoiceItem';
-import IInvoice from '../../shared/models/Invoice';
-import { Button, Icon } from 'antd';
+import { Icon } from 'antd';
 import ItemsForm from '../../components/ManageForm/InvoiceForm/ItemForm';
-import { RootAction, RootState } from '../../redux/store/types';
-import { State as CustomerState } from '../../redux/customer/states';
-import { State as InvoiceItemsState } from '../../redux/invoice-item/states';
-import { State as ProductState } from '../../redux/product/states';
-import { State as InvoiceState } from '../../redux/invoice/states';
-import * as CustomerActions from '../../redux/customer/actions';
-import * as InvoiceActions from '../../redux/invoice/actions';
-import * as InvoiceItemActions from '../../redux/invoice-item/actions';
+import { RootState, RootAction } from '../../redux/store/types';
 import { ActionBtn } from '../../components/ManageForm/style';
+import ICustomer from '../../shared/models/Customer';
+import IProduct from '../../shared/models/Product';
+import IInvoice from '../../shared/models/Invoice';
+import { InvoiceRequest, InvoiceItemRequest } from '../../redux/request/actions';
+import * as InvoiceItemActions from '../../redux/invoice-item/actions';
+
+const { Action: InvoiceAction } = InvoiceRequest;
+const { Action: InvoiceItemAction } = InvoiceItemRequest;
 
 type Props = {
-  invoice: InvoiceState;
-  product: ProductState;
-  customer: CustomerState;
-  invoiceItem: InvoiceItemsState;
+  invoice: IInvoice | null;
+  invoiceItem: IInvoiceItem | null;
+  products: ReadonlyArray<IProduct>;
+  customers: ReadonlyArray<ICustomer>;
+  invoiceItems: ReadonlyArray<IInvoiceItem>;
   isEdit: boolean;
   setIsEdit: Function;
   resetInvoice: () => void;
   toggleShowForm: () => void;
-  fillItem: (idx: ID) => void;
+  fillItem: (invoiceItem: IInvoiceItem) => void;
   deleteInvoiceItemLocal: (id: ID) => void;
+  editInvoiceItemLocal: (id: ID, invoice: IInvoiceItem) => void;
   deleteInvoiceItem: (id: ID, invoiceId: ID) => void;
   addInvoiceItem: (invoiceItem: IInvoiceItem) => void;
   fetchInvoiceItemById: (id: ID, invoiceId: ID) => void;
-  editInvoiceItemLocal: (id: ID, invoice: IInvoiceItem) => void;
   editInvoiceItem: (id: ID, invoiceId: ID, invoice: IInvoiceItem) => void;
 };
 const Edit: FC<Props> = ({
   fillItem,
   editInvoiceItemLocal,
   invoice,
-  product,
-  customer,
+  products,
+  customers,
   toggleShowForm,
   addInvoiceItem,
   isEdit,
@@ -51,6 +52,7 @@ const Edit: FC<Props> = ({
   deleteInvoiceItemLocal,
   fetchInvoiceItemById,
   invoiceItem,
+  invoiceItems,
   editInvoiceItem
 }) => {
   const [visible, changeVisible] = useState(false);
@@ -77,16 +79,16 @@ const Edit: FC<Props> = ({
     showDrawer();
     setEditItem(true);
     if (record.id) {
-      fetchInvoiceItemById(record.id, invoice.invoice!.id);
+      fetchInvoiceItemById(record.id, invoice!.id);
     } else {
-      fillItem(index);
+      fillItem(invoiceItems[index]);
       setEditIndex(index);
     }
   };
 
   const handleEditInvoiceItem = (values: IInvoiceItem) => {
-    if (invoiceItem.invoiceItem!.id) {
-      editInvoiceItem(invoiceItem.invoiceItem!.id, invoice.invoice!.id, values);
+    if (invoiceItem!.id) {
+      editInvoiceItem(invoiceItem!.id, invoice!.id, values);
     } else {
       editInvoiceItemLocal(editIndex, values);
     }
@@ -103,23 +105,18 @@ const Edit: FC<Props> = ({
       <ActionBtn type="primary" onClick={showDrawer} htmlType="button">
         <Icon type="plus" /> Add Invoice Item
       </ActionBtn>
-      <InvoiceForm
-        isEdit={isEdit}
-        customers={customer.customers}
-        products={product.products}
-        closeForm={handleCloseForm}
-      />
+      <InvoiceForm isEdit={isEdit} products={products} closeForm={handleCloseForm} />
       <Table
-        invoiceItems={invoiceItem.invoiceItems}
+        invoiceItems={invoiceItems}
         onDelete={handleDelete}
         onEdit={handleClickOnEdit}
       />
       <Drawer title="Create a new invoice" onClose={closeDrawer} visible={visible}>
         <ItemsForm
           isEdit={isEditItem}
-          invoiceId={invoice.invoice ? invoice.invoice.id : null}
-          invoiceItem={invoiceItem.invoiceItem}
-          products={product.products}
+          invoiceId={invoice ? invoice.id : null}
+          invoiceItem={invoiceItem}
+          products={products}
           onSubmit={addInvoiceItem}
           onEdit={handleEditInvoiceItem}
         />
@@ -129,21 +126,30 @@ const Edit: FC<Props> = ({
 };
 
 const mapStateToProps = (state: RootState) => ({
-  invoice: state.invoice,
-  invoiceItem: state.invoiceItem,
-  customer: state.customer,
-  product: state.product
+  invoice: state.request.invoice.fetchById.data,
+  invoiceItem: state.request.invoiceItem.fetchById.data,
+  invoiceItems: state.invoiceItem.entities,
+  customers: state.customer.entities,
+  products: state.product.entities
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<RootAction>) =>
-  bindActionCreators(
-    {
-      ...CustomerActions,
-      ...InvoiceActions,
-      ...InvoiceItemActions
-    },
-    dispatch
-  );
+const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
+  deleteInvoiceItem: (id: ID, invoiceId: ID) =>
+    dispatch(InvoiceItemAction.deleteInvoiceItem(id, invoiceId)),
+  fetchInvoiceItemById: (id: ID, invoiceId: ID) =>
+    dispatch(InvoiceItemAction.fetchInvoiceItemById(id, invoiceId)),
+  editInvoiceItem: (id: ID, invoiceId: ID, invoice: IInvoiceItem) =>
+    dispatch(InvoiceItemAction.editInvoiceItem(id, invoiceId, invoice)),
+  deleteInvoiceItemLocal: (id: ID) =>
+    dispatch(InvoiceItemActions.deleteInvoiceItemLocal(id)),
+  editInvoiceItemLocal: (id: ID, invoice: IInvoiceItem) =>
+    dispatch(InvoiceItemActions.editInvoiceItemLocal(id, invoice)),
+  resetInvoice: () => dispatch(InvoiceAction.resetInvoice()),
+  fillItem: (invoiceItem: IInvoiceItem) =>
+    dispatch(InvoiceItemAction.fillItem(invoiceItem)),
+  addInvoiceItem: (invoiceItem: IInvoiceItem) =>
+    dispatch(InvoiceItemActions.addInvoiceItem(invoiceItem))
+});
 
 export default connect(
   mapStateToProps,

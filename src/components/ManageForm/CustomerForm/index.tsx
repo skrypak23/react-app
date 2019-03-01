@@ -3,10 +3,11 @@ import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import BaseForm from './Form';
 import ICustomer from '../../../shared/models/Customer';
-import { createCustomer, editCustomer } from '../../../redux/customer/actions';
-import { RootAction, RootState } from '../../../redux/store/types';
-import { State } from '../../../redux/customer/states';
+import {RootAction, RootState} from '../../../redux/store/types';
 import { ID } from '../../../shared/typing/records';
+import { CustomerRequest } from '../../../redux/request/actions';
+
+const { Action } = CustomerRequest;
 
 const FORM_FIELDS = [
   {
@@ -32,41 +33,33 @@ const FORM_FIELDS = [
 type Props = {
   editCustomer: (id: ID, customer: ICustomer) => any;
   createCustomer: (customer: ICustomer) => any;
-  customer: State;
+  customer: ICustomer | null;
   isEdit: boolean;
 };
 
-const CustomerForm: FC<Props> = ({
-  customer,
-  createCustomer,
-  editCustomer,
-  isEdit
-}) => {
+const CustomerForm: FC<Props> = ({ customer, createCustomer, editCustomer, isEdit }) => {
   const handleSubmit = (values: ICustomer) => {
-    isEdit
-      ? editCustomer(customer.customer!.id, { ...values })
-      : createCustomer({ ...values });
+    isEdit ? editCustomer(customer!.id, { ...values }) : createCustomer({ ...values });
   };
 
   return (
     <BaseForm
       formFields={FORM_FIELDS}
       onSubmit={handleSubmit}
-      formData={customer.customer}
+      formData={customer}
       isEdit={isEdit}
     />
   );
 };
 
-const mapStateToProps = (state: RootState) => ({ customer: state.customer });
-const mapDispatchToProps = (dispatch: Dispatch<RootAction>) =>
-  bindActionCreators(
-    {
-      createCustomer,
-      editCustomer
-    },
-    dispatch
-  );
+const mapStateToProps = (state: RootState) => ({
+  customer: state.request.customer.fetchById.data
+});
+const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
+  createCustomer: (customer: ICustomer) => dispatch(Action.createCustomer(customer)),
+  editCustomer: (id: ID, customer: ICustomer) =>
+    dispatch(Action.editCustomer(id, customer))
+});
 
 export default connect(
   mapStateToProps,
