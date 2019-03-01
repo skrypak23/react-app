@@ -1,57 +1,34 @@
-import { of, Observable, concat } from 'rxjs';
-import { switchMap, filter } from 'rxjs/operators';
-import { Epic, ofType } from 'redux-observable';
-import { RootAction, RootState } from '../../store/types';
-import * as CUSTOMER_TYPES from '../actions/types';
-import ICustomer from '../../../shared/models/Customer';
+import { filter, map } from 'rxjs/operators';
+import { Epic } from 'redux-observable';
+import { ActionType, isOfType } from 'typesafe-actions';
+import { RootState } from '../../store/types';
 import * as CustomerActions from '../actions';
-import { isOfType } from 'typesafe-actions';
-import { Action } from 'redux';
-import ApiService from '../../../shared/services/request.service';
+import { CustomerRequest as Request } from '../../request/actions';
 
-const fetchCustomersEpic: Epic<RootAction, RootAction, RootState> = action$ =>
+const { Action, Types } = Request;
+const CombinedActions = { ...Action, ...CustomerActions };
+type Actions = ActionType<typeof CombinedActions>;
+
+const setCustomerDataEpic: Epic<Actions, Actions, RootState> = action$ =>
   action$.pipe(
-    filter(isOfType(CUSTOMER_TYPES.GET_CUSTOMERS_REQUEST)),
-    switchMap(action =>
-      ApiService.fetchAllData<ICustomer>(CustomerActions, action.payload)
-    )
+    filter(
+      isOfType([
+        Types.CREATE_CUSTOMER_SUCCESS,
+        Types.UPDATE_CUSTOMER_SUCCESS,
+        Types.FETCH_CUSTOMERS_SUCCESS,
+        Types.DELETE_CUSTOMER_SUCCESS
+      ])
+    ),
+    map(action => {
+      if (action.type === Types.DELETE_CUSTOMER_SUCCESS) {
+        return CustomerActions.deleteActionData(action.payload);
+      } else {
+        if (Array.isArray(action.payload)) {
+          return CustomerActions.setCustomerData(action.payload);
+        }
+        return CustomerActions.setCustomerData([action.payload]);
+      }
+    })
   );
 
-const fetchCustomersByIdEpic: Epic<RootAction, RootAction, RootState> = action$ =>
-  action$.pipe(
-    filter(isOfType(CUSTOMER_TYPES.GET_CUSTOMER_BY_ID_REQUEST)),
-    switchMap(action => ApiService.fetchById<ICustomer>(CustomerActions, action.payload))
-  );
-
-const editCustomerEpic: Epic<RootAction, RootAction, RootState> = action$ =>
-  action$.pipe(
-    filter(isOfType(CUSTOMER_TYPES.EDIT_CUSTOMER_REQUEST)),
-    switchMap(action => ApiService.editData<ICustomer>(CustomerActions, action.payload))
-  );
-
-const deleteCustomersEpic: Epic<RootAction, RootAction, RootState> = action$ =>
-  action$.pipe(
-    filter(isOfType(CUSTOMER_TYPES.DELETE_CUSTOMER_REQUEST)),
-    switchMap(action =>
-      concat(
-        ApiService.deleteData<ICustomer>(CustomerActions, action.payload),
-        of(CustomerActions.fetchAllCustomers())
-      )
-    )
-  );
-
-const createCustomersEpic = (action$: Observable<Action>) =>
-  action$.pipe(
-    ofType(CUSTOMER_TYPES.CREATE_CUSTOMER_REQUEST),
-    switchMap((action: any) =>
-      ApiService.createData<ICustomer>(CustomerActions, action.payload)
-    )
-  );
-
-export default [
-  fetchCustomersByIdEpic,
-  fetchCustomersEpic,
-  editCustomerEpic,
-  deleteCustomersEpic,
-  createCustomersEpic
-];
+export default [setCustomerDataEpic];

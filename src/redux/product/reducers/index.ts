@@ -1,43 +1,31 @@
 import { ActionType } from 'typesafe-actions';
+import { unionWith, eqBy, prop, propEq, reject } from 'ramda';
 import * as ProductActions from '../actions';
 import * as PRODUCT_TYPES from '../actions/types';
 import { State, initialState } from '../states';
-import { filteredData, mapedData } from '../../../shared/utils';
+import IProduct from '../../../shared/models/Product';
 
 type Action = ActionType<typeof ProductActions>;
 
 const reducer = (state: State = initialState, action: Action): State => {
   switch (action.type) {
-    case PRODUCT_TYPES.GET_PRODUCTS_SUCCESS:
+    case PRODUCT_TYPES.SET_PRODUCT_DATA:
+      const entities = unionWith<IProduct>(
+        eqBy(prop('id')),
+        action.payload,
+        state.entities
+      );
       return {
         ...state,
-        products: action.payload
+        entities
       };
-    case PRODUCT_TYPES.CREATE_PRODUCT_SUCCESS:
+    case PRODUCT_TYPES.DELETE_PRODUCT: {
+      const entities = reject<IProduct>(propEq('id', action.payload.id), state.entities);
       return {
         ...state,
-        products: [...state.products, action.payload]
-      };
-    case PRODUCT_TYPES.GET_PRODUCT_BY_ID_SUCCESS:
-      return {
-        ...state,
-        product: action.payload
-      };
-    case PRODUCT_TYPES.EDIT_PRODUCT_SUCCESS: {
-      const products = mapedData(state.products, action.payload);
-      return {
-        ...state,
-        product: action.payload,
-        products
+        entities
       };
     }
-    case PRODUCT_TYPES.DELETE_PRODUCT_SUCCESS:
-      const products = filteredData(state.products, action.payload.id);
-      return { ...state, products };
-    case PRODUCT_TYPES.RESET_PRODUCT:
-      return { ...state, product: null };
-    case PRODUCT_TYPES.FETCH_PRODUCT_ERROR:
-      return { ...state, loading: false, error: null };
     default:
       return state;
   }

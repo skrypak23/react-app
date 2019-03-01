@@ -5,7 +5,7 @@ import { URL_ALL_INVOICES } from '../../../../../../../shared/utils/api';
 export enum FetchInvoicesTypes {
   FETCH_INVOICES_REQUEST = '@invoice-app/invoice/FETCH_INVOICES_REQUEST',
   FETCH_INVOICES_SUCCESS = '@invoice-app/invoice/FETCH_INVOICES_SUCCESS',
-  FETCH_INVOICES_FAILURE = '@invoice-app/invoice/FETCH_INVOICES_FAILURE'
+  FETCH_INVOICES_FAILURE = '@invoice-app/invoice/FETCH_INVOICES_FAILURE',
 }
 
 export const FetchInvoiceActions = {

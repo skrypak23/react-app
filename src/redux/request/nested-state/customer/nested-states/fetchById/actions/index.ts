@@ -6,18 +6,21 @@ import { ID } from '../../../../../../../shared/typing/records';
 export enum FetchCustomerByIdTypes {
   FETCH_CUSTOMERS_BY_ID_REQUEST = '@invoice-app/customer/FETCH_CUSTOMERS_BY_ID_REQUEST',
   FETCH_CUSTOMERS_BY_ID_SUCCESS = '@invoice-app/customer/FETCH_CUSTOMERS_BY_ID_SUCCESS',
-  FETCH_CUSTOMERS_BY_ID_FAILURE = '@invoice-app/customer/FETCH_CUSTOMERS_BY_ID_FAILURE'
+  FETCH_CUSTOMERS_BY_ID_FAILURE = '@invoice-app/customer/FETCH_CUSTOMERS_BY_ID_FAILURE',
+  RESET_CUSTOMER = '@invoice-app/customer/RESET_CUSTOMER',
 }
 
 export const FetchCustomerByIdActions = {
   fetchCustomerById: (id: ID) =>
-    action(
-      FetchCustomerByIdTypes.FETCH_CUSTOMERS_BY_ID_REQUEST,
-        { url: `${URL_ALL_CUSTOMERS}/${id}` }
-    ),
+    action(FetchCustomerByIdTypes.FETCH_CUSTOMERS_BY_ID_REQUEST, {
+      url: `${URL_ALL_CUSTOMERS}/${id}`
+    }),
   fetchCustomerByIdSuccess: createStandardAction(
     FetchCustomerByIdTypes.FETCH_CUSTOMERS_BY_ID_SUCCESS
   )<ICustomer>(),
+  resetCustomer: createStandardAction(
+    FetchCustomerByIdTypes.RESET_CUSTOMER
+  )<undefined>(),
   fetchCustomerByIdFailure: createStandardAction(
     FetchCustomerByIdTypes.FETCH_CUSTOMERS_BY_ID_FAILURE
   )<Error>()

@@ -1,6 +1,7 @@
 import { action, createStandardAction } from 'typesafe-actions';
 import IProduct from '../../../../../../../shared/models/Product';
 import { URL_ALL_PRODUCTS } from '../../../../../../../shared/utils/api';
+import { ID } from '../../../../../../../shared/typing/records';
 
 export enum DeleteProductTypes {
   DELETE_PRODUCT_REQUEST = '@invoice-app/product/DELETE_PRODUCT_REQUEST',
@@ -9,15 +10,14 @@ export enum DeleteProductTypes {
 }
 
 export const DeleteProductActions = {
-  deleteProduct: (product: IProduct) =>
+  deleteProduct: (id: ID) =>
     action(DeleteProductTypes.DELETE_PRODUCT_REQUEST, {
-      url: URL_ALL_PRODUCTS,
-      body: product
+      url: `${URL_ALL_PRODUCTS}/${id}`
     }),
-  deleteProductSuccess: createStandardAction(
-    DeleteProductTypes.DELETE_PRODUCT_SUCCESS
-  )<IProduct>(),
-  deleteProductFailure: createStandardAction(
-    DeleteProductTypes.DELETE_PRODUCT_FAILURE
-  )<Error>()
+  deleteProductSuccess: createStandardAction(DeleteProductTypes.DELETE_PRODUCT_SUCCESS)<
+    IProduct
+  >(),
+  deleteProductFailure: createStandardAction(DeleteProductTypes.DELETE_PRODUCT_FAILURE)<
+    Error
+  >()
 };

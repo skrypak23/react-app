@@ -1,49 +1,31 @@
 import { ActionType } from 'typesafe-actions';
+import { unionWith, eqBy, prop, propEq, reject } from 'ramda';
 import * as CustomerActions from '../actions';
 import * as CUSTOMER_TYPES from '../actions/types';
 import { State, initialState } from '../states';
-import { filteredData, mapedData } from '../../../shared/utils';
+import ICustomer from '../../../shared/models/Customer';
 
 export type Action = ActionType<typeof CustomerActions>;
 
 const reducer = (state: State = initialState, action: Action): State => {
   switch (action.type) {
-    case CUSTOMER_TYPES.GET_CUSTOMERS_SUCCESS:
+    case CUSTOMER_TYPES.SET_CUSTOMER_DATA:
+      const entities = unionWith<ICustomer>(
+          eqBy(prop('id')),
+          action.payload,
+          state.entities
+      );
       return {
         ...state,
-        customers: [...action.payload],
+        entities
       };
-    case CUSTOMER_TYPES.CREATE_CUSTOMER_SUCCESS:
+    case CUSTOMER_TYPES.DELETE_CUSTOMER: {
+      const entities = reject<ICustomer>(propEq('id', action.payload.id), state.entities);
       return {
         ...state,
-        customers: [...state.customers, action.payload],
-        customer: action.payload,
-      };
-    case CUSTOMER_TYPES.GET_CUSTOMER_BY_ID_SUCCESS:
-      return {
-        ...state,
-        customer: action.payload,
-      };
-    case CUSTOMER_TYPES.EDIT_CUSTOMER_SUCCESS: {
-      const { payload: customer } = action;
-      const customers = mapedData(state.customers, customer);
-      return {
-        ...state,
-        customer,
-        customers,
+        entities
       };
     }
-    case CUSTOMER_TYPES.DELETE_CUSTOMER_SUCCESS: {
-      const customers = filteredData(state.customers, action.payload.id);
-      return {
-        ...state,
-        customers,
-      };
-    }
-    case CUSTOMER_TYPES.RESET_CUSTOMER:
-      return { ...state, customer: null };
-    case CUSTOMER_TYPES.FETCH_CUSTOMER_ERROR:
-      return { ...state, loading: false, error: action.payload };
     default:
       return state;
   }

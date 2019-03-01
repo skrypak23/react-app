@@ -1,20 +1,36 @@
-export {
+import {
   CreateCustomerActions,
   CreateCustomerTypes
 } from '../nested-states/create/actions';
-export {
+import {
   UpdateCustomerActions,
   UpdateCustomerTypes
 } from '../nested-states/update/actions';
-export {
+import {
   DeleteCustomerActions,
   DeleteCustomerTypes
 } from '../nested-states/delete/actions';
-export {
+import {
   FetchCustomerActions,
   FetchCustomersTypes
 } from '../nested-states/fetch/actions';
-export {
+import {
   FetchCustomerByIdActions,
   FetchCustomerByIdTypes
 } from '../nested-states/fetchById/actions';
+
+export const Action = {
+  ...CreateCustomerActions,
+  ...UpdateCustomerActions,
+  ...DeleteCustomerActions,
+  ...FetchCustomerActions,
+  ...FetchCustomerByIdActions
+};
+
+export const Types = {
+  ...CreateCustomerTypes,
+  ...UpdateCustomerTypes,
+  ...DeleteCustomerTypes,
+  ...FetchCustomersTypes,
+  ...FetchCustomerByIdTypes
+};
