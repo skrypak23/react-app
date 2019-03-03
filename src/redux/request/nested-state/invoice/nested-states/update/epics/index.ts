@@ -10,7 +10,7 @@ import { createItems } from '../../../../../../../shared/utils';
 
 const Actions = {
   ...UpdateInvoiceActions,
-  ...InvoiceItemRequest.CreateInvoiceItemActions
+  ...InvoiceItemRequest.Action
 };
 
 type RootAction = ActionType<typeof Actions>;

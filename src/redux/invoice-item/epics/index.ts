@@ -1,53 +1,34 @@
-import { Observable } from 'rxjs';
-import { switchMap, filter, mergeMap } from 'rxjs/operators';
-import { Epic, ofType, StateObservable } from 'redux-observable';
-import { RootAction, RootState } from '../../store/types';
-import * as INVOICE_ITEM_TYPES from '../actions/types';
-import IInvoiceItem from '../../../shared/models/InvoiceItem';
-import * as InvoiceItemActions from '../actions';
+import { filter, map, mergeMap } from 'rxjs/operators';
+import { Epic } from 'redux-observable';
 import { isOfType } from 'typesafe-actions';
-import { Action } from 'redux';
-import ApiService from '../../../shared/services/request.service';
-import * as INVOICE_TYPES from '../../invoice/actions/types';
+import { RootAction, RootState } from '../../store/types';
+import * as InvoiceItemActions from '../actions';
+import { InvoiceItemRequest as Request, InvoiceRequest } from '../../request/actions';
 import { createItems } from '../../../shared/utils';
 
-const fetchInvoiceItemsEpic: Epic<RootAction, RootAction, RootState> = action$ =>
-  action$.pipe(
-    filter(isOfType(INVOICE_ITEM_TYPES.GET_INVOICE_ITEMS_REQUEST)),
-    switchMap(action =>
-      ApiService.fetchAllData<IInvoiceItem>(InvoiceItemActions, action.payload)
-    )
-  );
+const { Types } = Request;
+const { Types: InvoiceTypes } = InvoiceRequest;
 
-const fetchInvoiceItemsByIdEpic: Epic<RootAction, RootAction, RootState> = action$ =>
+const setCustomerDataEpic: Epic<RootAction, RootAction, RootState> = action$ =>
   action$.pipe(
-    filter(isOfType(INVOICE_ITEM_TYPES.GET_INVOICE_ITEMS_BY_ID_REQUEST)),
-    switchMap(action =>
-      ApiService.fetchById<IInvoiceItem>(InvoiceItemActions, action.payload)
-    )
-  );
-
-const editInvoiceItemEpic: Epic<RootAction, RootAction, RootState> = action$ =>
-  action$.pipe(
-    filter(isOfType(INVOICE_ITEM_TYPES.EDIT_INVOICE_ITEMS_REQUEST)),
-    switchMap(action =>
-      ApiService.editData<IInvoiceItem>(InvoiceItemActions, action.payload)
-    )
-  );
-const deleteInvoiceItemEpic: Epic<RootAction, RootAction, RootState> = action$ =>
-  action$.pipe(
-    filter(isOfType(INVOICE_ITEM_TYPES.DELETE_INVOICE_ITEMS_REQUEST)),
-    switchMap(action =>
-      ApiService.deleteData<IInvoiceItem>(InvoiceItemActions, action.payload)
-    )
-  );
-
-const createInvoiceItemsReqEpic: Epic<RootAction, RootAction, RootState> = action$ =>
-  action$.pipe(
-    filter(isOfType(INVOICE_ITEM_TYPES.CREATE_INVOICE_ITEMS_REQUEST)),
-    switchMap(action =>
-      ApiService.createData<IInvoiceItem>(InvoiceItemActions, action.payload)
-    )
+    filter(
+      isOfType([
+        Types.CREATE_INVOICE_ITEM_SUCCESS,
+        Types.UPDATE_INVOICE_ITEM_SUCCESS,
+        Types.FETCH_INVOICE_ITEMS_SUCCESS,
+        Types.DELETE_INVOICE_ITEM_SUCCESS
+      ])
+    ),
+    map(action => {
+      if (action.type === Types.DELETE_INVOICE_ITEM_SUCCESS) {
+        return InvoiceItemActions.deleteInvoiceItemData(action.payload);
+      } else {
+        if (Array.isArray(action.payload)) {
+          return InvoiceItemActions.setInvoiceItemData(action.payload);
+        }
+        return InvoiceItemActions.setInvoiceItemData([action.payload]);
+      }
+    })
   );
 
 const createInvoiceItemEpic: Epic<RootAction, RootAction, RootState> = (
@@ -55,15 +36,8 @@ const createInvoiceItemEpic: Epic<RootAction, RootAction, RootState> = (
   state$
 ) =>
   action$.pipe(
-    filter(isOfType(INVOICE_TYPES.CREATE_INVOICE_SUCCESS)),
+    filter(isOfType(InvoiceTypes.CREATE_INVOICE_SUCCESS)),
     mergeMap(action => createItems(state$, action))
   );
 
-export default [
-  fetchInvoiceItemsByIdEpic,
-  fetchInvoiceItemsEpic,
-  editInvoiceItemEpic,
-  createInvoiceItemsReqEpic,
-  createInvoiceItemEpic,
-  deleteInvoiceItemEpic
-];
+export default [setCustomerDataEpic, createInvoiceItemEpic];

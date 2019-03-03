@@ -1,21 +1,20 @@
 import React, { FC } from 'react';
-import { Dispatch, bindActionCreators } from 'redux';
+import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import BaseForm from './Form';
 import IProduct from '../../../shared/models/Product';
-import { State } from '../../../redux/product/states';
-import { RootAction, RootState } from '../../../redux/store/types';
-import * as ProductActions from '../../../redux/product/actions';
+import { RootState, RootAction } from '../../../redux/store/types';
+import { ProductRequest } from '../../../redux/request/actions';
 import { ID } from '../../../shared/typing/records';
+
+const { Action } = ProductRequest;
 
 type Props = {
   editProduct: (id: ID, product: IProduct) => void;
   createProduct: (product: IProduct) => void;
-  product: State;
+  product: IProduct | null;
   isEdit: boolean;
 };
-
-const { createProduct, editProduct } = ProductActions;
 
 const FORM_FIELDS = [
   {
@@ -36,30 +35,24 @@ const FORM_FIELDS = [
 
 const ProductForm: FC<Props> = ({ product, createProduct, editProduct, isEdit }) => {
   const handleSubmit = (values: IProduct) => {
-    isEdit
-      ? editProduct(product.product!.id, { ...values })
-      : createProduct({ ...values });
+    isEdit ? editProduct(product!.id, { ...values }) : createProduct({ ...values });
   };
 
   return (
     <BaseForm
       formFields={FORM_FIELDS}
       onSubmit={handleSubmit}
-      formData={(product.product as IProduct) || {}}
+      formData={(product as IProduct) || {}}
       isEdit={isEdit}
     />
   );
 };
 
-const mapStateToProps = (state: RootState) => ({ product: state.product });
-const mapDispatchToProps = (dispatch: Dispatch<RootAction>) =>
-  bindActionCreators(
-    {
-      editProduct,
-      createProduct
-    },
-    dispatch
-  );
+const mapStateToProps = (state: RootState) => ({ product: state.request.product.fetchById.data });
+const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
+  editProduct: (id: ID, product: IProduct) => dispatch(Action.editProduct(id, product)),
+  createProduct: (product: IProduct) => dispatch(Action.createProduct(product))
+});
 
 export default connect(
   mapStateToProps,

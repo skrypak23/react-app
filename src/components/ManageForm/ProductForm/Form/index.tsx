@@ -25,7 +25,7 @@ const BaseForm: FC<Props> = ({ formFields, form, onSubmit, isEdit }) => {
     return formFields.map(({ label, key, placeholder, type, message }) => (
       <Col span={24} key={key}>
         <FormItem label={label}>
-          {getFieldDecorator(key, { rules: [{ required: true, message }]})(
+          {getFieldDecorator(key, { rules: [{ required: true, message }] })(
             <Input placeholder={placeholder} type={type} />
           )}
         </FormItem>
@@ -38,6 +38,7 @@ const BaseForm: FC<Props> = ({ formFields, form, onSubmit, isEdit }) => {
     form.validateFields((err: Error, values: any) => {
       if (!err && Object.values(values).every(Boolean)) {
         onSubmit(values);
+        form.resetFields();
       }
     });
   };
@@ -54,11 +55,7 @@ const BaseForm: FC<Props> = ({ formFields, form, onSubmit, isEdit }) => {
           <Button type="primary" htmlType="submit">
             Submit
           </Button>
-          <StyledButton
-            onClick={handleReset}
-            disabled={isEdit}
-            htmlType="button"
-          >
+          <StyledButton onClick={handleReset} disabled={isEdit} htmlType="button">
             Clear
           </StyledButton>
         </ButtonContainer>

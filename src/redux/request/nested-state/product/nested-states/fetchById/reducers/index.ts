@@ -10,6 +10,8 @@ const reducer = (state: State = initialState, action: Action): State => {
       return { ...state, data: null, loading: true, error: null };
     case FetchProductByIdTypes.FETCH_PRODUCT_BY_ID_SUCCESS:
       return { ...state, data: action.payload, loading: false, error: null };
+    case FetchProductByIdTypes.RESET_PRODUCT:
+      return { ...state, data: null, loading: false, error: null };
     case FetchProductByIdTypes.FETCH_PRODUCT_BY_ID_FAILURE:
       return { ...state, data: null, loading: false, error: action.payload };
     default:

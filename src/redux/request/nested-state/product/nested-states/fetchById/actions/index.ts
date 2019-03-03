@@ -6,6 +6,7 @@ import { ID } from '../../../../../../../shared/typing/records';
 export enum FetchProductByIdTypes {
   FETCH_PRODUCT_BY_ID_REQUEST = '@invoice-app/customer/FETCH_PRODUCT_BY_ID_REQUEST',
   FETCH_PRODUCT_BY_ID_SUCCESS = '@invoice-app/customer/FETCH_PRODUCT_BY_ID_SUCCESS',
+  RESET_PRODUCT = '@invoice-app/customer/RESET_PRODUCT',
   FETCH_PRODUCT_BY_ID_FAILURE = '@invoice-app/customer/FETCH_PRODUCT_BY_ID_FAILURE'
 }
 
@@ -14,6 +15,7 @@ export const FetchProductByIdActions = {
     action(FetchProductByIdTypes.FETCH_PRODUCT_BY_ID_REQUEST, {
       url: `${URL_ALL_PRODUCTS}/${id}`
     }),
+  resetProduct: createStandardAction(FetchProductByIdTypes.RESET_PRODUCT)<undefined>(),
   fetchProductByIdSuccess: createStandardAction(
     FetchProductByIdTypes.FETCH_PRODUCT_BY_ID_SUCCESS
   )<IProduct>(),

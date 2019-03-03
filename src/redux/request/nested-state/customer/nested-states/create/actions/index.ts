@@ -14,10 +14,10 @@ export const CreateCustomerActions = {
       url: URL_ALL_CUSTOMERS,
       body: customer
     }),
-  createCustomerSuccess: createStandardAction(CreateCustomerTypes.CREATE_CUSTOMER_SUCCESS)<
-    ICustomer
-  >(),
-  createCustomerFailure: createStandardAction(CreateCustomerTypes.CREATE_CUSTOMER_FAILURE)<
-    Error
-  >()
+  createCustomerSuccess: createStandardAction(
+    CreateCustomerTypes.CREATE_CUSTOMER_SUCCESS
+  )<ICustomer>(),
+  createCustomerFailure: createStandardAction(
+    CreateCustomerTypes.CREATE_CUSTOMER_FAILURE
+  )<Error>()
 };

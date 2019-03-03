@@ -1,6 +1,7 @@
 import { action, createStandardAction } from 'typesafe-actions';
 import ICustomer from '../../../../../../../shared/models/Customer';
 import { URL_ALL_CUSTOMERS } from '../../../../../../../shared/utils/api';
+import { ID } from '../../../../../../../shared/typing/records';
 
 export enum DeleteCustomerTypes {
   DELETE_CUSTOMER_REQUEST = '@invoice-app/customer/DELETE_CUSTOMER_REQUEST',
@@ -9,10 +10,9 @@ export enum DeleteCustomerTypes {
 }
 
 export const DeleteCustomerActions = {
-  deleteCustomer: (customer: ICustomer) =>
+  deleteCustomer: (id: ID) =>
     action(DeleteCustomerTypes.DELETE_CUSTOMER_REQUEST, {
-      url: URL_ALL_CUSTOMERS,
-      body: customer
+      url: `${URL_ALL_CUSTOMERS}/${id}`
     }),
   deleteCustomerSuccess: createStandardAction(
     DeleteCustomerTypes.DELETE_CUSTOMER_SUCCESS

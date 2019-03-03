@@ -1,17 +1,33 @@
-export {
+import {
   CreateProductActions,
   CreateProductTypes
 } from '../nested-states/create/actions';
-export {
+import {
   UpdateProductActions,
   UpdateProductTypes
 } from '../nested-states/update/actions';
-export {
+import {
   DeleteProductActions,
   DeleteProductTypes
 } from '../nested-states/delete/actions';
-export { FetchProductActions, FetchProductsTypes } from '../nested-states/fetch/actions';
-export {
+import { FetchProductActions, FetchProductsTypes } from '../nested-states/fetch/actions';
+import {
   FetchProductByIdActions,
   FetchProductByIdTypes
 } from '../nested-states/fetchById/actions';
+
+export const Action = {
+  ...CreateProductActions,
+  ...UpdateProductActions,
+  ...DeleteProductActions,
+  ...FetchProductByIdActions,
+  ...FetchProductActions
+};
+
+export const Types = {
+  ...CreateProductTypes,
+  ...UpdateProductTypes,
+  ...DeleteProductTypes,
+  ...FetchProductByIdTypes,
+  ...FetchProductsTypes
+};

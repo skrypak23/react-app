@@ -1,14 +1,9 @@
-import TState from "../../../shared/typing/state";
-import IInvoiceItem from "../../../shared/models/InvoiceItem";
+import IInvoiceItem from '../../../shared/models/InvoiceItem';
 
-export type State = TState & {
-    readonly invoiceItem: IInvoiceItem | null;
-    invoiceItems: ReadonlyArray<IInvoiceItem>;
+export type State = {
+  entities: ReadonlyArray<IInvoiceItem>;
 };
 
 export const initialState: State = {
-    loading: false,
-    error: null,
-    invoiceItem: null,
-    invoiceItems: []
+  entities: []
 };

@@ -1,6 +1,7 @@
 import { action, createStandardAction } from 'typesafe-actions';
 import IProduct from '../../../../../../../shared/models/Product';
 import { URL_ALL_PRODUCTS } from '../../../../../../../shared/utils/api';
+import {ID} from "../../../../../../../shared/typing/records";
 
 export enum UpdateProductTypes {
   UPDATE_PRODUCT_REQUEST = '@invoice-app/product/UPDATE_PRODUCT_REQUEST',
@@ -9,10 +10,10 @@ export enum UpdateProductTypes {
 }
 
 export const UpdateProductActions = {
-  editProduct: (product: IProduct) =>
+  editProduct: (id: ID, customer: IProduct) =>
     action(UpdateProductTypes.UPDATE_PRODUCT_REQUEST, {
-      url: URL_ALL_PRODUCTS,
-      body: product
+      url: `${URL_ALL_PRODUCTS}/${id}`,
+      body: customer
     }),
   editProductSuccess: createStandardAction(UpdateProductTypes.UPDATE_PRODUCT_SUCCESS)<
     IProduct

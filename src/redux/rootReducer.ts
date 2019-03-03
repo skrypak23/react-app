@@ -3,12 +3,12 @@ import customer from './customer/reducers';
 import product from './product/reducers';
 import invoice from './invoice/reducers';
 import invoiceItem from './invoice-item/reducers';
-import common from './common/reducers';
+import request from './request/reducers';
 
 export default combineReducers({
-    customer,
-    product,
-    invoice,
-    invoiceItem,
-    common
+  customer,
+  product,
+  invoice,
+  invoiceItem,
+  request
 });

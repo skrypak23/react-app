@@ -1,6 +1,7 @@
 import { action, createStandardAction } from 'typesafe-actions';
 import ICustomer from '../../../../../../../shared/models/Customer';
 import { URL_ALL_CUSTOMERS } from '../../../../../../../shared/utils/api';
+import { ID } from '../../../../../../../shared/typing/records';
 
 export enum UpdateCustomerTypes {
   UPDATE_CUSTOMER_REQUEST = '@invoice-app/customer/UPDATE_CUSTOMER_REQUEST',
@@ -9,9 +10,9 @@ export enum UpdateCustomerTypes {
 }
 
 export const UpdateCustomerActions = {
-  editCustomer: (customer: ICustomer) =>
+  editCustomer: (id: ID, customer: ICustomer) =>
     action(UpdateCustomerTypes.UPDATE_CUSTOMER_REQUEST, {
-      url: URL_ALL_CUSTOMERS,
+      url: `${URL_ALL_CUSTOMERS}/${id}`,
       body: customer
     }),
   editCustomerSuccess: createStandardAction(UpdateCustomerTypes.UPDATE_CUSTOMER_SUCCESS)<

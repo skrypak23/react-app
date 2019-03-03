@@ -2,73 +2,61 @@ import { ActionType } from 'typesafe-actions';
 import * as InvoiceItemActions from '../actions';
 import * as INVOICE_ITEMS_TYPES from '../actions/types';
 import { State, initialState } from '../states';
-import {
-  filteredData,
-  filteredDataByIdx,
-  mapedData,
-  mapedDataByIdx
-} from '../../../shared/utils';
+import { eqBy, propEq, reject, unionWith, prop, remove } from 'ramda';
+import IInvoiceItem from '../../../shared/models/InvoiceItem';
 
 type Action = ActionType<typeof InvoiceItemActions>;
 
 const reducer = (state: State = initialState, action: Action): State => {
   switch (action.type) {
-    case INVOICE_ITEMS_TYPES.FILL_INVOICE_ITEMS:
-      const foundItem = state.invoiceItems[action.payload];
+    case INVOICE_ITEMS_TYPES.SET_INVOICE_ITEM_DATA:
+      const entities = unionWith<IInvoiceItem>(
+        eqBy(prop('id')),
+        action.payload,
+        state.entities
+      );
       return {
         ...state,
-        invoiceItem: foundItem
+        entities
       };
-    case INVOICE_ITEMS_TYPES.GET_INVOICE_ITEMS_BY_ID_SUCCESS:
+    case INVOICE_ITEMS_TYPES.DELETE_INVOICE_ITEM: {
+      const entities = reject<IInvoiceItem>(
+        propEq('id', action.payload.id),
+        state.entities
+      );
       return {
         ...state,
-        invoiceItem: action.payload,
+        entities
       };
-    case INVOICE_ITEMS_TYPES.GET_INVOICE_ITEMS_SUCCESS:
-      return {
-        ...state,
-        invoiceItems: [...action.payload]
-      };
+    }
+
+    // case INVOICE_ITEMS_TYPES.FILL_INVOICE_ITEMS:
+    //   const foundItem = state.invoiceItems[action.payload];
+    //   return {
+    //     ...state,
+    //     invoiceItem: foundItem
+    //   };
+
     case INVOICE_ITEMS_TYPES.DELETE_INVOICE_ITEMS_LOCAL: {
-      const invoiceItems = filteredDataByIdx(
-        state.invoiceItems,
-        action.payload
-      );
-      return { ...state, invoiceItems };
+      const entities = remove(action.payload, 1, state.entities);
+      return { ...state, entities };
     }
-    case INVOICE_ITEMS_TYPES.DELETE_INVOICE_ITEMS_SUCCESS: {
-      const invoiceItems = filteredData(state.invoiceItems, action.payload.id);
+
+    case INVOICE_ITEMS_TYPES.EDIT_INVOICE_ITEMS_LOCAL: {
+      const entities = [...state.entities];
+      entities[action.payload.id] = action.payload.invoiceItem;
       return {
         ...state,
-        invoiceItems
-      };
-    }
-    case INVOICE_ITEMS_TYPES.ADD_INVOICE_ITEM:
-      return {
-        ...state,
-        invoiceItems: [...state.invoiceItems, action.payload]
-      };
-    case INVOICE_ITEMS_TYPES.EDIT_INVOICE_ITEMS_SUCCESS: {
-      const { payload: invoiceItem } = action;
-      const invoiceItems = mapedData(state.invoiceItems, invoiceItem);
-      return {
-        ...state,
-        invoiceItems,
-        invoiceItem
+        entities
       };
     }
-    case INVOICE_ITEMS_TYPES.EDIT_INVOICE_ITEMS_LOCAL_REQUEST:
-      const invoiceItems = mapedDataByIdx(
-        state.invoiceItems,
-        action.payload.invoiceItem
-      );
+    case INVOICE_ITEMS_TYPES.ADD_INVOICE_ITEM: {
+      const entities = [...state.entities, action.payload];
       return {
         ...state,
-        invoiceItems,
-        invoiceItem: null
+        entities
       };
-    case INVOICE_ITEMS_TYPES.RESET_INVOICE_ITEMS:
-      return { ...initialState };
+    }
     default:
       return state;
   }

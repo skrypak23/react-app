@@ -35,6 +35,7 @@ const BaseForm: FC<Props> = ({ formFields, form, onSubmit, isEdit }) => {
     form.validateFields((err: Error, values: any) => {
       if (!err && Object.values(values).every(Boolean)) {
         onSubmit(values);
+        form.resetFields();
       }
     });
   };

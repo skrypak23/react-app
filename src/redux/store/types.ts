@@ -5,12 +5,21 @@ import * as CustomerActions from '../customer/actions';
 import * as ProductActions from '../product/actions';
 import * as InvoiceActions from '../invoice/actions';
 import * as InvoiceItemActions from '../invoice-item/actions';
-
+import {
+  CustomerRequest,
+  ProductRequest,
+  InvoiceItemRequest,
+  InvoiceRequest
+} from '../../redux/request/actions';
 const Actions = {
   ...ProductActions,
   ...CustomerActions,
   ...InvoiceActions,
-  ...InvoiceItemActions
+  ...InvoiceItemActions,
+  ...InvoiceItemRequest.Action,
+  ...InvoiceRequest.Action,
+  ...ProductRequest.Action,
+  ...CustomerRequest.Action
 };
 
 export type Store = StateType<typeof State>;
