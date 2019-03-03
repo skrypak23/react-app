@@ -8,7 +8,7 @@ import { CreateCustomerTypes, CreateCustomerActions } from '../actions';
 
 type RootAction = ActionType<typeof CreateCustomerActions>;
 
-export const createCustomersEpic: Epic<RootAction, RootAction, RootState> = action$ =>
+export const createCustomersEpic: Epic<RootAction, RootAction, RootState> = (action$) =>
   action$.pipe(
     filter(isOfType(CreateCustomerTypes.CREATE_CUSTOMER_REQUEST)),
     switchMap(action =>
