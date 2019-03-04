@@ -6,20 +6,12 @@ import Table from './Table';
 import { RootAction, RootState } from '../../redux/store/types';
 import { ID } from '../../shared/typing/records';
 import Edit from './Edit';
-import {
-  CustomerRequest,
-  ProductRequest,
-  InvoiceItemRequest,
-  InvoiceRequest
-} from '../../redux/request/actions';
 import ICustomer from '../../shared/models/Customer';
 import IInvoice from '../../shared/models/Invoice';
 import * as InvoiceItemActions from '../../redux/invoice-item/actions';
-
-const { Action: CustomerAction } = CustomerRequest;
-const { Action: ProductAction } = ProductRequest;
-const { Action: InvoiceItemAction } = InvoiceItemRequest;
-const { Action: InvoiceAction } = InvoiceRequest;
+import * as InvoiceActions from '../../redux/invoice/actions';
+import * as CustomerActions from '../../redux/customer/actions';
+import * as ProductActions from '../../redux/product/actions';
 
 type Props = {
   fetchAllInvoiceItems: (id: ID) => void;
@@ -98,12 +90,12 @@ const mapStateToProps = (state: RootState) => ({
 });
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
   fetchAllInvoiceItems: (invoiceId: ID) =>
-    dispatch(InvoiceItemAction.fetchAllInvoiceItems(invoiceId)),
-  fetchAllCustomers: () => dispatch(CustomerAction.fetchAllCustomers()),
-  fetchAllProducts: () => dispatch(ProductAction.fetchAllProducts()),
-  fetchAllInvoices: () => dispatch(InvoiceAction.fetchAllInvoices()),
-  deleteInvoice: (id: ID) => dispatch(InvoiceAction.deleteInvoice(id)),
-  fetchInvoiceById: (id: ID) => dispatch(InvoiceAction.fetchInvoiceById(id)),
+    dispatch(InvoiceItemActions.fetchInvoiceItems(invoiceId)),
+  fetchAllCustomers: () => dispatch(CustomerActions.fetchCustomers()),
+  fetchAllProducts: () => dispatch(ProductActions.fetchProducts()),
+  fetchAllInvoices: () => dispatch(InvoiceActions.fetchInvoices()),
+  deleteInvoice: (id: ID) => dispatch(InvoiceActions.deleteInvoice(id)),
+  fetchInvoiceById: (id: ID) => dispatch(InvoiceActions.fetchInvoice(id)),
   resetInvoiceItems: () => dispatch(InvoiceItemActions.resetInvoiceItems())
 });
 

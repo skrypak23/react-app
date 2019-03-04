@@ -15,7 +15,7 @@ const reducer = (state: State = initialState, action: Action): State => {
         ...state,
         entities
       };
-    case PRODUCT_TYPES.DELETE_PRODUCT: {
+    case PRODUCT_TYPES.DELETE_PRODUCT_DATA: {
       const entities = deleteData<IProduct>(action.payload, state.entities);
       return {
         ...state,

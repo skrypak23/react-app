@@ -10,7 +10,7 @@ export enum FetchInvoiceItemsTypes {
 }
 
 export const FetchInvoiceItemActions = {
-  fetchAllInvoiceItems: (invoiceId: ID) =>
+  fetchAllInvoiceItemsRequest: (invoiceId: ID) =>
     action(FetchInvoiceItemsTypes.FETCH_INVOICE_ITEMS_REQUEST, {
       url: `${URL_ALL_INVOICES}/${invoiceId}/items`
     }),

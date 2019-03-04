@@ -9,9 +9,7 @@ import { RootState, RootAction } from '../../redux/store/types';
 import { ID } from '../../shared/typing/records';
 import { ActionBtn } from '../../components/ManageForm/style';
 import IProduct from '../../shared/models/Product';
-import { ProductRequest } from '../../redux/request/actions';
-
-const { Action } = ProductRequest;
+import * as ProductActions from '../../redux/product/actions';
 
 type Props = {
   fetchProductById: (id: ID) => void;
@@ -44,6 +42,9 @@ const Product: FC<Props> = ({
   const handleCloseForm = () => {
     changeVisible(false);
     setIsEdit(false);
+  };
+  const closeDrawer = () => {
+    handleCloseForm();
     resetProduct();
   };
 
@@ -53,8 +54,12 @@ const Product: FC<Props> = ({
         <Icon type="plus" /> Add Product
       </ActionBtn>
       <Table data={products} onEdit={handleEdit} onDelete={deleteProduct} />
-      <Drawer title="Create a new product" onClose={handleCloseForm} visible={visible}>
-        <ProductForm isEdit={isEdit} />
+      <Drawer
+        title={isEdit ? 'Edit the product' : 'Create a new product'}
+        onClose={closeDrawer}
+        visible={visible}
+      >
+        <ProductForm isEdit={isEdit} onClose={handleCloseForm} />
       </Drawer>
     </div>
   );
@@ -62,10 +67,10 @@ const Product: FC<Props> = ({
 
 const mapStateToProps = (state: RootState) => ({ products: state.product.entities });
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
-  fetchProductById: (id: ID) => dispatch(Action.fetchProductById(id)),
-  deleteProduct: (id: ID) => dispatch(Action.deleteProduct(id)),
-  fetchAllProducts: () => dispatch(Action.fetchAllProducts()),
-  resetProduct: () => dispatch(Action.resetProduct()),
+  fetchProductById: (id: ID) => dispatch(ProductActions.fetchProduct(id)),
+  deleteProduct: (id: ID) => dispatch(ProductActions.deleteProduct(id)),
+  fetchAllProducts: () => dispatch(ProductActions.fetchProducts()),
+  resetProduct: () => dispatch(ProductActions.resetProductLocal())
 });
 
 export default connect(

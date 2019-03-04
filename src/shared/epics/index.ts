@@ -18,7 +18,7 @@ export const createItems = (state$: any, invoiceId: number) => {
   return from(state$.value.invoiceItem.entities).pipe(
     filter(invoiceItem => !invoiceItem.hasOwnProperty('id')),
     map(item =>
-      InvoiceItemRequest.Action.createInvoiceItem(invoiceId, {
+      InvoiceItemRequest.Action.createInvoiceItemRequest(invoiceId, {
         ...item
       } as IInvoiceItem)
     )
@@ -27,12 +27,14 @@ export const createItems = (state$: any, invoiceId: number) => {
 export const editItems = (state$: any, invoiceId: number) => {
   const edited = state$.value.invoiceItem.edited;
   return from(Object.values<IInvoiceItem>(edited)).pipe(
-    map(item => InvoiceItemRequest.Action.editInvoiceItem(item!.id, invoiceId, item))
+    map(item =>
+      InvoiceItemRequest.Action.editInvoiceItemRequest(item!.id, invoiceId, item)
+    )
   );
 };
 export const deleteItems = (state$: any, invoiceId: number) => {
   const diff = diffItems(state$);
   return from(diff).pipe(
-    map(item => InvoiceItemRequest.Action.deleteInvoiceItem(item.id, invoiceId))
+    map(item => InvoiceItemRequest.Action.deleteInvoiceItemRequest(item.id, invoiceId))
   );
 };

@@ -10,7 +10,7 @@ export enum DeleteProductTypes {
 }
 
 export const DeleteProductActions = {
-  deleteProduct: (id: ID) =>
+  deleteProductRequest: (id: ID) =>
     action(DeleteProductTypes.DELETE_PRODUCT_REQUEST, {
       url: `${URL_ALL_PRODUCTS}/${id}`
     }),

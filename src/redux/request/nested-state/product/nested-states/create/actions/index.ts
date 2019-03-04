@@ -9,7 +9,7 @@ export enum CreateProductTypes {
 }
 
 export const CreateProductActions = {
-  createProduct: (product: IProduct) =>
+  createProductRequest: (product: IProduct) =>
     action(CreateProductTypes.CREATE_PRODUCT_REQUEST, {
       url: URL_ALL_PRODUCTS,
       body: product

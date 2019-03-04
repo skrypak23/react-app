@@ -10,7 +10,7 @@ export enum DeleteInvoiceTypes {
 }
 
 export const DeleteInvoiceActions = {
-  deleteInvoice: (id: ID) =>
+  deleteInvoiceRequest: (id: ID) =>
     action(DeleteInvoiceTypes.DELETE_INVOICE_REQUEST, {
       url: `${URL_ALL_INVOICES}/${id}`
     }),

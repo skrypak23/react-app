@@ -9,7 +9,7 @@ export enum FetchInvoicesTypes {
 }
 
 export const FetchInvoiceActions = {
-  fetchAllInvoices: () =>
+  fetchAllInvoicesRequest: () =>
     action(FetchInvoicesTypes.FETCH_INVOICES_REQUEST, { url: URL_ALL_INVOICES }),
   fetchInvoicesSuccess: createStandardAction(FetchInvoicesTypes.FETCH_INVOICES_SUCCESS)<
     IInvoice[]

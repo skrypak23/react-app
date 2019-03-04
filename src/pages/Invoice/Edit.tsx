@@ -121,11 +121,11 @@ const mapStateToProps = (state: RootState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
   deleteInvoiceItem: (id: ID, invoiceId: ID) =>
-    dispatch(InvoiceItemAction.deleteInvoiceItem(id, invoiceId)),
+    dispatch(InvoiceItemActions.deleteInvoiceItem(id, invoiceId)),
   fetchInvoiceItemById: (id: ID, invoiceId: ID) =>
-    dispatch(InvoiceItemAction.fetchInvoiceItemById(id, invoiceId)),
+    dispatch(InvoiceItemActions.fetchInvoiceItem(id, invoiceId)),
   editInvoiceItem: (id: ID, invoiceId: ID, invoice: IInvoiceItem) =>
-    dispatch(InvoiceItemAction.editInvoiceItem(id, invoiceId, invoice)),
+    dispatch(InvoiceItemActions.editInvoiceItem(id, invoiceId, invoice)),
   deleteInvoiceItemLocal: (id: ID) =>
     dispatch(InvoiceItemActions.deleteInvoiceItemLocal(id)),
   editInvoiceItemLocal: (id: ID, invoice: IInvoiceItem) =>

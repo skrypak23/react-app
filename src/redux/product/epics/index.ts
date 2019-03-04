@@ -1,15 +1,14 @@
-import { filter, map } from 'rxjs/operators';
+import { filter, map, mapTo } from 'rxjs/operators';
 import { Epic } from 'redux-observable';
-import { ActionType, isOfType } from 'typesafe-actions';
-import { RootState } from '../../store/types';
+import { isOfType } from 'typesafe-actions';
+import { RootAction, RootState } from '../../store/types';
 import * as ProductActions from '../actions';
 import { ProductRequest as Request } from '../../request/actions';
+import * as PRODUCT_TYPES from '../actions/types';
 
 const { Action, Types } = Request;
-const CombinedActions = { ...Action, ...ProductActions };
-type Actions = ActionType<typeof CombinedActions>;
 
-const setProductDataEpic: Epic<Actions, Actions, RootState> = action$ =>
+const setProductDataEpic: Epic<RootAction, RootAction, RootState> = action$ =>
   action$.pipe(
     filter(
       isOfType([
@@ -31,4 +30,48 @@ const setProductDataEpic: Epic<Actions, Actions, RootState> = action$ =>
     })
   );
 
-export default [setProductDataEpic];
+const createProductEpic: Epic<RootAction, RootAction, RootState> = action$ =>
+  action$.pipe(
+    filter(isOfType(PRODUCT_TYPES.CREATE_PRODUCT)),
+    map(action => Action.createProductRequest(action.payload))
+  );
+
+const editProductEpic: Epic<RootAction, RootAction, RootState> = action$ =>
+  action$.pipe(
+    filter(isOfType(PRODUCT_TYPES.EDIT_PRODUCT)),
+    map(action => Action.editProductRequest(action.payload.id, action.payload.product))
+  );
+
+const deleteProductEpic: Epic<RootAction, RootAction, RootState> = action$ =>
+  action$.pipe(
+    filter(isOfType(PRODUCT_TYPES.DELETE_PRODUCT)),
+    map(action => Action.deleteProductRequest(action.payload))
+  );
+
+const fetchProductEpic: Epic<RootAction, RootAction, RootState> = action$ =>
+  action$.pipe(
+    filter(isOfType(PRODUCT_TYPES.FETCH_PRODUCTS)),
+    mapTo(Action.fetchAllProductsRequest())
+  );
+
+const fetchProductByIdEpic: Epic<RootAction, RootAction, RootState> = action$ =>
+  action$.pipe(
+    filter(isOfType(PRODUCT_TYPES.FETCH_PRODUCT)),
+    map(action => Action.fetchProductByIdRequest(action.payload))
+  );
+
+const resetProductEpic: Epic<RootAction, RootAction, RootState> = action$ =>
+  action$.pipe(
+    filter(isOfType(PRODUCT_TYPES.RESET_PRODUCT)),
+    mapTo(Action.resetProduct())
+  );
+
+export default [
+  setProductDataEpic,
+  createProductEpic,
+  deleteProductEpic,
+  editProductEpic,
+  fetchProductEpic,
+  fetchProductByIdEpic,
+  resetProductEpic
+];

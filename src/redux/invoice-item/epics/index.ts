@@ -4,7 +4,8 @@ import { isOfType } from 'typesafe-actions';
 import { RootAction, RootState } from '../../store/types';
 import * as InvoiceItemActions from '../actions';
 import { InvoiceItemRequest as Request } from '../../request/actions';
-const { Types } = Request;
+import * as INVOICE_ITEM_TYPES from '../actions/types';
+const { Types, Action } = Request;
 
 const setInvoiceItemDataEpic: Epic<RootAction, RootAction, RootState> = action$ =>
   action$.pipe(
@@ -28,6 +29,50 @@ const setInvoiceItemDataEpic: Epic<RootAction, RootAction, RootState> = action$ 
     })
   );
 
+const editInvoiceItemEpic: Epic<RootAction, RootAction, RootState> = action$ =>
+  action$.pipe(
+    filter(isOfType(INVOICE_ITEM_TYPES.EDIT_INVOICE_ITEM)),
+    map(action =>
+      Action.editInvoiceItemRequest(
+        action.payload.invoiceItemId,
+        action.payload.invoiceId,
+        action.payload.invoice
+      )
+    )
+  );
 
+const deleteInvoiceItemEpic: Epic<RootAction, RootAction, RootState> = action$ =>
+  action$.pipe(
+    filter(isOfType(INVOICE_ITEM_TYPES.DELETE_INVOICE_ITEM)),
+    map(action =>
+      Action.deleteInvoiceItemRequest(
+        action.payload.invoiceItemId,
+        action.payload.invoiceId
+      )
+    )
+  );
 
-export default [setInvoiceItemDataEpic];
+const fetchInvoiceItemsEpic: Epic<RootAction, RootAction, RootState> = action$ =>
+  action$.pipe(
+    filter(isOfType(INVOICE_ITEM_TYPES.FETCH_INVOICE_ITEMS)),
+    map(action => Action.fetchAllInvoiceItemsRequest(action.payload.invoiceId))
+  );
+
+const fetchInvoiceItemByIdEpic: Epic<RootAction, RootAction, RootState> = action$ =>
+  action$.pipe(
+    filter(isOfType(INVOICE_ITEM_TYPES.FETCH_INVOICE_ITEM)),
+    map(action =>
+      Action.fetchInvoiceItemByIdRequest(
+        action.payload.invoiceItemId,
+        action.payload.invoiceId
+      )
+    )
+  );
+
+export default [
+  setInvoiceItemDataEpic,
+  fetchInvoiceItemByIdEpic,
+  fetchInvoiceItemsEpic,
+  editInvoiceItemEpic,
+  deleteInvoiceItemEpic
+];

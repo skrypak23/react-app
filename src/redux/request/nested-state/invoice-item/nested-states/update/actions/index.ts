@@ -10,7 +10,7 @@ export enum UpdateInvoiceItemTypes {
 }
 
 export const UpdateInvoiceItemActions = {
-  editInvoiceItem: (id: ID, invoiceId: ID, invoice: IInvoiceItem) =>
+  editInvoiceItemRequest: (id: ID, invoiceId: ID, invoice: IInvoiceItem) =>
     action(UpdateInvoiceItemTypes.UPDATE_INVOICE_ITEM_REQUEST, {
       url: `${URL_ALL_INVOICES}/${invoiceId}/items/${id}`,
       body: invoice

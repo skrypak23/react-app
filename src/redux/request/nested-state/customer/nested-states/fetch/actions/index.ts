@@ -9,7 +9,7 @@ export enum FetchCustomersTypes {
 }
 
 export const FetchCustomerActions = {
-  fetchAllCustomers: () =>
+  fetchAllCustomersRequest: () =>
     action(FetchCustomersTypes.FETCH_CUSTOMERS_REQUEST, { url: URL_ALL_CUSTOMERS }),
   fetchCustomersSuccess: createStandardAction(
     FetchCustomersTypes.FETCH_CUSTOMERS_SUCCESS

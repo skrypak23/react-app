@@ -43,7 +43,7 @@ const InvoiceTable: FC<Props> = ({ data, onEdit, onDelete }) => {
     <Table
       columns={renderColumns()}
       dataSource={data as ICustomer[]}
-      rowKey={record => `${record.id}`}
+      rowKey={(record, id) => `${record.id}-${id}`}
     />
   );
 };

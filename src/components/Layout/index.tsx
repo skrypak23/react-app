@@ -1,9 +1,11 @@
 import React, { FC } from 'react';
-import { Layout as AntLayout, Icon } from 'antd';
-const {  Sider } = AntLayout;
+import { Layout as AntLayout } from 'antd';
+const { Sider } = AntLayout;
 import Menu from './Menu';
-import {StyledContent, StyledHeader} from './style';
+import { StyledContent, StyledHeader } from './style';
 import * as PATHS from '../../routes/routes';
+import ErrorBoundary from '../ErrorBoundary';
+import Alert from '../Alert';
 
 const MENU_ITEMS = [
   { to: PATHS.CUSTOMER, name: 'Customers' },
@@ -13,13 +15,17 @@ const MENU_ITEMS = [
 
 const Layout: FC = ({ children }) => {
   return (
-    <AntLayout>
+    <AntLayout tagName="section">
       <Sider trigger={null}>
         <Menu menuItems={MENU_ITEMS} />
       </Sider>
-      <AntLayout className="layout">
-        <StyledHeader/>
-        <StyledContent>{children}</StyledContent>
+      <AntLayout className="layout" tagName="section">
+        <StyledHeader tagName="header" />
+        <ErrorBoundary>
+          <Alert>
+            <StyledContent tagName="main">{children}</StyledContent>
+          </Alert>
+        </ErrorBoundary>
       </AntLayout>
     </AntLayout>
   );

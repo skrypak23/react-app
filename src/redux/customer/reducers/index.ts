@@ -13,13 +13,15 @@ const reducer = (state: State = initialState, action: Action): State => {
       const entities = union<ICustomer>(action.payload, state.entities);
       return {
         ...state,
-        entities
+        entities,
+        success: true
       };
-    case CUSTOMER_TYPES.DELETE_CUSTOMER: {
+    case CUSTOMER_TYPES.DELETE_CUSTOMER_DATA: {
       const entities = deleteData<ICustomer>(action.payload, state.entities);
       return {
         ...state,
-        entities
+        entities,
+        success: true
       };
     }
     default:

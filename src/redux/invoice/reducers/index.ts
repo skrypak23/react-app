@@ -16,7 +16,7 @@ const reducer = (state: State = initialState, action: Action): State => {
         entities
       };
     }
-    case INVOICE_TYPES.DELETE_INVOICE: {
+    case INVOICE_TYPES.DELETE_INVOICE_DATA: {
       const entities = deleteData<IInvoice>(action.payload, state.entities);
       return {
         ...state,

@@ -9,7 +9,7 @@ export enum FetchProductsTypes {
 }
 
 export const FetchProductActions = {
-  fetchAllProducts: () =>
+  fetchAllProductsRequest: () =>
     action(FetchProductsTypes.FETCH_PRODUCTS_REQUEST, { url: URL_ALL_PRODUCTS }),
   fetchProductsSuccess: createStandardAction(FetchProductsTypes.FETCH_PRODUCTS_SUCCESS)<
     IProduct[]

@@ -10,7 +10,7 @@ export enum CreateInvoiceItemTypes {
 }
 
 export const CreateInvoiceItemActions = {
-  createInvoiceItem: (id: ID, invoice: IInvoiceItem) =>
+  createInvoiceItemRequest: (id: ID, invoice: IInvoiceItem) =>
     action(CreateInvoiceItemTypes.CREATE_INVOICE_ITEM_REQUEST, {
       url: `${URL_ALL_INVOICES}/${id}/items`,
       body: invoice

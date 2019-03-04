@@ -9,10 +9,7 @@ import { RootState, RootAction } from '../../redux/store/types';
 import { ID } from '../../shared/typing/records';
 import { ActionBtn } from '../../components/ManageForm/style';
 import ICustomer from '../../shared/models/Customer';
-
-import { CustomerRequest } from '../../redux/request/actions';
-
-const { Action } = CustomerRequest;
+import * as CustomerActions from '../../redux/customer/actions';
 
 type Props = {
   fetchCustomerById: (id: ID) => void;
@@ -37,6 +34,10 @@ const Customer: FC<Props> = ({
   }, []);
 
   const showDrawer = () => changeVisible(true);
+  const closeDrawer = () => {
+    handleCloseForm();
+    resetCustomer();
+  };
   const handleEdit = (id: ID) => {
     fetchCustomerById(id);
     showDrawer();
@@ -45,7 +46,6 @@ const Customer: FC<Props> = ({
   const handleCloseForm = () => {
     changeVisible(false);
     setIsEdit(false);
-    resetCustomer();
   };
 
   return (
@@ -54,8 +54,12 @@ const Customer: FC<Props> = ({
         <Icon type="plus" /> Add Customer
       </ActionBtn>
       <Table data={customers} onEdit={handleEdit} onDelete={deleteCustomer} />
-      <Drawer title="Create a new customer" onClose={handleCloseForm} visible={visible}>
-        <CustomerForm isEdit={isEdit} />
+      <Drawer
+        title={isEdit ? 'Edit the customer' : 'Create a new customer'}
+        onClose={closeDrawer}
+        visible={visible}
+      >
+        <CustomerForm isEdit={isEdit} onClose={handleCloseForm} />
       </Drawer>
     </div>
   );
@@ -63,10 +67,10 @@ const Customer: FC<Props> = ({
 
 const mapStateToProps = (state: RootState) => ({ customers: state.customer.entities });
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
-  fetchCustomerById: (id: ID) => dispatch(Action.fetchCustomerById(id)),
-  deleteCustomer: (id: ID) => dispatch(Action.deleteCustomer(id)),
-  fetchAllCustomers: () => dispatch(Action.fetchAllCustomers()),
-  resetCustomer: () => dispatch(Action.resetCustomer())
+  fetchCustomerById: (id: ID) => dispatch(CustomerActions.fetchCustomer(id)),
+  deleteCustomer: (id: ID) => dispatch(CustomerActions.deleteCustomer(id)),
+  fetchAllCustomers: () => dispatch(CustomerActions.fetchCustomers()),
+  resetCustomer: () => dispatch(CustomerActions.resetCustomerLocal())
 });
 
 export default connect(

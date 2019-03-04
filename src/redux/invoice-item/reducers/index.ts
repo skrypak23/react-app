@@ -22,12 +22,12 @@ const reducer = (state: State = initialState, action: Action): State => {
         entities: []
       };
 
-    case INVOICE_ITEMS_TYPES.DELETE_INVOICE_ITEM: {
+    case INVOICE_ITEMS_TYPES.DELETE_INVOICE_ITEM_LOCAL: {
       const entities = state.entities.filter((_, idx) => idx !== action.payload);
       return { ...state, entities };
     }
 
-    case INVOICE_ITEMS_TYPES.EDIT_INVOICE_ITEM: {
+    case INVOICE_ITEMS_TYPES.EDIT_INVOICE_ITEM_LOCAL: {
       const { index, invoiceItem } = action.payload;
       const entities = [...state.entities];
       const edited = { ...state.edited, [index]: invoiceItem };

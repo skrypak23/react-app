@@ -9,7 +9,7 @@ export enum CreateInvoiceTypes {
 }
 
 export const CreateInvoiceActions = {
-  createInvoice: (invoice: IInvoice) =>
+  createInvoiceRequest: (invoice: IInvoice) =>
     action(CreateInvoiceTypes.CREATE_INVOICE_REQUEST, {
       url: URL_ALL_INVOICES,
       body: invoice

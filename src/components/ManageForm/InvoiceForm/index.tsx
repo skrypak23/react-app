@@ -9,9 +9,8 @@ import { ID } from '../../../shared/typing/records';
 import IInvoiceItem from '../../../shared/models/InvoiceItem';
 import IProduct from '../../../shared/models/Product';
 import * as InvoiceItemActions from '../../../redux/invoice-item/actions';
-import { InvoiceRequest, InvoiceItemRequest } from '../../../redux/request/actions';
+import { InvoiceRequest } from '../../../redux/request/actions';
 const { Action: InvoiceAction } = InvoiceRequest;
-const { Action: InvoiceItemAction } = InvoiceItemRequest;
 
 type Props = {
   invoice: IInvoice | null;
@@ -85,8 +84,8 @@ const mapStateToProps = (state: RootState) => ({
 });
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
   editInvoice: (id: ID, invoice: IInvoice) =>
-    dispatch(InvoiceAction.editInvoice(id, invoice)),
-  createInvoice: (invoice: IInvoice) => dispatch(InvoiceAction.createInvoice(invoice)),
+    dispatch(InvoiceAction.editInvoiceRequest(id, invoice)),
+  createInvoice: (invoice: IInvoice) => dispatch(InvoiceAction.createInvoiceRequest(invoice)),
   fillInvoice: (invoice: IInvoice) => dispatch(InvoiceAction.fillInvoice(invoice)),
   deleteInvoiceItem: (id: ID) => dispatch(InvoiceItemActions.deleteInvoiceItemLocal(id))
 });

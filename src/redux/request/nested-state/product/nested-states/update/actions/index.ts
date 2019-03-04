@@ -10,7 +10,7 @@ export enum UpdateProductTypes {
 }
 
 export const UpdateProductActions = {
-  editProduct: (id: ID, customer: IProduct) =>
+  editProductRequest: (id: ID, customer: IProduct) =>
     action(UpdateProductTypes.UPDATE_PRODUCT_REQUEST, {
       url: `${URL_ALL_PRODUCTS}/${id}`,
       body: customer

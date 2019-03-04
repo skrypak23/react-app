@@ -10,7 +10,7 @@ export enum UpdateCustomerTypes {
 }
 
 export const UpdateCustomerActions = {
-  editCustomer: (id: ID, customer: ICustomer) =>
+  editCustomerRequest: (id: ID, customer: ICustomer) =>
     action(UpdateCustomerTypes.UPDATE_CUSTOMER_REQUEST, {
       url: `${URL_ALL_CUSTOMERS}/${id}`,
       body: customer

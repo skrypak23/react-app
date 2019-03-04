@@ -11,7 +11,7 @@ export enum FetchCustomerByIdTypes {
 }
 
 export const FetchCustomerByIdActions = {
-  fetchCustomerById: (id: ID) =>
+  fetchCustomerByIdRequest: (id: ID) =>
     action(FetchCustomerByIdTypes.FETCH_CUSTOMERS_BY_ID_REQUEST, {
       url: `${URL_ALL_CUSTOMERS}/${id}`
     }),

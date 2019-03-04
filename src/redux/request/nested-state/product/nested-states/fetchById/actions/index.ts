@@ -11,7 +11,7 @@ export enum FetchProductByIdTypes {
 }
 
 export const FetchProductByIdActions = {
-  fetchProductById: (id: ID) =>
+  fetchProductByIdRequest: (id: ID) =>
     action(FetchProductByIdTypes.FETCH_PRODUCT_BY_ID_REQUEST, {
       url: `${URL_ALL_PRODUCTS}/${id}`
     }),

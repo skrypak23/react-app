@@ -9,7 +9,7 @@ export enum CreateCustomerTypes {
 }
 
 export const CreateCustomerActions = {
-  createCustomer: (customer: ICustomer) =>
+  createCustomerRequest: (customer: ICustomer) =>
     action(CreateCustomerTypes.CREATE_CUSTOMER_REQUEST, {
       url: URL_ALL_CUSTOMERS,
       body: customer
