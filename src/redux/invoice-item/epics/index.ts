@@ -1,9 +1,12 @@
-import { filter, map, mergeMap } from 'rxjs/operators';
+import { filter, map, mergeMap, switchMap } from 'rxjs/operators';
 import { Epic } from 'redux-observable';
 import { isOfType } from 'typesafe-actions';
 import { RootAction, RootState } from '../../store/types';
 import * as InvoiceItemActions from '../actions';
 import { InvoiceItemRequest as Request } from '../../request/actions';
+import {InvoiceRequest} from "../../request/actions";
+import {createItems, deleteItems} from "../../../shared/epics";
+import {DeleteInvoiceTypes} from "../../request/nested-state/invoice/nested-states/delete/actions";
 
 const { Types } = Request;
 
@@ -28,6 +31,7 @@ const setInvoiceItemDataEpic: Epic<RootAction, RootAction, RootState> = action$ 
       }
     })
   );
+
 
 
 export default [setInvoiceItemDataEpic];

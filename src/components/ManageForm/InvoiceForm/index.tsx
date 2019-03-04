@@ -42,16 +42,15 @@ const InvoiceForm: FC<Props> = ({
 }) => {
   const handleSubmit = (values: IInvoice) => {
     if (isEdit) {
-      const id = invoice!.id;
-      editInvoice(id, { id, ...values });
+      editInvoice(values.id, { ...values });
     } else {
       createInvoice({ ...values });
     }
     closeForm();
   };
 
-  const handleDelete = (index: ID, invoiceItem: IInvoiceItem) => {
-      deleteInvoiceItem(index);
+  const handleDelete = (index: ID) => {
+    deleteInvoiceItem(index);
   };
 
   const findCustomer = (customers: ReadonlyArray<ICustomer>): ICustomer => {
@@ -89,8 +88,7 @@ const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
     dispatch(InvoiceAction.editInvoice(id, invoice)),
   createInvoice: (invoice: IInvoice) => dispatch(InvoiceAction.createInvoice(invoice)),
   fillInvoice: (invoice: IInvoice) => dispatch(InvoiceAction.fillInvoice(invoice)),
-  deleteInvoiceItem: (id: ID) =>
-    dispatch(InvoiceItemActions.deleteInvoiceItemLocal(id))
+  deleteInvoiceItem: (id: ID) => dispatch(InvoiceItemActions.deleteInvoiceItemLocal(id))
 });
 
 export default connect(

@@ -65,12 +65,11 @@ const Edit: FC<Props> = ({
     setIsEdit(false);
     resetInvoice();
   };
-  const handleDelete = (index: ID, invoiceItem: IInvoiceItem) => {
+  const handleDelete = (index: ID) => {
     deleteInvoiceItemLocal(index);
   };
 
   const handleClickOnEdit = (record: IInvoiceItem, index: ID) => {
-    resetInvoiceItems();
     showDrawer();
     setEditItem(true);
     fillItem(invoiceItems[index]);
@@ -79,7 +78,6 @@ const Edit: FC<Props> = ({
 
   const handleEditInvoiceItem = (values: IInvoiceItem) => {
     editInvoiceItemLocal(editIndex, { ...invoiceItem, ...values });
-    
     closeDrawer();
   };
 

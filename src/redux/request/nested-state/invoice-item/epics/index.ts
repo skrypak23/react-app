@@ -1,6 +1,12 @@
-import { createInvoiceItemEpic } from '../nested-states/create/epics';
+import {
+  createInvoiceItemEpic,
+  createInvoiceItemsEpic
+} from '../nested-states/create/epics';
 import { updateInvoiceItemEpic } from '../nested-states/update/epics';
-import { deleteInvoiceItemEpic } from '../nested-states/delete/epics';
+import {
+  deleteInvoiceItemEpic,
+  deleteInvoiceItemsEpic
+} from '../nested-states/delete/epics';
 import { fetchInvoiceItemsEpic } from '../nested-states/fetch/epics';
 import { fetchInvoiceItemByIdEpic } from '../nested-states/fetchById/epics';
 
@@ -9,5 +15,7 @@ export default [
   updateInvoiceItemEpic,
   deleteInvoiceItemEpic,
   fetchInvoiceItemsEpic,
-  fetchInvoiceItemByIdEpic
+  fetchInvoiceItemByIdEpic,
+  createInvoiceItemsEpic,
+  deleteInvoiceItemsEpic
 ];

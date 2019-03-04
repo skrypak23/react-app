@@ -54,6 +54,7 @@ const Invoice: FC<Props> = ({
   }, []);
 
   const handleEdit = (id: ID) => {
+    resetInvoiceItems();
     fetchInvoiceById(id);
     fetchAllInvoiceItems(id);
     setShowForm(true);

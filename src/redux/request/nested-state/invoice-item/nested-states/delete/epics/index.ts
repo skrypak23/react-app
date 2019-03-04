@@ -2,11 +2,11 @@ import { of } from 'rxjs';
 import { Epic } from 'redux-observable';
 import { switchMap, map, catchError, filter } from 'rxjs/operators';
 import { ActionType, isOfType } from 'typesafe-actions';
-import { RootState } from '../../../../../../store/types';
+import { RootAction, RootState } from '../../../../../../store/types';
 import InvoiceItemService from '../../../../../../../shared/services/invoice-item.service';
 import { DeleteInvoiceItemTypes, DeleteInvoiceItemActions } from '../actions';
-
-type RootAction = ActionType<typeof DeleteInvoiceItemActions>;
+import { DeleteInvoiceTypes } from '../../../../invoice/nested-states/delete/actions';
+import { deleteItems } from '../../../../../../../shared/epics';
 
 export const deleteInvoiceItemEpic: Epic<RootAction, RootAction, RootState> = action$ =>
   action$.pipe(
@@ -17,4 +17,13 @@ export const deleteInvoiceItemEpic: Epic<RootAction, RootAction, RootState> = ac
         catchError(err => of(DeleteInvoiceItemActions.deleteInvoiceItemFailure(err)))
       )
     )
+  );
+
+export const deleteInvoiceItemsEpic: Epic<RootAction, RootAction, RootState> = (
+  action$,
+  state$
+) =>
+  action$.pipe(
+    filter(isOfType(DeleteInvoiceTypes.DELETE_INVOICE_SUCCESS)),
+    switchMap(action => deleteItems(state$, action.payload.id))
   );

@@ -17,7 +17,7 @@ type Props = {
   invoice: IInvoice | null;
   invoiceItems: ReadonlyArray<IInvoiceItem>;
   products: ReadonlyArray<IProduct>;
-  handleDelete: (index: ID, invoiceItem: IInvoiceItem) => void;
+  handleDelete: (index: ID) => void;
   closeForm: () => void;
 };
 
@@ -66,9 +66,11 @@ const BaseForm: FC<Props> = ({
               min={0}
               max={100}
               onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                const id = invoice ? invoice.id : null;
                 fillInvoice({
                   ...form.getFieldsValue(),
-                  discount: event.target.value
+                  discount: event.target.value,
+                  id
                 } as IInvoice);
               }}
             />
@@ -89,7 +91,8 @@ const BaseForm: FC<Props> = ({
     event.preventDefault();
     form.validateFields((err: Error, values: any) => {
       if (!err && Object.values(values).every(Boolean)) {
-        onSubmit({ ...values, total: total.toFixed(2) });
+        const id = invoice ? invoice.id : null;
+        onSubmit({ ...values, id, total: total.toFixed(2) });
       }
     });
   };

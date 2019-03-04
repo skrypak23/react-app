@@ -27,12 +27,3 @@ export const createInvoiceEpic: Epic<RootAction, RootAction, RootState> = (
       )
     )
   );
-
-export const createInvoiceSuccessEpic: Epic<RootAction, RootAction, RootState> = (
-  action$,
-  state$
-) =>
-  action$.pipe(
-    filter(isOfType(CreateInvoiceTypes.CREATE_INVOICE_SUCCESS)),
-    switchMap(action => createItems(state$, action.payload.id))
-  );

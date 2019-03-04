@@ -28,12 +28,3 @@ export const deleteInvoiceEpic: Epic<RootAction, RootAction, RootState> = (
       )
     )
   );
-
-export const deleteInvoiceSuccessEpic: Epic<RootAction, RootAction, RootState> = (
-  action$,
-  state$
-) =>
-  action$.pipe(
-    filter(isOfType(DeleteInvoiceTypes.DELETE_INVOICE_SUCCESS)),
-    switchMap(action => deleteItems(state$, action.payload.id))
-  );

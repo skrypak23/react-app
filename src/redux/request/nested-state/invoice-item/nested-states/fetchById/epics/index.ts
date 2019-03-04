@@ -9,22 +9,20 @@ import { FetchInvoiceItemByIdTypes, FetchInvoiceItemByIdActions } from '../actio
 type RootAction = ActionType<typeof FetchInvoiceItemByIdActions>;
 
 export const fetchInvoiceItemByIdEpic: Epic<
-         RootAction,
-         RootAction,
-         RootState
-       > = action$ =>
-         action$.pipe(
-           filter(
-             isOfType(FetchInvoiceItemByIdTypes.FETCH_INVOICE_ITEM_BY_ID_REQUEST)
-           ),
-           switchMap(action =>
-             InvoiceItemService.fetchInvoiceItemById(action.payload).pipe(
-               map(response =>
-                 FetchInvoiceItemByIdActions.fetchInvoiceItemByIdSuccess(response)
-               ),
-               catchError(err =>
-                 of(FetchInvoiceItemByIdActions.fetchInvoiceItemByIdFailure(err))
-               )
-             )
-           )
-         );
+  RootAction,
+  RootAction,
+  RootState
+> = action$ =>
+  action$.pipe(
+    filter(isOfType(FetchInvoiceItemByIdTypes.FETCH_INVOICE_ITEM_BY_ID_REQUEST)),
+    switchMap(action =>
+      InvoiceItemService.fetchInvoiceItemById(action.payload).pipe(
+        map(response =>
+          FetchInvoiceItemByIdActions.fetchInvoiceItemByIdSuccess(response)
+        ),
+        catchError(err =>
+          of(FetchInvoiceItemByIdActions.fetchInvoiceItemByIdFailure(err))
+        )
+      )
+    )
+  );

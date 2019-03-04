@@ -15,7 +15,6 @@ const diffItems = (state$: any) => {
 };
 
 export const createItems = (state$: any, invoiceId: number) => {
-  console.log('CREATE', state$.value.invoiceItem.entitie);
   return from(state$.value.invoiceItem.entities).pipe(
     filter(invoiceItem => !invoiceItem.hasOwnProperty('id')),
     map(item =>
