@@ -20,10 +20,9 @@ type Props = {
   invoiceItems: ReadonlyArray<IInvoiceItem>;
   customers: ReadonlyArray<ICustomer>;
   isEdit: boolean;
-  deleteInvoiceItem: (id: ID, invoiceId: ID) => void;
   editInvoice: (id: ID, invoice: IInvoice) => void;
   createInvoice: (invoice: IInvoice) => void;
-  deleteInvoiceItemLocal: (id: ID) => void;
+  deleteInvoiceItem: (id: ID) => void;
   fillInvoice: (invoice: IInvoice) => void;
   closeForm: () => void;
 };
@@ -34,7 +33,6 @@ const InvoiceForm: FC<Props> = ({
   invoiceItems,
   createInvoice,
   editInvoice,
-  deleteInvoiceItemLocal,
   deleteInvoiceItem,
   isEdit,
   customers,
@@ -53,11 +51,7 @@ const InvoiceForm: FC<Props> = ({
   };
 
   const handleDelete = (index: ID, invoiceItem: IInvoiceItem) => {
-    if (invoiceItem.id) {
-      deleteInvoiceItem(invoiceItem.id, invoice!.id);
-    } else {
-      deleteInvoiceItemLocal(index);
-    }
+      deleteInvoiceItem(index);
   };
 
   const findCustomer = (customers: ReadonlyArray<ICustomer>): ICustomer => {
@@ -94,10 +88,8 @@ const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
   editInvoice: (id: ID, invoice: IInvoice) =>
     dispatch(InvoiceAction.editInvoice(id, invoice)),
   createInvoice: (invoice: IInvoice) => dispatch(InvoiceAction.createInvoice(invoice)),
-  deleteInvoiceItem: (id: ID, invoiceId: ID) =>
-    dispatch(InvoiceItemAction.deleteInvoiceItem(id, invoiceId)),
   fillInvoice: (invoice: IInvoice) => dispatch(InvoiceAction.fillInvoice(invoice)),
-  deleteInvoiceItemLocal: (id: ID) =>
+  deleteInvoiceItem: (id: ID) =>
     dispatch(InvoiceItemActions.deleteInvoiceItemLocal(id))
 });
 

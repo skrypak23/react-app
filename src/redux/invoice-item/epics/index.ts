@@ -3,13 +3,11 @@ import { Epic } from 'redux-observable';
 import { isOfType } from 'typesafe-actions';
 import { RootAction, RootState } from '../../store/types';
 import * as InvoiceItemActions from '../actions';
-import { InvoiceItemRequest as Request, InvoiceRequest } from '../../request/actions';
-import { createItems } from '../../../shared/utils';
+import { InvoiceItemRequest as Request } from '../../request/actions';
 
 const { Types } = Request;
-const { Types: InvoiceTypes } = InvoiceRequest;
 
-const setCustomerDataEpic: Epic<RootAction, RootAction, RootState> = action$ =>
+const setInvoiceItemDataEpic: Epic<RootAction, RootAction, RootState> = action$ =>
   action$.pipe(
     filter(
       isOfType([
@@ -31,13 +29,5 @@ const setCustomerDataEpic: Epic<RootAction, RootAction, RootState> = action$ =>
     })
   );
 
-const createInvoiceItemEpic: Epic<RootAction, RootAction, RootState> = (
-  action$,
-  state$
-) =>
-  action$.pipe(
-    filter(isOfType(InvoiceTypes.CREATE_INVOICE_SUCCESS)),
-    mergeMap(action => createItems(state$, action))
-  );
 
-export default [setCustomerDataEpic, createInvoiceItemEpic];
+export default [setInvoiceItemDataEpic];

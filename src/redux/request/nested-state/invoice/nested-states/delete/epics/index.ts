@@ -4,11 +4,21 @@ import { switchMap, map, catchError, filter } from 'rxjs/operators';
 import { ActionType, isOfType } from 'typesafe-actions';
 import { RootState } from '../../../../../../store/types';
 import InvoiceService from '../../../../../../../shared/services/invoice.service';
+import { InvoiceItemRequest } from '../../../../../actions';
 import { DeleteInvoiceTypes, DeleteInvoiceActions } from '../actions';
+import { deleteItems } from '../../../../../../../shared/epics';
 
-type RootAction = ActionType<typeof DeleteInvoiceActions>;
+const Actions = {
+  ...DeleteInvoiceActions,
+  ...InvoiceItemRequest.Action
+};
 
-export const deleteInvoiceEpic: Epic<RootAction, RootAction, RootState> = action$ =>
+type RootAction = ActionType<typeof Actions>;
+
+export const deleteInvoiceEpic: Epic<RootAction, RootAction, RootState> = (
+  action$,
+  state$
+) =>
   action$.pipe(
     filter(isOfType(DeleteInvoiceTypes.DELETE_INVOICE_REQUEST)),
     switchMap(action =>
@@ -17,4 +27,13 @@ export const deleteInvoiceEpic: Epic<RootAction, RootAction, RootState> = action
         catchError(err => of(DeleteInvoiceActions.deleteInvoiceFailure(err)))
       )
     )
+  );
+
+export const deleteInvoiceSuccessEpic: Epic<RootAction, RootAction, RootState> = (
+  action$,
+  state$
+) =>
+  action$.pipe(
+    filter(isOfType(DeleteInvoiceTypes.DELETE_INVOICE_SUCCESS)),
+    switchMap(action => deleteItems(state$, action.payload.id))
   );

@@ -1,6 +1,6 @@
 import React, { FC, MouseEvent } from 'react';
 import { Form, Row, Input, Button, Select } from 'antd';
-import {ButtonContainer} from '../../style';
+import { ButtonContainer } from '../../style';
 import IInvoiceItem from '../../../../shared/models/InvoiceItem';
 import IProduct from '../../../../shared/models/Product';
 import { ID } from '../../../../shared/typing/records';
@@ -18,14 +18,7 @@ type Props = {
   onEdit: Function;
 };
 
-const BaseForm: FC<Props> = ({
-  form,
-  onSubmit,
-  products,
-  invoiceId,
-  isEdit,
-  onEdit
-}) => {
+const BaseForm: FC<Props> = ({ form, onSubmit, products, invoiceId, isEdit, onEdit }) => {
   const getFields = () => {
     const { getFieldDecorator } = form;
     return (
@@ -56,9 +49,8 @@ const BaseForm: FC<Props> = ({
     event.preventDefault();
     form.validateFields((err: Error, values: any) => {
       if (!err && Object.values(values).every(Boolean)) {
-        isEdit
-          ? onEdit(values)
-          : onSubmit({ ...values, invoice_id: invoiceId });
+        isEdit ? onEdit(values) : onSubmit({ ...values, invoice_id: invoiceId });
+        form.resetFields();
       }
     });
   };
@@ -78,8 +70,8 @@ const BaseForm: FC<Props> = ({
 };
 
 export default Form.create({
-  mapPropsToFields({ invoiceItem }: Props) {
-    const data = invoiceItem || {};
+  mapPropsToFields({ invoiceItem, isEdit }: Props) {
+    const data = isEdit && invoiceItem ? invoiceItem : {};
     return Object.entries(data).reduce(
       (values, [key, value]) => ({
         ...values,

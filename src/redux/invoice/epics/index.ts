@@ -18,8 +18,8 @@ const calculateTotalEpic: Epic<RootAction, RootAction, RootState> = (action$, st
         InvoiceItemTypes.DELETE_INVOICE_ITEM_SUCCESS,
         InvoiceItemTypes.UPDATE_INVOICE_ITEM_SUCCESS,
         INVOICE_ITEMS_TYPES.ADD_INVOICE_ITEM,
-        INVOICE_ITEMS_TYPES.DELETE_INVOICE_ITEMS_LOCAL,
-        INVOICE_ITEMS_TYPES.EDIT_INVOICE_ITEMS_LOCAL
+        INVOICE_ITEMS_TYPES.DELETE_INVOICE_ITEM,
+        INVOICE_ITEMS_TYPES.EDIT_INVOICE_ITEM
       ])
     ),
     map(() => {

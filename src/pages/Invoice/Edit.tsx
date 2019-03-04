@@ -28,6 +28,7 @@ type Props = {
   isEdit: boolean;
   setIsEdit: Function;
   resetInvoice: () => void;
+  resetInvoiceItems: () => void;
   toggleShowForm: () => void;
   fillItem: (invoiceItem: IInvoiceItem) => void;
   deleteInvoiceItemLocal: (id: ID) => void;
@@ -42,18 +43,15 @@ const Edit: FC<Props> = ({
   editInvoiceItemLocal,
   invoice,
   products,
-  customers,
   toggleShowForm,
   addInvoiceItem,
   isEdit,
   setIsEdit,
   resetInvoice,
-  deleteInvoiceItem,
+  resetInvoiceItems,
   deleteInvoiceItemLocal,
-  fetchInvoiceItemById,
   invoiceItem,
   invoiceItems,
-  editInvoiceItem
 }) => {
   const [visible, changeVisible] = useState(false);
   const [isEditItem, setEditItem] = useState(false);
@@ -68,30 +66,20 @@ const Edit: FC<Props> = ({
     resetInvoice();
   };
   const handleDelete = (index: ID, invoiceItem: IInvoiceItem) => {
-    if (invoiceItem.id) {
-      deleteInvoiceItem(invoiceItem.id, invoiceItem.invoice_id);
-    } else {
-      deleteInvoiceItemLocal(index);
-    }
+    deleteInvoiceItemLocal(index);
   };
 
   const handleClickOnEdit = (record: IInvoiceItem, index: ID) => {
+    resetInvoiceItems();
     showDrawer();
     setEditItem(true);
-    if (record.id) {
-      fetchInvoiceItemById(record.id, invoice!.id);
-    } else {
-      fillItem(invoiceItems[index]);
-      setEditIndex(index);
-    }
+    fillItem(invoiceItems[index]);
+    setEditIndex(index);
   };
 
   const handleEditInvoiceItem = (values: IInvoiceItem) => {
-    if (invoiceItem!.id) {
-      editInvoiceItem(invoiceItem!.id, invoice!.id, values);
-    } else {
-      editInvoiceItemLocal(editIndex, values);
-    }
+    editInvoiceItemLocal(editIndex, { ...invoiceItem, ...values });
+    
     closeDrawer();
   };
 
@@ -148,7 +136,8 @@ const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
   fillItem: (invoiceItem: IInvoiceItem) =>
     dispatch(InvoiceItemAction.fillItem(invoiceItem)),
   addInvoiceItem: (invoiceItem: IInvoiceItem) =>
-    dispatch(InvoiceItemActions.addInvoiceItem(invoiceItem))
+    dispatch(InvoiceItemActions.addInvoiceItem(invoiceItem)),
+  resetInvoiceItems: () => dispatch(InvoiceItemActions.resetInvoiceItems())
 });
 
 export default connect(

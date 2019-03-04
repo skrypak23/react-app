@@ -3,8 +3,7 @@ import * as InvoiceItemActions from '../actions';
 import * as INVOICE_ITEMS_TYPES from '../actions/types';
 import { State, initialState } from '../states';
 import IInvoiceItem from '../../../shared/models/InvoiceItem';
-import { union, deleteData } from '../../../shared/utils';
-import { remove } from 'ramda';
+import { union } from '../../../shared/utils';
 
 type Action = ActionType<typeof InvoiceItemActions>;
 
@@ -16,32 +15,27 @@ const reducer = (state: State = initialState, action: Action): State => {
         ...state,
         entities
       };
-    case INVOICE_ITEMS_TYPES.DELETE_INVOICE_ITEM: {
-      const entities = deleteData<IInvoiceItem>(action.payload, state.entities);
+
+    case INVOICE_ITEMS_TYPES.RESET_INVOICE_ITEMS:
       return {
         ...state,
-        entities
+        entities: []
       };
-    }
 
-    // case INVOICE_ITEMS_TYPES.FILL_INVOICE_ITEMS:
-    //   const foundItem = state.invoiceItems[action.payload];
-    //   return {
-    //     ...state,
-    //     invoiceItem: foundItem
-    //   };
-
-    case INVOICE_ITEMS_TYPES.DELETE_INVOICE_ITEMS_LOCAL: {
-      const entities = remove(action.payload, 1, state.entities);
+    case INVOICE_ITEMS_TYPES.DELETE_INVOICE_ITEM: {
+      const entities = state.entities.filter((_, idx) => idx !== action.payload);
       return { ...state, entities };
     }
 
-    case INVOICE_ITEMS_TYPES.EDIT_INVOICE_ITEMS_LOCAL: {
+    case INVOICE_ITEMS_TYPES.EDIT_INVOICE_ITEM: {
+      const { index, invoiceItem } = action.payload;
       const entities = [...state.entities];
-      entities[action.payload.id] = action.payload.invoiceItem;
+      const edited = { ...state.edited, [index]: invoiceItem };
+      entities[action.payload.index] = action.payload.invoiceItem;
       return {
         ...state,
-        entities
+        entities,
+        edited
       };
     }
     case INVOICE_ITEMS_TYPES.ADD_INVOICE_ITEM: {

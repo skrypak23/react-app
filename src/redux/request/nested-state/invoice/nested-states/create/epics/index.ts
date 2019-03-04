@@ -1,14 +1,23 @@
-import { of } from 'rxjs';
+import { of, concat } from 'rxjs';
 import { Epic } from 'redux-observable';
 import { switchMap, map, catchError, filter } from 'rxjs/operators';
 import { ActionType, isOfType } from 'typesafe-actions';
 import { RootState } from '../../../../../../store/types';
 import InvoiceService from '../../../../../../../shared/services/invoice.service';
 import { CreateInvoiceTypes, CreateInvoiceActions } from '../actions';
+import { createItems } from '../../../../../../../shared/epics';
+import { InvoiceItemRequest } from '../../../../../actions';
 
-type RootAction = ActionType<typeof CreateInvoiceActions>;
+const Actions = {
+  ...CreateInvoiceActions,
+  ...InvoiceItemRequest.Action
+};
 
-export const createInvoiceEpic: Epic<RootAction, RootAction, RootState> = action$ =>
+type RootAction = ActionType<typeof Actions>;
+
+export const createInvoiceEpic: Epic<RootAction, RootAction, RootState> = (
+  action$
+) =>
   action$.pipe(
     filter(isOfType(CreateInvoiceTypes.CREATE_INVOICE_REQUEST)),
     switchMap(action =>
@@ -17,4 +26,13 @@ export const createInvoiceEpic: Epic<RootAction, RootAction, RootState> = action
         catchError(err => of(CreateInvoiceActions.createInvoiceFailure(err)))
       )
     )
+  );
+
+export const createInvoiceSuccessEpic: Epic<RootAction, RootAction, RootState> = (
+  action$,
+  state$
+) =>
+  action$.pipe(
+    filter(isOfType(CreateInvoiceTypes.CREATE_INVOICE_SUCCESS)),
+    switchMap(action => createItems(state$, action.payload.id))
   );

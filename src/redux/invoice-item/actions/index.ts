@@ -12,10 +12,14 @@ export const deleteInvoiceItemData = createStandardAction(
 )<IInvoiceItem>();
 
 export const deleteInvoiceItemLocal = (id: ID) =>
-  action(INVOICE_ITEMS_TYPES.DELETE_INVOICE_ITEMS_LOCAL, id);
+  action(INVOICE_ITEMS_TYPES.DELETE_INVOICE_ITEM, id);
 
-export const editInvoiceItemLocal = (id: ID, invoiceItem: IInvoiceItem) =>
-  action(INVOICE_ITEMS_TYPES.EDIT_INVOICE_ITEMS_LOCAL, { id, invoiceItem });
+export const resetInvoiceItems = createStandardAction(
+  INVOICE_ITEMS_TYPES.RESET_INVOICE_ITEMS
+)<undefined>();
+
+export const editInvoiceItemLocal = (index: ID, invoiceItem: IInvoiceItem) =>
+  action(INVOICE_ITEMS_TYPES.EDIT_INVOICE_ITEM, { index, invoiceItem });
 export const addInvoiceItem = createStandardAction(INVOICE_ITEMS_TYPES.ADD_INVOICE_ITEM)<
   IInvoiceItem
 >();

@@ -14,6 +14,7 @@ import {
 } from '../../redux/request/actions';
 import ICustomer from '../../shared/models/Customer';
 import IInvoice from '../../shared/models/Invoice';
+import * as InvoiceItemActions from '../../redux/invoice-item/actions';
 
 const { Action: CustomerAction } = CustomerRequest;
 const { Action: ProductAction } = ProductRequest;
@@ -29,6 +30,7 @@ type Props = {
   fetchInvoiceById: (id: ID) => void;
   customers: ReadonlyArray<ICustomer>;
   invoices: ReadonlyArray<IInvoice>;
+  resetInvoiceItems: () => void;
 };
 
 const Invoice: FC<Props> = ({
@@ -39,7 +41,8 @@ const Invoice: FC<Props> = ({
   customers,
   invoices,
   fetchAllProducts,
-  fetchAllInvoiceItems
+  fetchAllInvoiceItems,
+  resetInvoiceItems
 }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [showForm, setShowForm] = useState(false);
@@ -62,13 +65,18 @@ const Invoice: FC<Props> = ({
     return foundCustomer ? foundCustomer.name : '';
   };
 
+  const handleOpenEdit = () => {
+    resetInvoiceItems();
+    toggleShowForm();
+  };
+
   return (
     <div>
       {showForm ? (
         <Edit toggleShowForm={toggleShowForm} isEdit={isEdit} setIsEdit={setIsEdit} />
       ) : (
         <>
-          <Button type="primary" onClick={toggleShowForm} htmlType="button">
+          <Button type="primary" onClick={handleOpenEdit} htmlType="button">
             <Icon type="plus" /> Add Invoice
           </Button>
           <Table
@@ -94,7 +102,8 @@ const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
   fetchAllProducts: () => dispatch(ProductAction.fetchAllProducts()),
   fetchAllInvoices: () => dispatch(InvoiceAction.fetchAllInvoices()),
   deleteInvoice: (id: ID) => dispatch(InvoiceAction.deleteInvoice(id)),
-  fetchInvoiceById: (id: ID) => dispatch(InvoiceAction.fetchInvoiceById(id))
+  fetchInvoiceById: (id: ID) => dispatch(InvoiceAction.fetchInvoiceById(id)),
+  resetInvoiceItems: () => dispatch(InvoiceItemActions.resetInvoiceItems())
 });
 
 export default connect(
