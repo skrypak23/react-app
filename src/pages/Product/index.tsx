@@ -10,6 +10,7 @@ import { ID } from '../../shared/typing/records';
 import { ActionBtn } from '../../components/ManageForm/style';
 import IProduct from '../../shared/models/Product';
 import * as ProductActions from '../../redux/product/actions';
+import withToast from '../../hoc/withToast';
 
 type Props = {
   fetchProductById: (id: ID) => void;
@@ -34,17 +35,15 @@ const Product: FC<Props> = ({
   }, []);
 
   const showDrawer = () => changeVisible(true);
-  const handleEdit = (id: number) => {
+
+  const handleEdit = (id: ID) => {
     fetchProductById(id);
-    showDrawer();
     setIsEdit(true);
+    showDrawer();
   };
   const handleCloseForm = () => {
     changeVisible(false);
     setIsEdit(false);
-  };
-  const closeDrawer = () => {
-    handleCloseForm();
     resetProduct();
   };
 
@@ -56,7 +55,7 @@ const Product: FC<Props> = ({
       <Table data={products} onEdit={handleEdit} onDelete={deleteProduct} />
       <Drawer
         title={isEdit ? 'Edit the product' : 'Create a new product'}
-        onClose={closeDrawer}
+        onClose={handleCloseForm}
         visible={visible}
       >
         <ProductForm isEdit={isEdit} onClose={handleCloseForm} />
@@ -73,7 +72,9 @@ const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
   resetProduct: () => dispatch(ProductActions.resetProductLocal())
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Product);
+export default withToast(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Product)
+);

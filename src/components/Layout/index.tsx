@@ -5,7 +5,6 @@ import Menu from './Menu';
 import { StyledContent, StyledHeader } from './style';
 import * as PATHS from '../../routes/routes';
 import ErrorBoundary from '../ErrorBoundary';
-import Alert from '../Alert';
 
 const MENU_ITEMS = [
   { to: PATHS.CUSTOMER, name: 'Customers' },
@@ -22,9 +21,7 @@ const Layout: FC = ({ children }) => {
       <AntLayout className="layout" tagName="section">
         <StyledHeader tagName="header" />
         <ErrorBoundary>
-          <Alert>
             <StyledContent tagName="main">{children}</StyledContent>
-          </Alert>
         </ErrorBoundary>
       </AntLayout>
     </AntLayout>

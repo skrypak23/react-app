@@ -10,6 +10,7 @@ import { ID } from '../../shared/typing/records';
 import { ActionBtn } from '../../components/ManageForm/style';
 import ICustomer from '../../shared/models/Customer';
 import * as CustomerActions from '../../redux/customer/actions';
+import withToast from '../../hoc/withToast';
 
 type Props = {
   fetchCustomerById: (id: ID) => void;
@@ -24,7 +25,7 @@ const Customer: FC<Props> = ({
   fetchCustomerById,
   deleteCustomer,
   resetCustomer,
-  customers
+  customers,
 }) => {
   const [visible, changeVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -34,18 +35,16 @@ const Customer: FC<Props> = ({
   }, []);
 
   const showDrawer = () => changeVisible(true);
-  const closeDrawer = () => {
-    handleCloseForm();
-    resetCustomer();
-  };
+
   const handleEdit = (id: ID) => {
     fetchCustomerById(id);
-    showDrawer();
     setIsEdit(true);
+    showDrawer();
   };
   const handleCloseForm = () => {
     changeVisible(false);
     setIsEdit(false);
+    resetCustomer();
   };
 
   return (
@@ -56,7 +55,7 @@ const Customer: FC<Props> = ({
       <Table data={customers} onEdit={handleEdit} onDelete={deleteCustomer} />
       <Drawer
         title={isEdit ? 'Edit the customer' : 'Create a new customer'}
-        onClose={closeDrawer}
+        onClose={handleCloseForm}
         visible={visible}
       >
         <CustomerForm isEdit={isEdit} onClose={handleCloseForm} />
@@ -73,7 +72,7 @@ const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
   resetCustomer: () => dispatch(CustomerActions.resetCustomerLocal())
 });
 
-export default connect(
+export default withToast(connect(
   mapStateToProps,
   mapDispatchToProps
-)(Customer);
+)(Customer));

@@ -12,6 +12,7 @@ import * as InvoiceItemActions from '../../redux/invoice-item/actions';
 import * as InvoiceActions from '../../redux/invoice/actions';
 import * as CustomerActions from '../../redux/customer/actions';
 import * as ProductActions from '../../redux/product/actions';
+import withToast from '../../hoc/withToast';
 
 type Props = {
   fetchAllInvoiceItems: (id: ID) => void;
@@ -99,7 +100,9 @@ const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
   resetInvoiceItems: () => dispatch(InvoiceItemActions.resetInvoiceItems())
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Invoice);
+export default withToast(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Invoice)
+);

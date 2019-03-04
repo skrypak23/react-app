@@ -12,10 +12,10 @@ type Props = {
 };
 
 class ErrorBoundary extends React.Component<Props> {
-  state = { hasError: false };
+  state = { hasError: false, error: null };
 
   static getDerivedStateFromError(error: Error) {
-    return { hasError: true };
+    return { hasError: true, error };
   }
 
   renderAlert = () => {
@@ -25,7 +25,13 @@ class ErrorBoundary extends React.Component<Props> {
       invoiceErrors,
       invoiceItemErrors
     } = this.props;
-    return [...customerErrors, ...productErrors, ...invoiceErrors, ...invoiceItemErrors]
+    return [
+      ...customerErrors,
+      ...productErrors,
+      ...invoiceErrors,
+      ...invoiceItemErrors,
+      this.state.error
+    ]
       .filter(Boolean)
       .map((error, idx) => (
         <Alert

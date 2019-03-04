@@ -24,7 +24,7 @@ const createAlertEpic: Epic<RootAction, RootAction, RootState> = action$ =>
         IITypes.CREATE_INVOICE_ITEM_SUCCESS
       ])
     ),
-    mapTo(AlertActions.setSuccessAlert(true, 'Created Success!'))
+    mapTo(AlertActions.setSuccessAlert(true, 'Record was successfully created!'))
   );
 const updateAlertEpic: Epic<RootAction, RootAction, RootState> = action$ =>
   action$.pipe(
@@ -36,7 +36,7 @@ const updateAlertEpic: Epic<RootAction, RootAction, RootState> = action$ =>
         IITypes.UPDATE_INVOICE_ITEM_SUCCESS
       ])
     ),
-    mapTo(AlertActions.setSuccessAlert(true, 'Updated Success!'))
+    mapTo(AlertActions.setSuccessAlert(true, 'Record was successfully updated!'))
   );
 
 const deleteAlertEpic: Epic<RootAction, RootAction, RootState> = action$ =>
@@ -49,7 +49,7 @@ const deleteAlertEpic: Epic<RootAction, RootAction, RootState> = action$ =>
         IITypes.DELETE_INVOICE_ITEM_SUCCESS
       ])
     ),
-    mapTo(AlertActions.setSuccessAlert(true, 'Updated Success!'))
+    mapTo(AlertActions.setSuccessAlert(true, 'Record was successfully deleted!'))
   );
 
 export default [createAlertEpic, deleteAlertEpic, updateAlertEpic];
