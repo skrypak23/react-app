@@ -11,13 +11,3 @@ export function union<T extends IWithID>(payload: Array<T>, entities: ReadonlyAr
 export function deleteData<T extends IWithID>(payload: T, entities: ReadonlyArray<T>) {
   return reject<T>(propEq('id', payload.id), entities);
 }
-
-export const fetchErrors = (storeName: string, state: any) => {
-  return [
-    state.request[storeName].fetchById.error,
-    state.request[storeName].fetch.error,
-    state.request[storeName].create.error,
-    state.request[storeName].update.error,
-    state.request[storeName].remove.error
-  ];
-};

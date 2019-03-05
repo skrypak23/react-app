@@ -1,11 +1,12 @@
 import React, { useEffect, useState, FC } from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Icon } from 'antd';
+import { Icon } from 'antd';
 import Table from './Table';
 import { RootAction, RootState } from '../../redux/store/types';
 import { ID } from '../../shared/typing/records';
 import Edit from './Edit';
+import { ActionBtn } from '../../components/ManageForm/style';
 import ICustomer from '../../shared/models/Customer';
 import IInvoice from '../../shared/models/Invoice';
 import * as InvoiceItemActions from '../../redux/invoice-item/actions';
@@ -70,9 +71,9 @@ const Invoice: FC<Props> = ({
         <Edit toggleShowForm={toggleShowForm} isEdit={isEdit} setIsEdit={setIsEdit} />
       ) : (
         <>
-          <Button type="primary" onClick={handleOpenEdit} htmlType="button">
+          <ActionBtn type="primary" onClick={handleOpenEdit} htmlType="button">
             <Icon type="plus" /> Add Invoice
-          </Button>
+          </ActionBtn>
           <Table
             onEdit={handleEdit}
             data={invoices}

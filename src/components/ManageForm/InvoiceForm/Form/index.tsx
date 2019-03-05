@@ -103,7 +103,7 @@ const BaseForm: FC<Props> = ({
       <Row>
         <ButtonContainer span={24}>
           <FormItem>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" disabled={!invoiceItems.length}>
               Submit
             </Button>
             <StyledButton onClick={closeForm} htmlType="button">

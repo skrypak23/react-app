@@ -51,7 +51,7 @@ const Edit: FC<Props> = ({
   resetInvoiceItems,
   deleteInvoiceItemLocal,
   invoiceItem,
-  invoiceItems,
+  invoiceItems
 }) => {
   const [visible, changeVisible] = useState(false);
   const [isEditItem, setEditItem] = useState(false);
@@ -97,7 +97,11 @@ const Edit: FC<Props> = ({
         onDelete={handleDelete}
         onEdit={handleClickOnEdit}
       />
-      <Drawer title="Create a new invoice" onClose={closeDrawer} visible={visible}>
+      <Drawer
+        title={isEditItem ? 'Edit an invoice item' : 'Create a new invoice item'}
+        onClose={closeDrawer}
+        visible={visible}
+      >
         <ItemsForm
           isEdit={isEditItem}
           invoiceId={invoice ? invoice.id : null}
