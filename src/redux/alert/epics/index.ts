@@ -85,4 +85,4 @@ const errorAlertEpic: Epic<RootAction, RootAction, RootState> = action$ =>
     mapTo(AlertActions.setFailureAlert(true, 'Oops, something wrong!'))
   );
 
-export default [createAlertEpic, deleteAlertEpic, updateAlertEpic];
+export default [createAlertEpic, deleteAlertEpic, updateAlertEpic, errorAlertEpic];
