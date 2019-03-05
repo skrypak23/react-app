@@ -69,7 +69,7 @@ const errorAlertEpic: Epic<RootAction, RootAction, RootState> = action$ =>
         CTypes.CREATE_CUSTOMER_FAILURE,
         ITypes.CREATE_INVOICE_FAILURE,
         PTypes.CREATE_PRODUCT_FAILURE,
-        IITypes.UPDATE_INVOICE_ITEM_FAILURE,
+        IITypes.CREATE_INVOICE_ITEM_FAILURE,
 
         CTypes.FETCH_CUSTOMERS_FAILURE,
         ITypes.FETCH_INVOICES_FAILURE,
