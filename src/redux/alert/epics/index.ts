@@ -52,4 +52,37 @@ const deleteAlertEpic: Epic<RootAction, RootAction, RootState> = action$ =>
     mapTo(AlertActions.setSuccessAlert(true, 'Record was successfully deleted!'))
   );
 
+const errorAlertEpic: Epic<RootAction, RootAction, RootState> = action$ =>
+  action$.pipe(
+    filter(
+      isOfType([
+        CTypes.DELETE_CUSTOMER_FAILURE,
+        ITypes.DELETE_INVOICE_FAILURE,
+        PTypes.DELETE_PRODUCT_FAILURE,
+        IITypes.DELETE_INVOICE_ITEM_FAILURE,
+
+        CTypes.UPDATE_CUSTOMER_FAILURE,
+        ITypes.UPDATE_INVOICE_FAILURE,
+        PTypes.UPDATE_PRODUCT_FAILURE,
+        IITypes.UPDATE_INVOICE_ITEM_FAILURE,
+
+        CTypes.CREATE_CUSTOMER_FAILURE,
+        ITypes.CREATE_INVOICE_FAILURE,
+        PTypes.CREATE_PRODUCT_FAILURE,
+        IITypes.UPDATE_INVOICE_ITEM_FAILURE,
+
+        CTypes.FETCH_CUSTOMERS_FAILURE,
+        ITypes.FETCH_INVOICES_FAILURE,
+        PTypes.FETCH_PRODUCTS_FAILURE,
+        IITypes.FETCH_INVOICE_ITEMS_FAILURE,
+
+        CTypes.FETCH_CUSTOMERS_BY_ID_FAILURE,
+        ITypes.FETCH_INVOICE_BY_ID_FAILURE,
+        PTypes.FETCH_PRODUCT_BY_ID_FAILURE,
+        IITypes.FETCH_INVOICE_ITEM_BY_ID_FAILURE
+      ])
+    ),
+    mapTo(AlertActions.setFailureAlert(true, 'Oops, something wrong!'))
+  );
+
 export default [createAlertEpic, deleteAlertEpic, updateAlertEpic];

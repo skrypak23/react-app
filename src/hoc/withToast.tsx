@@ -16,8 +16,9 @@ const withToast = (Component: ComponentType<any>) => {
   class Toast extends React.Component<Props> {
     componentDidUpdate() {
       const { alert, setSuccessAlert } = this.props;
-      if (this.props.alert.success) {
+      if (alert.success) {
         notification.open({
+          type: 'success',
           message: alert.message,
           onClick: () => setSuccessAlert(null, null)
         });

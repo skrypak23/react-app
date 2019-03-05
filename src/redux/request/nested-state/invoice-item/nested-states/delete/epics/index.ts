@@ -1,12 +1,12 @@
-import { of } from 'rxjs';
+import { of, from } from 'rxjs';
 import { Epic } from 'redux-observable';
 import { switchMap, map, catchError, filter } from 'rxjs/operators';
 import { ActionType, isOfType } from 'typesafe-actions';
 import { RootAction, RootState } from '../../../../../../store/types';
 import InvoiceItemService from '../../../../../../../shared/services/invoice-item.service';
 import { DeleteInvoiceItemTypes, DeleteInvoiceItemActions } from '../actions';
+import { FetchInvoiceItemActions } from '../../fetch/actions';
 import { DeleteInvoiceTypes } from '../../../../invoice/nested-states/delete/actions';
-import { deleteItems } from '../../../../../../../shared/epics';
 
 export const deleteInvoiceItemEpic: Epic<RootAction, RootAction, RootState> = action$ =>
   action$.pipe(
@@ -19,11 +19,27 @@ export const deleteInvoiceItemEpic: Epic<RootAction, RootAction, RootState> = ac
     )
   );
 
+export const deleteInvoiceItemsRequestEpic: Epic<
+  RootAction,
+  RootAction,
+  RootState
+> = action$ =>
+  action$.pipe(
+    filter(isOfType(DeleteInvoiceTypes.DELETE_INVOICE_REQUEST)),
+    map(action => FetchInvoiceItemActions.fetchAllInvoiceItemsRequest(action.payload.id))
+  );
+
 export const deleteInvoiceItemsEpic: Epic<RootAction, RootAction, RootState> = (
   action$,
   state$
 ) =>
   action$.pipe(
     filter(isOfType(DeleteInvoiceTypes.DELETE_INVOICE_SUCCESS)),
-    switchMap(action => deleteItems(state$, action.payload.id))
+    switchMap(() =>
+      from(state$.value.request.invoiceItem.fetch.data).pipe(
+        map(data =>
+          DeleteInvoiceItemActions.deleteInvoiceItemRequest(data.id, data.invoice_id)
+        )
+      )
+    )
   );

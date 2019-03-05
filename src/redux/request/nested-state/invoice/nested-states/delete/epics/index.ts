@@ -6,7 +6,6 @@ import { RootState } from '../../../../../../store/types';
 import InvoiceService from '../../../../../../../shared/services/invoice.service';
 import { InvoiceItemRequest } from '../../../../../actions';
 import { DeleteInvoiceTypes, DeleteInvoiceActions } from '../actions';
-import { deleteItems } from '../../../../../../../shared/epics';
 
 const Actions = {
   ...DeleteInvoiceActions,
@@ -15,10 +14,7 @@ const Actions = {
 
 type RootAction = ActionType<typeof Actions>;
 
-export const deleteInvoiceEpic: Epic<RootAction, RootAction, RootState> = (
-  action$,
-  state$
-) =>
+export const deleteInvoiceEpic: Epic<RootAction, RootAction, RootState> = action$ =>
   action$.pipe(
     filter(isOfType(DeleteInvoiceTypes.DELETE_INVOICE_REQUEST)),
     switchMap(action =>

@@ -1,64 +1,46 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../../redux/store/types';
-import { fetchErrors } from '../../shared/utils';
-import { Alert } from 'antd';
+import { Alert, notification } from 'antd';
+import { setFailureAlert } from '../../redux/alert/actions';
 
 type Props = {
-  customerErrors: Array<Error | null>;
-  productErrors: Array<Error | null>;
-  invoiceErrors: Array<Error | null>;
-  invoiceItemErrors: Array<Error | null>;
+  alert: {
+    failure: boolean | null;
+    message: string | null;
+  };
+  setFailureAlert: (success: boolean | null, message: string | null) => void;
 };
 
-class ErrorBoundary extends React.Component<Props> {
+type State = {
+  hasError: boolean;
+  error: Error | null;
+};
+
+class ErrorBoundary extends React.Component<Props, State> {
   state = { hasError: false, error: null };
 
   static getDerivedStateFromError(error: Error) {
     return { hasError: true, error };
   }
 
-  renderAlert = () => {
-    const {
-      customerErrors,
-      productErrors,
-      invoiceErrors,
-      invoiceItemErrors
-    } = this.props;
-    return [
-      ...customerErrors,
-      ...productErrors,
-      ...invoiceErrors,
-      ...invoiceItemErrors,
-      this.state.error
-    ]
-      .filter(Boolean)
-      .map((error, idx) => (
-        <Alert
-          message={error!.message}
-          type="error"
-          closable
-          style={{ position: 'absolute' }}
-          key={idx}
-        />
-      ));
-  };
+  componentDidUpdate() {
+    const { alert, setFailureAlert } = this.props;
+    if (alert.failure) {
+      notification.open({
+        type: 'error',
+        message: alert.message,
+        onClick: () => setFailureAlert(null, null)
+      });
+    }
+  }
 
   render() {
-    return (
-      <div>
-        {this.renderAlert()}
-        {this.props.children}
-      </div>
-    );
+    return this.props.children;
   }
 }
 
-const mapStateToProps = (state: RootState) => ({
-  customerErrors: fetchErrors('customer', state),
-  productErrors: fetchErrors('product', state),
-  invoiceErrors: fetchErrors('invoice', state),
-  invoiceItemErrors: fetchErrors('invoiceItem', state)
-});
-
-export default connect(mapStateToProps)(ErrorBoundary);
+export default connect(
+  (state: RootState) => ({ alert: state.alert }),
+  { setFailureAlert }
+)(ErrorBoundary);

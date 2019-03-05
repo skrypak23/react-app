@@ -13,6 +13,12 @@ const reducer = (state: State = initialState, action: Action): State => {
         success: action.payload.success,
         message: action.payload.message
       };
+      case ALERT_TYPES.SET_FAILURE_ALERT:
+      return {
+        ...state,
+        failure: action.payload.failure,
+        message: action.payload.message
+      };
     default:
       return state;
   }

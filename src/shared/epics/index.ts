@@ -10,8 +10,7 @@ const diffItems = (state$: any) => {
 
   const cmp = (x: IInvoiceItem, y: IInvoiceItem) => x.id === y.id;
   const createdItems = items.filter((iI: IInvoiceItem) => iI.hasOwnProperty('id'));
-  const diff = differenceWith(cmp, requestedItems, createdItems);
-  return diff;
+  return differenceWith(cmp, requestedItems, createdItems);
 };
 
 export const createItems = (state$: any, invoiceId: number) => {
