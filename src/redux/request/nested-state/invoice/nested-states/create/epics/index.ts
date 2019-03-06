@@ -5,7 +5,6 @@ import { ActionType, isOfType } from 'typesafe-actions';
 import { RootState } from '../../../../../../store/types';
 import InvoiceService from '../../../../../../../shared/services/invoice.service';
 import { CreateInvoiceTypes, CreateInvoiceActions } from '../actions';
-import { createItems } from '../../../../../../../shared/epics';
 import { InvoiceItemRequest } from '../../../../../actions';
 
 const Actions = {

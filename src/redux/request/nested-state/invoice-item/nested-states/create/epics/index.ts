@@ -1,7 +1,7 @@
 import { of } from 'rxjs';
 import { Epic } from 'redux-observable';
 import { switchMap, map, catchError, filter } from 'rxjs/operators';
-import { ActionType, isOfType } from 'typesafe-actions';
+import { isOfType } from 'typesafe-actions';
 import { RootAction, RootState } from '../../../../../../store/types';
 import InvoiceItemService from '../../../../../../../shared/services/invoice-item.service';
 import { CreateInvoiceItemTypes, CreateInvoiceItemActions } from '../actions';

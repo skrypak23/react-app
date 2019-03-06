@@ -1,44 +1,29 @@
-import { from } from 'rxjs';
 import IInvoice from '../models/Invoice';
 import * as API from '../utils/api';
 
-type TData = {
+type TFetch = {
   url: string;
-  body?: IInvoice;
 };
-const headers = { 'Content-Type': 'application/json' };
+
+type TData = TFetch & {
+  body: IInvoice;
+};
 
 class InvoiceService {
   static createInvoice(data: TData) {
-    const config = {
-      method: 'POST',
-      body: JSON.stringify(data.body),
-      headers
-    };
-
-    return from(API.request<IInvoice>(data.url, config));
+    return API.createData<IInvoice>(data.url, data.body);
   }
   static editInvoice(data: TData) {
-    const config = {
-      method: 'PUT',
-      body: JSON.stringify(data.body),
-      headers
-    };
-
-    return from(API.request<IInvoice>(data.url, config));
+    return API.editData<IInvoice>(data.url, data.body);
   }
-  static deleteInvoice(data: TData) {
-    const config = {
-      method: 'DELETE'
-    };
-
-    return from(API.request<IInvoice>(data.url, config));
+  static deleteInvoice(data: TFetch) {
+    return API.deleteData<IInvoice>(data.url);
   }
-  static fetchInvoices(data: TData) {
-    return from(API.fetchAll<IInvoice>(data.url));
+  static fetchInvoices(data: TFetch) {
+    return API.getAll<IInvoice>(data.url);
   }
-  static fetchInvoiceById(data: TData) {
-    return from(API.request<IInvoice>(data.url));
+  static fetchInvoiceById(data: TFetch) {
+    return API.getOne<IInvoice>(data.url);
   }
 }
 

@@ -1,44 +1,29 @@
-import { from } from 'rxjs';
+import { Observable } from 'rxjs';
 import IProduct from '../models/Product';
 import * as API from '../utils/api';
 
-type TData = {
+type TFetch = {
   url: string;
-  body?: IProduct;
 };
-const headers = { 'Content-Type': 'application/json' };
+type TData = TFetch & {
+  body: IProduct;
+};
 
 class ProductService {
-  static createProduct(data: TData) {
-    const config = {
-      method: 'POST',
-      body: JSON.stringify(data.body),
-      headers
-    };
-
-    return from(API.request<IProduct>(data.url, config));
+  static createProduct(data: TData): Observable<IProduct> {
+    return API.createData<IProduct>(data.url, data.body);
   }
-  static editProduct(data: TData) {
-    const config = {
-      method: 'PUT',
-      body: JSON.stringify(data.body),
-      headers
-    };
-
-    return from(API.request<IProduct>(data.url, config));
+  static editProduct(data: TData): Observable<IProduct> {
+    return API.editData<IProduct>(data.url, data.body);
   }
-  static deleteProduct(data: TData) {
-    const config = {
-      method: 'DELETE'
-    };
-
-    return from(API.request<IProduct>(data.url, config));
+  static deleteProduct(data: TFetch) {
+    return API.deleteData<IProduct>(data.url);
   }
-  static fetchProducts(data: TData) {
-    return from(API.fetchAll<IProduct>(data.url));
+  static fetchProducts(data: TFetch) {
+    return API.getAll<IProduct>(data.url);
   }
-  static fetchProductById(data: TData) {
-    return from(API.request<IProduct>(data.url));
+  static fetchProductById(data: TFetch) {
+    return API.getOne<IProduct>(data.url);
   }
 }
 

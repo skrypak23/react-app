@@ -14,14 +14,12 @@ const reducer = (state: State = initialState, action: Action): State => {
       return {
         ...state,
         entities,
-        success: true
       };
     case CUSTOMER_TYPES.DELETE_CUSTOMER_DATA: {
       const entities = deleteData<ICustomer>(action.payload, state.entities);
       return {
         ...state,
         entities,
-        success: true
       };
     }
     default:
